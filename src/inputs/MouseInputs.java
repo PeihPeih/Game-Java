@@ -12,10 +12,8 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         this.gamePanel = gamePanel;
     }
     @Override
-    // Code lại chỗ này nhé. Code xong xóa cmt này đi
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1){
-        }
+
     }
 
     @Override

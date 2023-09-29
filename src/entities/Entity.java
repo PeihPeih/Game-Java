@@ -6,9 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static utils.constants.Direction.*;
-import static utils.constants.Direction.DOWN;
-import static utils.constants.PlayerConstants.*;
+import static utilz.constants.Direction.*;
+import static utilz.constants.PlayerConstants.*;
 
 public abstract class Entity {
     protected float x, y;

@@ -4,7 +4,7 @@ import main.GamePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import static utils.constants.Direction.*;
+import static utilz.constants.Direction.*;
 public class KeybroadInputs implements KeyListener {
     private GamePanel gamePanel;
     public KeybroadInputs(GamePanel gamePanel){

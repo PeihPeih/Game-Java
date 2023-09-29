@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static utils.constants.PlayerConstants.*;
-import static utils.constants.Direction.*;
+import static utilz.constants.PlayerConstants.*;
+import static utilz.constants.Direction.*;
 
 public class GamePanel extends JPanel{
     private MouseInputs mouseInputs;
@@ -21,12 +21,12 @@ public class GamePanel extends JPanel{
     public GamePanel(Game game){
 
         setPanelSize();
-//        mouseInputs = new MouseInputs(this);
+        mouseInputs = new MouseInputs(this);
         this.game = game;
 
         addKeyListener(new KeybroadInputs(this));
-//        addMouseListener(mouseInputs);
-//        addMouseMotionListener(mouseInputs);
+        addMouseListener(mouseInputs);
+        addMouseMotionListener(mouseInputs);
     }
 
 

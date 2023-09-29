@@ -6,9 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static utils.constants.Direction.*;
-import static utils.constants.Direction.DOWN;
-import static utils.constants.PlayerConstants.*;
+import static utilz.constants.Direction.*;
+import static utilz.constants.PlayerConstants.*;
 
 public class Player extends  Entity{
     private BufferedImage[][] animations;
@@ -29,10 +28,12 @@ public class Player extends  Entity{
 
     }
 
+    // In player ra screen
     public void render(Graphics g) {
         g.drawImage(animations[playerAction][aniIndex],(int) x,(int) y,256,160,null);
     }
 
+    // Chuyển frame của mỗi animation
     private void updateAnimationonTick(){
         aniTick++;
         if(aniTick >= aniSpeed){
@@ -44,6 +45,8 @@ public class Player extends  Entity{
             }
         }
     }
+
+    // Animation về hành động
     private void setAnimation(){
         int startAni = playerAction;
         if(moving){
@@ -55,15 +58,19 @@ public class Player extends  Entity{
         if(attacking){
             playerAction = ATTACK_1;
         }
+
+        // Nếu chuyeren hành động thì chạy animation mới
         if(startAni != playerAction){
             resetAninTick();
         }
     }
+
     private void resetAninTick(){
         aniTick = 0;
         aniIndex = 0;
     }
 
+    // Nhân vật di chuyển
     private void updatePos(){
         moving = false;
 
@@ -84,6 +91,7 @@ public class Player extends  Entity{
         }
     }
 
+    // Load ảnh animation
     private void loadsAnimation() {
 
     }

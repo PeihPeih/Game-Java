@@ -19,16 +19,5 @@ public class GameWindow {
 		jframe.setLocationRelativeTo(null);        			   // dat game ve giua man hinh khi bat len
 
 		jframe.setVisible(true);	 						   // hien thi man hinh game (dat o cuoi de tranh loi)
-        jframe.addWindowFocusListener(new WindowFocusListener() {
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                gamePanel.getGame().windowFocusLost();
-            }
-
-            @Override
-            public void windowLostFocus(WindowEvent e) {
-
-            }
-        });
 	}
 }
