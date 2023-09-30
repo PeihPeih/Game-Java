@@ -1,6 +1,6 @@
 package utilz;
 
-public class constants {
+public class constants{
     public static class Direction {
         public static final int LEFT = 0;
         public static final int UP = 1;
