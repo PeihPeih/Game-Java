@@ -180,4 +180,8 @@ local.properties
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
+<<<<<<< HEAD
 .sts4-cache/
+=======
+.sts4-cache/
+>>>>>>> 8f9fd782966dceaacac07ceacfbed662f00b3438
