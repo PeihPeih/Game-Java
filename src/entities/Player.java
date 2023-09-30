@@ -49,15 +49,15 @@ public class Player extends  Entity{
     // Animation về hành động
     private void setAnimation(){
         int startAni = playerAction;
-        if(moving){
-            playerAction = RUNNING;
-        }else {
-            playerAction = IDLE;
-        }
-
-        if(attacking){
-            playerAction = ATTACK_1;
-        }
+//        if(moving){
+//            playerAction = RUNNING;
+//        }else {
+//            playerAction = IDLE;
+//        }
+//
+//        if(attacking){
+//            playerAction = ATTACK_1;
+//        }
 
         // Nếu chuyeren hành động thì chạy animation mới
         if(startAni != playerAction){
