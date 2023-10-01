@@ -11,9 +11,12 @@ import static utilz.constants.PlayerConstants.*;
 
 public abstract class Entity {
     protected float x, y;
-    public Entity(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
+    protected int width, height;
 
+    public Entity(float x, float y, int width, int height) {
+        this.x = x; // vị tri x ban dau
+        this.y = y; // vi tri y ban dau
+        this.height = height;
+        this.width = width;
+    }
 }

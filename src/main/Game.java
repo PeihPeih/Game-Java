@@ -15,6 +15,7 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
     private LevelManager levelManager;
+    private Player player;
 
     // Background
     private BufferedImage[] backgroundImage;
@@ -24,7 +25,7 @@ public class Game implements Runnable {
 
     // SYSTEM
     private final int FPS_CAP = 120;    // FPS (frame per second) gioi han 1 giay lam moi bao nhieu frame
-    private final int UPS_CAP = 200;    // UPS (update per second) gioi han so lan lam moi 1 logic/s
+    private final int UPS_CAP = 180;    // UPS (update per second) gioi han so lan lam moi 1 logic/s
 
     // WIDTH AND HEIGHT OF WINDOW
     // Tiles
@@ -39,9 +40,11 @@ public class Game implements Runnable {
 
     // Khởi tạo
     public Game() {
+        innitClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         levelManager = new LevelManager(this);
+
 
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
@@ -57,6 +60,11 @@ public class Game implements Runnable {
         backgroundImage[2]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
         backgroundImage[3]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
         backgroundImage[4]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
+    }
+
+    // khởi tạo 1 đối tượng nh player, enemy,..
+    private void innitClasses(){
+        player = new Player(100,200,71,67);
     }
 
     public void startGameLoop() {
@@ -103,6 +111,7 @@ public class Game implements Runnable {
     // Update
     public void update() {        // update cac hanh dong cua thuc the
         levelManager.update();
+        player.update();
     }
 
     // In ra screen
@@ -111,6 +120,10 @@ public class Game implements Runnable {
 
         if (levelManager != null) {
             levelManager.render(g);
+        }
+
+        if(player!=null){
+            player.render(g);
         }
 
     }
@@ -124,6 +137,13 @@ public class Game implements Runnable {
 
     }
 
-    public void windowFocusLost() {
+    // mất tiêu điểm bug
+	public void windowFocusLost() {
+        player.resetDirBoleans();
 	}
+
+    //getter Player
+    public Player getPlayer(){
+        return player;
+    }
 }
