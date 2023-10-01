@@ -40,7 +40,9 @@ public class Game implements Runnable {
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_HEIGHT;
 
     // Khởi tạo
-    public Game() {
+    public Game() {    
+        loadBackground();
+
         innitClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
@@ -50,8 +52,6 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
         startGameLoop();
-
-        loadBackground();
     }
 
     private void loadBackground() {
