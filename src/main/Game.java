@@ -11,10 +11,11 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
     private LevelManager levelManager;
+    private Player player;
 
     // SYSTEM
     private final int FPS_CAP = 120;    // FPS (frame per second) gioi han 1 giay lam moi bao nhieu frame
-    private final int UPS_CAP = 200;    // UPS (update per second) gioi han so lan lam moi 1 logic/s
+    private final int UPS_CAP = 180;    // UPS (update per second) gioi han so lan lam moi 1 logic/s
 
     // WIDTH AND HEIGHT OF WINDOW
     // Tiles
@@ -32,6 +33,7 @@ public class Game implements Runnable {
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         levelManager = new LevelManager(this);
+        player = new Player(100, 513, 71,67);
 
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
@@ -82,12 +84,16 @@ public class Game implements Runnable {
     // Update
     public void update() {        // update cac hanh dong cua thuc the
         levelManager.update();
+        player.update();
     }
 
     // In ra screen
     public void render(Graphics g) {
         if (levelManager != null) {
             levelManager.render(g);
+        }
+        if(player!=null){
+            player.render(g);
         }
     }
 

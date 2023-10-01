@@ -16,7 +16,7 @@ public class constants {
         public static final int JUMP = 2;
         public static final int RUN = 4;
         public static final int RUN_SHOOT = 5;
-
+        public static final int SHOOT = 6;
 
 
         // Số lượng ảnh của từng hành động
@@ -25,15 +25,19 @@ public class constants {
                 case HURT:
                     return 1;
                 case IDLE:
+                    return 4;
                 case JUMP:
                     return 4;
                 case BACK_JUMP:
                     return 7;
                 case RUN:
+                    return 8;
                 case RUN_SHOOT:
                     return 8;
+                case SHOOT:
+                    return 1;
                 default:
-                    return 4;// vì idle là mặc định nên t nghĩ là default cũng là 4
+                    return 1;
             }
         }
     }

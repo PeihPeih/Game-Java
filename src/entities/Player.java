@@ -17,8 +17,8 @@ public class Player extends  Entity{
     private boolean moving = false,attacking = false;
     private boolean left,up,right,down;
     private float playerSpeed = 2.0f;
-    public Player(float x,float y){
-        super(x,y);
+    public Player(float x,float y,int width, int height ){
+        super(x,y,width,height);
         loadsAnimation();
     }
     public void update() {
@@ -30,7 +30,7 @@ public class Player extends  Entity{
 
     // In player ra screen
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex],(int) x,(int) y,256,160,null);
+        g.drawImage(animations[playerAction][aniIndex],(int) x,(int) y,width,height,null);
     }
 
     // Chuyển frame của mỗi animation
@@ -49,15 +49,11 @@ public class Player extends  Entity{
     // Animation về hành động
     private void setAnimation(){
         int startAni = playerAction;
-//        if(moving){
-//            playerAction = RUNNING;
-//        }else {
-//            playerAction = IDLE;
-//        }
-//
-//        if(attacking){
-//            playerAction = ATTACK_1;
-//        }
+        if(moving){
+            playerAction = RUN;
+        }else {
+            playerAction = IDLE;
+        }
 
         // Nếu chuyeren hành động thì chạy animation mới
         if(startAni != playerAction){
@@ -68,6 +64,11 @@ public class Player extends  Entity{
     private void resetAninTick(){
         aniTick = 0;
         aniIndex = 0;
+    }
+
+    public void setRectPos(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     // Nhân vật di chuyển
@@ -93,20 +94,19 @@ public class Player extends  Entity{
 
     // Load ảnh animation
     private void loadsAnimation() {
-        animations = new BufferedImage[6][8]; // 6 là số folder ảnh t back-jump -> run-shoot
+        animations = new BufferedImage[7][8]; // 7 là số folder ảnh t back-jump -> run-shoot
         // 8 là số ảnh hành động lớn nhất tính trong 6 folder đó
 
-        // Ilde
+        // IDLE
         for(int  i = 0 ;i<GetSpriteAmount(IDLE);i++){
                 try {
-                    // animation[playerAction][aniIndex]
                     animations[IDLE][i] = ImageIO.read(getClass().getResourceAsStream("/player/idle/idle-"+(i+1)+".png"));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
         }
 
-        // Back jump
+        // BACK-JUMP
         for(int  i = 0 ;i<GetSpriteAmount(BACK_JUMP);i++){
             try {
                 animations[BACK_JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/back-jump/back-jump-"+(i+1)+".png"));
@@ -115,7 +115,7 @@ public class Player extends  Entity{
             }
         }
 
-        // jump
+        // JUMP
         for(int  i = 0 ;i<GetSpriteAmount(JUMP);i++){
             try {
                 animations[JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/jump/jump-"+(i+1)+".png"));
@@ -124,16 +124,16 @@ public class Player extends  Entity{
             }
         }
 
-        // hurt
+        // HURT
         for(int  i = 0 ;i<GetSpriteAmount(HURT);i++){
             try {
-                animations[HURT][i] = ImageIO.read(getClass().getResourceAsStream("/player/hurt/hurt-"+(i+1)+".png"));
+                animations[HURT][i] = ImageIO.read(getClass().getResourceAsStream("/player/hurt/hurt.png"));
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
 
-        // Run
+        // RUN
         for(int  i = 0 ;i<GetSpriteAmount(RUN);i++){
             try {
                 animations[RUN][i] = ImageIO.read(getClass().getResourceAsStream("/player/run/run-"+(i+1)+".png"));
@@ -142,10 +142,19 @@ public class Player extends  Entity{
             }
         }
 
-        // Ilde
+        // RUN-SHOOT
         for(int  i = 0 ;i<GetSpriteAmount(RUN_SHOOT);i++){
             try {
                 animations[RUN_SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/run-shoot/run-shoot-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        // SHOOT
+        for(int  i = 0 ;i<GetSpriteAmount(SHOOT);i++){
+            try {
+                animations[SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/shoot/shoot.png"));
             }catch (Exception e){
                 e.printStackTrace();
             }
