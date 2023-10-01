@@ -93,7 +93,63 @@ public class Player extends  Entity{
 
     // Load ảnh animation
     private void loadsAnimation() {
+        animations = new BufferedImage[6][8]; // 6 là số folder ảnh t back-jump -> run-shoot
+        // 8 là số ảnh hành động lớn nhất tính trong 6 folder đó
 
+        // Ilde
+        for(int  i = 0 ;i<GetSpriteAmount(IDLE);i++){
+                try {
+                    // animation[playerAction][aniIndex]
+                    animations[IDLE][i] = ImageIO.read(getClass().getResourceAsStream("/player/idle/idle-"+(i+1)+".png"));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+        }
+
+        // Back jump
+        for(int  i = 0 ;i<GetSpriteAmount(BACK_JUMP);i++){
+            try {
+                animations[BACK_JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/back-jump/back-jump-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        // jump
+        for(int  i = 0 ;i<GetSpriteAmount(JUMP);i++){
+            try {
+                animations[JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/jump/jump-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        // hurt
+        for(int  i = 0 ;i<GetSpriteAmount(HURT);i++){
+            try {
+                animations[HURT][i] = ImageIO.read(getClass().getResourceAsStream("/player/hurt/hurt-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        // Run
+        for(int  i = 0 ;i<GetSpriteAmount(RUN);i++){
+            try {
+                animations[RUN][i] = ImageIO.read(getClass().getResourceAsStream("/player/run/run-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        // Ilde
+        for(int  i = 0 ;i<GetSpriteAmount(RUN_SHOOT);i++){
+            try {
+                animations[RUN_SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/run-shoot/run-shoot-"+(i+1)+".png"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean isUp() {
