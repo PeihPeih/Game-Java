@@ -9,18 +9,20 @@ import java.io.InputStream;
 import static utilz.constants.Direction.*;
 import static utilz.constants.PlayerConstants.*;
 
-public class Player extends  Entity {
+public class Player extends Entity {
     private BufferedImage[][] animations;
-    private int aniTick,aniIndex,aniSpeed = 15;
+    private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private int playerDir = -1;
-    private boolean moving = false,attacking = false;
-    private boolean left,up,right,down;
+    private boolean moving = false, attacking = false;
+    private boolean left, up, right, down;
     private float playerSpeed = 2.0f;
-    public Player(float x,float y,int width, int height ){
-        super(x,y,width,height);
+
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadsAnimation();
     }
+
     public void update() {
         updatePos();
         updateAnimationonTick();
@@ -30,16 +32,16 @@ public class Player extends  Entity {
 
     // In player ra screen
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex],(int) x,(int) y,width,height,null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
     }
 
     // Chuyển frame của mỗi animation
-    private void updateAnimationonTick(){
+    private void updateAnimationonTick() {
         aniTick++;
-        if(aniTick >= aniSpeed){
+        if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if(aniIndex >= GetSpriteAmount(playerAction)){
+            if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
                 attacking = false;
             }
@@ -47,21 +49,25 @@ public class Player extends  Entity {
     }
 
     // Animation về hành động
-    private void setAnimation(){
+    private void setAnimation() {
         int startAni = playerAction;
-        if(moving){
+        if (moving) {
             playerAction = RUN;
-        }else {
+        } else {
             playerAction = IDLE;
         }
 
+        if(up){
+            playerAction = JUMP;
+        }
+
         // Nếu chuyeren hành động thì chạy animation mới
-        if(startAni != playerAction){
+        if (startAni != playerAction) {
             resetAninTick();
         }
     }
 
-    private void resetAninTick(){
+    private void resetAninTick() {
         aniTick = 0;
         aniIndex = 0;
     }
@@ -72,107 +78,102 @@ public class Player extends  Entity {
     }
 
     // Nhân vật di chuyển
-    private void updatePos(){
+    private void updatePos() {
         moving = false;
-    // di chuyển mượt không bị khựng khi thao tác phím (1 loại bug)
-        if(left && !right){
-            x-=playerSpeed;
-            moving = true;
-        }else if(right && !left){
-            x+=playerSpeed;
+
+        // Left
+        if (left && !right) {
+            x -= playerSpeed;
             moving = true;
         }
-
-        if(up && !down){
-            y-=playerSpeed;
+        // Right
+        else if (right && !left) {
+            x += playerSpeed;
             moving = true;
-        }else if(down && !up){
-            y+=playerSpeed;
+        }
+        // Up
+        if (up && !down) {
+            y -= playerSpeed;
+            moving = true;
+        }
+        // Down
+        else if (down && !up) {
+            y += playerSpeed;
             moving = true;
         }
     }
 
     // Load ảnh animation
     private void loadsAnimation() {
-        animations = new BufferedImage[7][8]; // 7 là số folder ảnh t back-jump -> run-shoot
-        // 8 là số ảnh hành động lớn nhất tính trong 6 folder đó
+        animations = new BufferedImage[7][8];
 
         // IDLE
-        for(int  i = 0 ;i<GetSpriteAmount(IDLE);i++){
-                try {
-                    animations[IDLE][i] = ImageIO.read(getClass().getResourceAsStream("/player/idle/idle-"+(i+1)+".png"));
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        for (int i = 0; i < GetSpriteAmount(IDLE); i++) {
+            try {
+                animations[IDLE][i] = ImageIO.read(getClass().getResourceAsStream("/player/idle/idle-" + (i + 1) + ".png"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // BACK-JUMP
-        for(int  i = 0 ;i<GetSpriteAmount(BACK_JUMP);i++){
+        for (int i = 0; i < GetSpriteAmount(BACK_JUMP); i++) {
             try {
-                animations[BACK_JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/back-jump/back-jump-"+(i+1)+".png"));
-            }catch (Exception e){
+                animations[BACK_JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/back-jump/back-jump-" + (i + 1) + ".png"));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // JUMP
-        for(int  i = 0 ;i<GetSpriteAmount(JUMP);i++){
+        for (int i = 0; i < GetSpriteAmount(JUMP); i++) {
             try {
-                animations[JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/jump/jump-"+(i+1)+".png"));
-            }catch (Exception e){
+                animations[JUMP][i] = ImageIO.read(getClass().getResourceAsStream("/player/jump/jump-" + (i + 1) + ".png"));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // HURT
-        for(int  i = 0 ;i<GetSpriteAmount(HURT);i++){
+        for (int i = 0; i < GetSpriteAmount(HURT); i++) {
             try {
                 animations[HURT][i] = ImageIO.read(getClass().getResourceAsStream("/player/hurt/hurt.png"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // RUN
-        for(int  i = 0 ;i<GetSpriteAmount(RUN);i++){
+        for (int i = 0; i < GetSpriteAmount(RUN); i++) {
             try {
-                animations[RUN][i] = ImageIO.read(getClass().getResourceAsStream("/player/run/run-"+(i+1)+".png"));
-            }catch (Exception e){
+                animations[RUN][i] = ImageIO.read(getClass().getResourceAsStream("/player/run/run-" + (i + 1) + ".png"));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // RUN-SHOOT
-        for(int  i = 0 ;i<GetSpriteAmount(RUN_SHOOT);i++){
+        for (int i = 0; i < GetSpriteAmount(RUN_SHOOT); i++) {
             try {
-                animations[RUN_SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/run-shoot/run-shoot-"+(i+1)+".png"));
-            }catch (Exception e){
+                animations[RUN_SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/run-shoot/run-shoot-" + (i + 1) + ".png"));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // SHOOT
-        for(int  i = 0 ;i<GetSpriteAmount(SHOOT);i++){
+        for (int i = 0; i < GetSpriteAmount(SHOOT); i++) {
             try {
                 animations[SHOOT][i] = ImageIO.read(getClass().getResourceAsStream("/player/shoot/shoot.png"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-
-
-//    -----ACTION-----
-public void setMoving(boolean moving){
+    public void setMoving(boolean moving) {
         this.moving = moving;
-        // trạng thái di chuyển hay đứng yên
-        // liên quan đến keyboard inputs
-}
-public void setDirection(int direction){
-    this.playerDir = direction; // nhân vật di chuyển thì moving  = tre , nhận param direction
-    moving = true;
-}
+    }
 
     public boolean isUp() {
         return up;
@@ -190,9 +191,10 @@ public void setDirection(int direction){
         this.down = down;
     }
 
-    public void setAttack(boolean attacking){
+    public void setAttack(boolean attacking) {
         this.attacking = attacking;
     }
+
     public boolean isLeft() {
         return left;
     }
@@ -209,8 +211,8 @@ public void setDirection(int direction){
         this.right = right;
     }
 
-    // bug tieeuddiem
-    public void resetDirBoleans(){
+    // Set đứng yên
+    public void resetDirBoleans() {
         left = false;
         right = false;
         down = false;
