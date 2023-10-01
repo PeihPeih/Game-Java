@@ -12,12 +12,11 @@ public class LoadSave {
     public static final String LEVEL_ONE_DATA = "level/level_one.png";
 
     // Background
-    public static final String PLAYING_BG_IMG_1 = "layer/1.png";
-    public static final String PLAYING_BG_IMG_2= "layer/2.png";
-    public static final String PLAYING_BG_IMG_3 = "layer/3.png";
-    public static final String PLAYING_BG_IMG_4 = "layer/4.png";
-    public static final String PLAYING_BG_IMG_5 = "layer/5.png";
-
+    public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
+    public static final String PLAYING_BG_IMG_2 = "layer/night_2.png";
+    public static final String PLAYING_BG_IMG_3 = "layer/night_3.png";
+    public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
+    public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
 
 
     // Load ảnh

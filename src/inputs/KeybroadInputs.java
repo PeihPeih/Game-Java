@@ -18,6 +18,7 @@ public class KeybroadInputs implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()){
+            // Move
             case KeyEvent.VK_A:
                 gamePanel.getGame().getPlayer().setLeft(true);
                 break;
@@ -30,6 +31,12 @@ public class KeybroadInputs implements KeyListener {
             case KeyEvent.VK_W:
                 gamePanel.getGame().getPlayer().setUp(true);
                 break;
+
+                // Attack
+            case KeyEvent.VK_J:
+                gamePanel.getGame().getPlayer().setAttack(true);
+                break;
+
         }
     }
 
@@ -48,6 +55,9 @@ public class KeybroadInputs implements KeyListener {
                 break;
             case KeyEvent.VK_D:
                 gamePanel.getGame().getPlayer().setRight(false);
+                break;
+            case KeyEvent.VK_J:
+                gamePanel.getGame().getPlayer().setAttack(false);
                 break;
         }
     }

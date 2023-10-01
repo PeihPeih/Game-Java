@@ -53,19 +53,34 @@ public class Player extends Entity {
     // Animation về hành động
     private void setAnimation() {
         int startAni = playerAction;
+        // Run
         if (moving) {
             playerAction = RUN;
         } else {
             playerAction = IDLE;
         }
 
+        // Jump
         if(up){
             playerAction = JUMP;
         }
 
+        // Attack
+        if (attacking){
+            if (playerAction == RUN){
+                playerAction = RUN_SHOOT;
+            }
+            else if(playerAction==IDLE){
+                playerAction = SHOOT;
+            }
+        }
+
         // Nếu chuyeren hành động thì chạy animation mới
         if (startAni != playerAction) {
-            resetAninTick();
+//            resetAninTick();
+            if(!(startAni==RUN && playerAction == RUN_SHOOT)){
+                resetAninTick();
+            }
         }
     }
 
@@ -173,10 +188,6 @@ public class Player extends Entity {
         }
     }
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     public boolean isUp() {
         return up;
     }
@@ -221,5 +232,6 @@ public class Player extends Entity {
         right = false;
         down = false;
         up = false;
+        attacking = false;
     }
 }
