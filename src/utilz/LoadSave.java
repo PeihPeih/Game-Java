@@ -9,7 +9,16 @@ import java.io.IOException;
 
 // Hỗ trợ load phần hình ảnh
 public class LoadSave {
-    public static final String LEVEL_ONE_DATA = "level/test.png";
+    public static final String LEVEL_ONE_DATA = "level/level_one.png";
+
+    // Background
+    public static final String PLAYING_BG_IMG_1 = "layer/1.png";
+    public static final String PLAYING_BG_IMG_2= "layer/2.png";
+    public static final String PLAYING_BG_IMG_3 = "layer/3.png";
+    public static final String PLAYING_BG_IMG_4 = "layer/4.png";
+    public static final String PLAYING_BG_IMG_5 = "layer/5.png";
+
+
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {

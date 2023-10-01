@@ -20,7 +20,7 @@ public class Player extends Entity {
 
     public Player(float x, float y) {
         super(x, y);
-        loadsAnimation();
+//        loadsAnimation();
     }
 
     public void update() {
@@ -50,21 +50,21 @@ public class Player extends Entity {
 
     // Animation về hành động
     private void setAnimation() {
-//        int startAni = playerAction;
-//        if(moving){
+        int startAni = playerAction;
+        if(moving){
 //            playerAction = RUNNING;
-//        }else {
-//            playerAction = IDLE;
-//        }
-//
-//        if(attacking){
+        }else {
+            playerAction = IDLE;
+        }
+
+        if(attacking){
 //            playerAction = ATTACK_1;
-//        }
-//
-//        // Nếu chuyeren hành động thì chạy animation mới
-//        if(startAni != playerAction){
-//            resetAninTick();
-//        }
+        }
+
+        // Nếu chuyeren hành động thì chạy animation mới
+        if(startAni != playerAction){
+            resetAninTick();
+        }
     }
 
     private void resetAninTick() {
@@ -94,7 +94,8 @@ public class Player extends Entity {
     }
 
     // Load ảnh animation
-    private void loadsAnimation() {
+    private void loadsAnimation(){
+
 
     }
 

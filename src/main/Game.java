@@ -2,8 +2,12 @@ package main;
 
 import levels.LevelManager;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
+
 import entities.Player;
+import utilz.LoadSave;
 
 
 public class Game implements Runnable {
@@ -11,6 +15,12 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
     private LevelManager levelManager;
+
+    // Background
+    private BufferedImage[] backgroundImage;
+    private int[] smallCloudsPos;
+    private Random random = new Random();
+
 
     // SYSTEM
     private final int FPS_CAP = 120;    // FPS (frame per second) gioi han 1 giay lam moi bao nhieu frame
@@ -36,6 +46,17 @@ public class Game implements Runnable {
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
         startGameLoop();
+
+        loadBackground();
+    }
+
+    private void loadBackground() {
+        backgroundImage = new BufferedImage[5];
+        backgroundImage[0]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
+        backgroundImage[1]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
+        backgroundImage[2]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
+        backgroundImage[3]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
+        backgroundImage[4]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
     }
 
     public void startGameLoop() {
@@ -86,11 +107,23 @@ public class Game implements Runnable {
 
     // In ra screen
     public void render(Graphics g) {
+        drawBackground(g);
+
         if (levelManager != null) {
             levelManager.render(g);
         }
+
     }
 
-	public void windowFocusLost() {
+    private void drawBackground(Graphics g) {
+        if (backgroundImage[0]!=null) g.drawImage(backgroundImage[0],0,0,GAME_WIDTH,GAME_HEIGHT,null);
+        if (backgroundImage[1]!=null) g.drawImage(backgroundImage[1],0,0,GAME_WIDTH,GAME_HEIGHT,null);
+        if (backgroundImage[2]!=null) g.drawImage(backgroundImage[2],0,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*1.7),(int)(backgroundImage[2].getWidth()*1.7),(int)(backgroundImage[2].getHeight()*1.7), null );
+        if (backgroundImage[3]!=null) g.drawImage(backgroundImage[3],200,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*2),(int)(backgroundImage[2].getWidth()*2),(int)(backgroundImage[2].getHeight()*2), null );
+//        g.drawImage(backgroundImage[2],0,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*1.7),(int)(backgroundImage[2].getWidth()*1.7),(int)(backgroundImage[2].getHeight()*1.7), null );
+
+    }
+
+    public void windowFocusLost() {
 	}
 }
