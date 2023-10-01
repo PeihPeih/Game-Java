@@ -64,7 +64,7 @@ public class Game implements Runnable {
 
     // khởi tạo 1 đối tượng nh player, enemy,..
     private void innitClasses(){
-        player = new Player(100,200,71,67);
+        player = new Player(100,200,91,86);
     }
 
     public void startGameLoop() {
