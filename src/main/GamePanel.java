@@ -36,6 +36,8 @@ public class GamePanel extends JPanel{
 		setPreferredSize(size);
 	}
 
+	// getter Game
+
     public Game getGame(){
         return game;
     }

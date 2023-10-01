@@ -19,5 +19,20 @@ public class GameWindow {
 		jframe.setLocationRelativeTo(null);        			   // dat game ve giua man hinh khi bat len
 
 		jframe.setVisible(true);	 						   // hien thi man hinh game (dat o cuoi de tranh loi)
+
+
+
+		// fix bug window mất tiêu điểm ấn giữ nhân vật chạy nhưng thả ra nhân vật chạy xuyên màn hình
+		jframe.addWindowFocusListener(new WindowFocusListener() {
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				gamePanel.getGame().windowFocusLost();
+			}
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+
+			}
+		});
 	}
 }

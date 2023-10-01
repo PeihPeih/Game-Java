@@ -30,14 +30,20 @@ public class Game implements Runnable {
 
     // Khởi tạo
     public Game() {
+        innitClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         levelManager = new LevelManager(this);
-        player = new Player(100, 513, 71,67);
+
 
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
         startGameLoop();
+    }
+
+    // khởi tạo 1 đối tượng nh player, enemy,..
+    private void innitClasses(){
+        player = new Player(100,200,71,67);
     }
 
     public void startGameLoop() {
@@ -97,6 +103,14 @@ public class Game implements Runnable {
         }
     }
 
+
+    // mất tiêu điểm bug
 	public void windowFocusLost() {
+        player.resetDirBoleans();
 	}
+
+    //getter Player
+    public Player getPlayer(){
+        return player;
+    }
 }

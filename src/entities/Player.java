@@ -9,7 +9,7 @@ import java.io.InputStream;
 import static utilz.constants.Direction.*;
 import static utilz.constants.PlayerConstants.*;
 
-public class Player extends  Entity{
+public class Player extends  Entity {
     private BufferedImage[][] animations;
     private int aniTick,aniIndex,aniSpeed = 15;
     private int playerAction = IDLE;
@@ -74,7 +74,7 @@ public class Player extends  Entity{
     // Nhân vật di chuyển
     private void updatePos(){
         moving = false;
-
+    // di chuyển mượt không bị khựng khi thao tác phím (1 loại bug)
         if(left && !right){
             x-=playerSpeed;
             moving = true;
@@ -161,6 +161,19 @@ public class Player extends  Entity{
         }
     }
 
+
+
+//    -----ACTION-----
+public void setMoving(boolean moving){
+        this.moving = moving;
+        // trạng thái di chuyển hay đứng yên
+        // liên quan đến keyboard inputs
+}
+public void setDirection(int direction){
+    this.playerDir = direction; // nhân vật di chuyển thì moving  = tre , nhận param direction
+    moving = true;
+}
+
     public boolean isUp() {
         return up;
     }
@@ -177,12 +190,6 @@ public class Player extends  Entity{
         this.down = down;
     }
 
-    public void resetDirBoleans(){
-        left = false;
-        right = false;
-        down = false;
-        up = false;
-    }
     public void setAttack(boolean attacking){
         this.attacking = attacking;
     }
@@ -200,5 +207,13 @@ public class Player extends  Entity{
 
     public void setRight(boolean right) {
         this.right = right;
+    }
+
+    // bug tieeuddiem
+    public void resetDirBoleans(){
+        left = false;
+        right = false;
+        down = false;
+        up = false;
     }
 }
