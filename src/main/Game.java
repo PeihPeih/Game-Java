@@ -1,6 +1,7 @@
 package main;
 
 import levels.LevelManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -55,16 +56,16 @@ public class Game implements Runnable {
 
     private void loadBackground() {
         backgroundImage = new BufferedImage[5];
-        backgroundImage[0]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
-        backgroundImage[1]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
-        backgroundImage[2]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
-        backgroundImage[3]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
-        backgroundImage[4]=LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
+        backgroundImage[0] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
+        backgroundImage[1] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
+        backgroundImage[2] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
+        backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
+        backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
     }
 
     // khởi tạo 1 đối tượng nh player, enemy,..
-    private void innitClasses(){
-        player = new Player(100,200,91,86);
+    private void innitClasses() {
+        player = new Player(100, 200, 91, 86);
     }
 
     public void startGameLoop() {
@@ -122,28 +123,32 @@ public class Game implements Runnable {
             levelManager.render(g);
         }
 
-        if(player!=null){
+        if (player != null) {
             player.render(g);
         }
 
     }
 
     private void drawBackground(Graphics g) {
-        if (backgroundImage[0]!=null) g.drawImage(backgroundImage[0],0,0,GAME_WIDTH,GAME_HEIGHT,null);
-        if (backgroundImage[1]!=null) g.drawImage(backgroundImage[1],0,0,GAME_WIDTH,GAME_HEIGHT,null);
-        if (backgroundImage[2]!=null) g.drawImage(backgroundImage[2],0,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*1.7),(int)(backgroundImage[2].getWidth()*1.7),(int)(backgroundImage[2].getHeight()*1.7), null );
-        if (backgroundImage[3]!=null) g.drawImage(backgroundImage[3],200,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*2),(int)(backgroundImage[2].getWidth()*2),(int)(backgroundImage[2].getHeight()*2), null );
-//        g.drawImage(backgroundImage[2],0,(int)(GAME_HEIGHT - backgroundImage[2].getHeight()*1.7),(int)(backgroundImage[2].getWidth()*1.7),(int)(backgroundImage[2].getHeight()*1.7), null );
+        if (backgroundImage[0] != null) g.drawImage(backgroundImage[0], 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
+        if (backgroundImage[1] != null) g.drawImage(backgroundImage[1], 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
+        if (backgroundImage[2] != null)
+            g.drawImage(backgroundImage[2], 0, (int) (GAME_HEIGHT - backgroundImage[2].getHeight() * 1.7), (int) (backgroundImage[2].getWidth() * 1.7), (int) (backgroundImage[2].getHeight() * 1.7), null);
+        if (backgroundImage[4] != null)
+            g.drawImage(backgroundImage[4], GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5), (int) (GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
+        if (backgroundImage[3] != null)
+            g.drawImage(backgroundImage[3], 0, (int) (GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
+
 
     }
 
     // mất tiêu điểm bug
-	public void windowFocusLost() {
+    public void windowFocusLost() {
         player.resetDirBoleans();
-	}
+    }
 
     //getter Player
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 }
