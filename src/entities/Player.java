@@ -18,6 +18,10 @@ public class Player extends Entity {
     private boolean left, up, right, down;
     private float playerSpeed = 2.0f;
 
+    // Flip animation when turn left or right
+    private int flipX = 0 ;
+    private int flipW = 1;
+
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -34,7 +38,7 @@ public class Player extends Entity {
     // In player ra screen
     public void render(Graphics g) {
 
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x + flipX, (int) y, width*flipW, height, null);
     }
 
     // Chuyển frame của mỗi animation
@@ -102,11 +106,15 @@ public class Player extends Entity {
         if (left && !right) {
             x -= playerSpeed;
             moving = true;
+            flipW = -1;
+            flipX = width;
         }
         // Right
         else if (right && !left) {
             x += playerSpeed;
             moving = true;
+            flipW = 1;
+            flipX = 0;
         }
         // Up
         if (up && !down) {
