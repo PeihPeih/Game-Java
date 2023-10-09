@@ -65,13 +65,11 @@ public class Game implements Runnable {
 
     // khởi tạo 1 đối tượng nh player, enemy,..
     private void innitClasses() {
+
     	levelManager = new LevelManager(this);
     	player = new Player(100, 200, 82, 77);
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
     }
-
-    
-    
     public void startGameLoop() {
         gameThread = new Thread(this);
         gameThread.start(); // Gọi hàm run ở dưới

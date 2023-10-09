@@ -33,6 +33,7 @@ public class LevelManager {
                e.printStackTrace();
            }
         }
+
         // OBJECTS
         // Trees
         for (int i = 46 ;i <= 63;i++){

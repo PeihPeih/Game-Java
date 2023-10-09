@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import static utilz.constants.Direction.*;
 import static utilz.constants.PlayerConstants.*;
+
 import static utilz.HelpMethods.*;
 
 import main.Game;
@@ -24,10 +25,11 @@ public class Player extends Entity {
     private float xdrawOffset = 18 * Game.SCALE;
     private float ydrawOffset = 12 * Game.SCALE;
     
-    
+
     // Flip animation when turn left or right
     private int flipX = 0 ;
     private int flipW = 1;
+
 
     //JUMPING // GRAVITY
     private float airSpeed = 0f;
@@ -67,7 +69,9 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xdrawOffset + flipX), (int)(hitbox.y - ydrawOffset), width*flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g);
+
     }
+
 
     // Chuyển frame của mỗi animation
     private void updateAnimationonTick() {
@@ -85,9 +89,6 @@ public class Player extends Entity {
     // Animation về hành động
     private void setAnimation() {
         int startAni = playerAction;
-
-        // animation khi inAir
-
         // Run
         if (moving) {
             playerAction = RUN;
@@ -97,6 +98,7 @@ public class Player extends Entity {
 
         // Jump
         if(jump || inAir){
+
             playerAction = JUMP;
         }
 
@@ -132,6 +134,7 @@ public class Player extends Entity {
     // Nhân vật di chuyển
     private void updatePos() {
         moving = false;
+
         if (jump)
             jump();
 
@@ -206,6 +209,7 @@ public class Player extends Entity {
             // đang va chạm
             // hitbox next to wall
             hitbox.x = GetEntityXposNextToWAll(hitbox,xSpeed);
+
         }
     }
 
@@ -323,6 +327,7 @@ public class Player extends Entity {
         up = false;
         attacking = false;
     }
+
 
     // jump
     public void setJump(boolean jump){
