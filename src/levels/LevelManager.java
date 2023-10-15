@@ -74,17 +74,17 @@ public class LevelManager {
     }
 
     // In ra screen
-    public void render(Graphics g){
-        for(int j=0;j < Game.TILES_HEIGHT;j++){
-            for(int i=0;i<Game.TILES_WIDTH;i++){
+    public void render(Graphics g, int xLvlOffset){
+        for(int j=0;j < levelOne.getLevelData().length;j++){
+            for(int i=0;i<levelOne.getLevelData()[j].length;i++){
                 int index = levelOne.getSpriteIndex(i, j);
                 // Nếu là tiles thì in ra tiles theo size là 48 x 48
                 if(index <= 45){
-                    g.drawImage(levelSprite[index],Game.TILES_SIZE*i,Game.TILES_SIZE*j,Game.TILES_SIZE, Game.TILES_SIZE,null);
+                    g.drawImage(levelSprite[index],Game.TILES_SIZE*i - xLvlOffset,Game.TILES_SIZE*j,Game.TILES_SIZE, Game.TILES_SIZE,null);
                 }
                 // Objects thì giữ nguyên size
                 else{
-                    g.drawImage(levelSprite[index],Game.TILES_SIZE*i,Game.TILES_SIZE*j - levelSprite[index].getHeight()+Game.TILES_SIZE,null);
+                    g.drawImage(levelSprite[index],Game.TILES_SIZE*i - xLvlOffset,Game.TILES_SIZE*j - levelSprite[index].getHeight()+Game.TILES_SIZE,null);
                 }
             }
         }

@@ -12,33 +12,28 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
+
 
 public class Playing extends State implements Statemethods {
     private LevelManager levelManager;
     private Player player;
 
-    private boolean paused=false;
+    private boolean paused = false;
     private PauseOverlay pauseOverlay;
+
+    // Camera
+    private int xLvlOffset; //
+    private int leftBorder = (int) (0.2 * GAME_WIDTH);
+    private int rightBorder = (int) (0.8 * GAME_WIDTH);
+    private int lvlTilesWide = LoadSave.GetLevelData(1)[0].length;
+    private int maxTilesOffset = lvlTilesWide - Game.TILES_WIDTH;
+    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+
     // Background
     private BufferedImage[] backgroundImage;
-    private void loadBackground() {//load background
-        backgroundImage = new BufferedImage[5];
-        backgroundImage[0] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
-        backgroundImage[1] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
-        backgroundImage[2] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
-        backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
-        backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
-    }
-    private void drawBackground(Graphics g) {// ve background
-        if (backgroundImage[0] != null) g.drawImage(backgroundImage[0], 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-        if (backgroundImage[1] != null) g.drawImage(backgroundImage[1], 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-        if (backgroundImage[2] != null)
-            g.drawImage(backgroundImage[2], 0, (int) (Game.GAME_HEIGHT - backgroundImage[2].getHeight() * 1.7), (int) (backgroundImage[2].getWidth() * 1.7), (int) (backgroundImage[2].getHeight() * 1.7), null);
-        if (backgroundImage[4] != null)
-            g.drawImage(backgroundImage[4], Game.GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5), (int) (Game.GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
-        if (backgroundImage[3] != null)
-            g.drawImage(backgroundImage[3], 0, (int) (Game.GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
-    }
+    private BufferedImage cloud;
 
     public Playing(Game game) throws IOException {
         super(game);
@@ -54,29 +49,100 @@ public class Playing extends State implements Statemethods {
         pauseOverlay = new PauseOverlay(this);
     }
 
+    // BACKGROUND
+    private void loadBackground() {//load background
+        backgroundImage = new BufferedImage[5];
+        backgroundImage[0] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
+        backgroundImage[1] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
+        backgroundImage[2] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
+        backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
+        backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
+        cloud = LoadSave.GetSpriteAtlas(LoadSave.CLOUD);
+    }
+
+
+    private void drawBackground(Graphics g, int xLvlOffset) {
+        int bgImageWidth = GAME_WIDTH;
+        int bgOffset = xLvlOffset % bgImageWidth;
+        int amountBgToFillScreen = (int) Math.ceil(1.0 * GAME_WIDTH / bgImageWidth) + 1;
+
+        // VẼ
+        for (int i = 0; i < amountBgToFillScreen; i++) {
+            // LAYER 0
+            if (backgroundImage[0] != null)
+                g.drawImage(backgroundImage[0], i * bgImageWidth - bgOffset, 0, bgImageWidth, GAME_HEIGHT, null);
+            // LAYER 1
+            if (backgroundImage[1] != null)
+                g.drawImage(backgroundImage[1], i * bgImageWidth - bgOffset, 0, bgImageWidth, GAME_HEIGHT, null);
+            // LAYER 2
+            if (backgroundImage[2] != null)
+                g.drawImage(backgroundImage[2], i * bgImageWidth - bgOffset, (int) (GAME_HEIGHT - backgroundImage[2].getHeight() * 1.7), (int) (backgroundImage[2].getWidth() * 1.7), (int) (backgroundImage[2].getHeight() * 1.7), null);
+            // LAYER 4
+            if (backgroundImage[4] != null)
+                g.drawImage(backgroundImage[4], i * bgImageWidth + GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5) - bgOffset, (int) (GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
+            // LAYER 3
+            if (backgroundImage[3] != null)
+                g.drawImage(backgroundImage[3], i * bgImageWidth - bgOffset, (int) (GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
+        }
+
+    }
+
+    private void drawCloud(Graphics g, int xLvlOffset) {
+        int bgImageWidth = GAME_WIDTH;
+        int bgOffset = xLvlOffset % bgImageWidth;
+        int amountBgToFillScreen = (int) Math.ceil(1.0 * GAME_WIDTH / bgImageWidth) + 1;
+
+        // VẼ
+        for (int i = 0; i < amountBgToFillScreen; i++) {
+            // LAYER 0
+            if (cloud != null)
+                g.drawImage(cloud, i * bgImageWidth - bgOffset, -150, bgImageWidth, 400, null);
+        }
+    }
+
+
     @Override
     public void update() {//update
-        if(!paused){
+        if (!paused) {
             levelManager.update();
             player.update();
-        }
-        else
+        } else
             pauseOverlay.update();
     }
 
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
-        drawBackground(g);
+        drawBackground(g, xLvlOffset);
+
+        drawCloud(g, xLvlOffset);
+
         if (levelManager != null) {
-            levelManager.render(g);
+            levelManager.render(g, xLvlOffset);
         }
 
         if (player != null) {
-            player.render(g);
+            player.render(g, xLvlOffset);
         }
-        if(paused)
+
+        if (paused)
             pauseOverlay.draw(g);
 
+        checkCloseToBorder();
+    }
+
+    private void checkCloseToBorder() {
+        int playerX = (int) player.getHitbox().x;
+        int diff = playerX - xLvlOffset;
+
+        if (diff > rightBorder)
+            xLvlOffset += diff - rightBorder;
+        else if (diff < leftBorder)
+            xLvlOffset += diff - leftBorder;
+
+        if (xLvlOffset > maxLvlOffsetX)
+            xLvlOffset = maxLvlOffsetX;
+        else if (xLvlOffset < 0)
+            xLvlOffset = 0;
     }
 
     @Override
@@ -103,14 +169,14 @@ public class Playing extends State implements Statemethods {
             pauseOverlay.mouseMoved(e);
     }
 
-    public void mouseDragged(MouseEvent e){
-        if(paused)
+    public void mouseDragged(MouseEvent e) {
+        if (paused)
             pauseOverlay.mouseDragged(e);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {// dieu khien nhan vat
-        switch (e.getKeyCode()){
+        switch (e.getKeyCode()) {
             // Move
             case KeyEvent.VK_A:
                 player.setLeft(true);
@@ -127,7 +193,7 @@ public class Playing extends State implements Statemethods {
                 player.setAttack(true);
                 break;
             case KeyEvent.VK_ESCAPE:
-                paused=!paused;
+                paused = !paused;
                 break;
         }
 
@@ -153,9 +219,11 @@ public class Playing extends State implements Statemethods {
         }
 
     }
-    public void unpausedGame(){
-        paused=false;
+
+    public void unpausedGame() {
+        paused = false;
     }
+
     public void windowFocusLost() {
         player.resetDirBoleans();
     }

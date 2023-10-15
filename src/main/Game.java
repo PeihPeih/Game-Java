@@ -16,7 +16,6 @@ public class Game implements Runnable {
     private GamePanel gamePanel;
     private Thread gameThread;
 
-    private int[] smallCloudsPos;
     private Random random = new Random();
     private Gamestate gamestate;
     private Menu menu;

@@ -64,9 +64,9 @@ public class Player extends Entity {
     }
     
     // In player ra screen
-    public void render(Graphics g) {
+    public void render(Graphics g, int xLvlOffset) {
 
-        g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xdrawOffset + flipX), (int)(hitbox.y - ydrawOffset), width*flipW, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xdrawOffset - xLvlOffset + flipX), (int)(hitbox.y - ydrawOffset), width*flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g);
 

@@ -12,11 +12,6 @@ public class LoadSave {
     // Level
     public static final String[] LEVEL_DATA = {
             "level/level_1.png",
-            "level/level_2.png",
-            "level/level_3.png",
-            "level/level_4.png",
-            "level/level_5.png",
-
     };
     // Background
     public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
@@ -24,6 +19,7 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_3 = "layer/night_3.png";
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
+    public static final String CLOUD = "layer/cloud.png";
 
 
     // Load ảnh
@@ -39,11 +35,12 @@ public class LoadSave {
 
     // Xây ma trận level theo ảnh màu pixel
     public static int[][] GetLevelData(int level) {
-        int[][] lvlData = new int[Game.TILES_HEIGHT][Game.TILES_WIDTH];
         BufferedImage image = GetSpriteAtlas(LEVEL_DATA[level-1]);
+        int height = image.getHeight(), width = image.getWidth();
+        int[][] lvlData = new int[height][width];
         // Nếu muốn xem ma trận level thì comment lại 2 cái system.out ở dưới
-        for (int j = 0; j < Game.TILES_HEIGHT; j++) {
-            for (int i = 0; i < Game.TILES_WIDTH; i++) {
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
                 Color color = new Color(image.getRGB(i, j));
                 int value = color.getRed();
                 if (value > 98) value = 0;
