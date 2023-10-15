@@ -21,9 +21,11 @@ public class Menu extends State implements Statemethods {
     private MenuButtons[] buttons = new MenuButtons[3];
 
     private BufferedImage[] backgroundImage;
+    private BufferedImage cloud;
 
     private int menuX,menuY,menuWidth,menuHeight;
     private BufferedImage MenuBackGround;
+
     private void loadBackground() {//ve background
         backgroundImage = new BufferedImage[5];
         backgroundImage[0] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
@@ -31,7 +33,9 @@ public class Menu extends State implements Statemethods {
         backgroundImage[2] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
         backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
         backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
+        cloud = LoadSave.GetSpriteAtlas(LoadSave.CLOUD);
     }
+
     private void drawBackground(Graphics g) {
         if (backgroundImage[0] != null) g.drawImage(backgroundImage[0], 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
         if (backgroundImage[1] != null) g.drawImage(backgroundImage[1], 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
@@ -41,6 +45,9 @@ public class Menu extends State implements Statemethods {
             g.drawImage(backgroundImage[4], Game.GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5), (int) (Game.GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
         if (backgroundImage[3] != null)
             g.drawImage(backgroundImage[3], 0, (int) (Game.GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
+        if(cloud!=null){
+            g.drawImage(cloud,0,-150,Game.GAME_WIDTH,400,null);
+        }
     }
 
     public void loadButtons(){//load nut ( boi vi cai Menu buttons chi la cai rieng biet de load tung nut)
