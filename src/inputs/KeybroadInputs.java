@@ -1,5 +1,6 @@
 package inputs;
 
+import gamestate.Gamestate;
 import main.GamePanel;
 
 import java.awt.event.KeyEvent;
@@ -20,43 +21,38 @@ public class KeybroadInputs implements KeyListener {
     // A W D to move, J to attack
 
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()){
-            // Move
-            case KeyEvent.VK_A:
-                gamePanel.getGame().getPlayer().setLeft(true);
+        switch (Gamestate.state){
+            case MENU -> {
+                gamePanel.getGame().getMenu().keyPressed(e);
                 break;
-            case KeyEvent.VK_D:
-                gamePanel.getGame().getPlayer().setRight(true);
+            }
+            case PLAYING -> {
+                gamePanel.getGame().getPlaying().keyPressed(e);
                 break;
-            case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer().setJump(true);
-                break;
-                // Attack
-            case KeyEvent.VK_J:
-                gamePanel.getGame().getPlayer().setAttack(true);
+            }
+            default -> {
                 break;
 
+            }
         }
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // thả key thì k di chuyển
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer().setJump(false);
-
+        switch (Gamestate.state){
+            case MENU -> {
+                gamePanel.getGame().getMenu().keyReleased(e);
                 break;
-            case KeyEvent.VK_A:
-                gamePanel.getGame().getPlayer().setLeft(false);
+            }
+            case PLAYING -> {
+                gamePanel.getGame().getPlaying().keyReleased(e);
                 break;
-            case KeyEvent.VK_D:
-                gamePanel.getGame().getPlayer().setRight(false);
-                break;
-            case KeyEvent.VK_J:
-                gamePanel.getGame().getPlayer().setAttack(false);
+            }
+            default -> {
                 break;
 
+            }
         }
     }
 }

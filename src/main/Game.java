@@ -1,13 +1,13 @@
 package main;
 
-import levels.LevelManager;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics;
 import java.io.IOException;
 import java.util.Random;
 
-import entities.Player;
+import gamestate.Gamestate;
+import gamestate.Menu;
+import gamestate.Playing;
 import utilz.LoadSave;
 
 
@@ -15,14 +15,12 @@ public class Game implements Runnable {
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;
-    private LevelManager levelManager;
-    private Player player;
 
-    // Background
-    private BufferedImage[] backgroundImage;
     private int[] smallCloudsPos;
     private Random random = new Random();
-
+    private Gamestate gamestate;
+    private Menu menu;
+    private Playing playing;
 
     // SYSTEM
     private final int FPS_CAP = 120;    // FPS (frame per second) gioi han 1 giay lam moi bao nhieu frame
@@ -40,35 +38,23 @@ public class Game implements Runnable {
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_HEIGHT;
 
     // Khởi tạo
-    public Game() {    
-        loadBackground();
+    public Game() throws IOException {
 
         innitClasses();
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
-        levelManager = new LevelManager(this);
-
 
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();        // yeu cau cac input di vao game panel
         startGameLoop();
     }
 
-    private void loadBackground() {
-        backgroundImage = new BufferedImage[5];
-        backgroundImage[0] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_1);
-        backgroundImage[1] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
-        backgroundImage[2] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_3);
-        backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
-        backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
-    }
+
 
     // khởi tạo 1 đối tượng nh player, enemy,..
-    private void innitClasses() {
-
-    	levelManager = new LevelManager(this);
-    	player = new Player(100, 200, 82, 77);
-        player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+    private void innitClasses() throws IOException {
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
     public void startGameLoop() {
         gameThread = new Thread(this);
@@ -112,45 +98,56 @@ public class Game implements Runnable {
     }
 
     // Update
-    public void update() {        // update cac hanh dong cua thuc the
-        levelManager.update();
-        player.update();
+    public void update() {
+        switch (Gamestate.state){//Update tung trang thai khac nhau
+            case MENU -> {
+                menu.update();
+                break;
+            }
+            case PLAYING -> {
+                playing.update();
+                break;
+            }
+            case OPTION -> {
+
+            }
+            case QUIT -> {
+                System.exit(0);
+            }
+            default -> {
+                break;
+            }
+        }
     }
 
     // In ra screen
     public void render(Graphics g) {
-        drawBackground(g);
-
-        if (levelManager != null) {
-            levelManager.render(g);
-        }
-
-        if (player != null) {
-            player.render(g);
+        switch (Gamestate.state){//render tung trang thai khi nao den phan nao thì mới render
+            case MENU -> {
+                menu.draw(g);
+                break;
+            }
+            case PLAYING -> {
+                playing.draw(g);
+                break;
+            }
+            default -> {
+                break;
+            }
         }
 
     }
-
-    private void drawBackground(Graphics g) {
-        if (backgroundImage[0] != null) g.drawImage(backgroundImage[0], 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
-        if (backgroundImage[1] != null) g.drawImage(backgroundImage[1], 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
-        if (backgroundImage[2] != null)
-            g.drawImage(backgroundImage[2], 0, (int) (GAME_HEIGHT - backgroundImage[2].getHeight() * 1.7), (int) (backgroundImage[2].getWidth() * 1.7), (int) (backgroundImage[2].getHeight() * 1.7), null);
-        if (backgroundImage[4] != null)
-            g.drawImage(backgroundImage[4], GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5), (int) (GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
-        if (backgroundImage[3] != null)
-            g.drawImage(backgroundImage[3], 0, (int) (GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
-
-
-    }
-
     // mất tiêu điểm bug
-    public void windowFocusLost() {
-        player.resetDirBoleans();
+    public void windowFocusLost() {// nếu bắt đầu chơi thì để trạng thái nhân vật mặc định
+        if(Gamestate.state== Gamestate.PLAYING)
+            playing.getPlayer().resetDirBoleans();
+
+    }
+    public Menu getMenu(){
+        return menu;
+    }
+    public Playing getPlaying(){
+        return playing;
     }
 
-    //getter Player
-    public Player getPlayer() {
-        return player;
-    }
 }
