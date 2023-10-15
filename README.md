@@ -8,3 +8,4 @@ Tuần 1 đã làm được:
 Tuần 2 đã làm được:
 1. Update va chạm giữa player và vật thể
 2. Thêm trọng lượng cho player
+3. Update level, scroll background, hoàn chỉnh game state: Menu, Playing, Pause
