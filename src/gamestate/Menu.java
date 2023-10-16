@@ -24,6 +24,7 @@ public class Menu extends State implements Statemethods {
     private BufferedImage cloud;
     private int scrollCloud;
 
+
     private int menuX,menuY,menuWidth,menuHeight;
     private BufferedImage MenuBackGround;
 
@@ -50,6 +51,7 @@ public class Menu extends State implements Statemethods {
             if(cloud!=null){
                 g.drawImage(cloud,i*Game.GAME_WIDTH+scrollCloud,-150,Game.GAME_WIDTH,400,null);
             }
+
         }
     }
 
@@ -80,6 +82,7 @@ public class Menu extends State implements Statemethods {
         loadButtons();
         loadMenuBackground();
         this.scrollCloud = 0;
+
     }
 
     @Override
@@ -89,6 +92,7 @@ public class Menu extends State implements Statemethods {
         }
         scrollCloud -= 1;
         if(scrollCloud <= -Game.GAME_WIDTH) scrollCloud = 0;
+
     }
 
     @Override

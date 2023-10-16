@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+
 import static utilz.constants.Direction.*;
 import static utilz.constants.PlayerConstants.*;
 
@@ -19,6 +20,7 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
+
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down, jump;
     private float playerSpeed = 2.0f;
@@ -26,6 +28,7 @@ public class Player extends Entity {
     private float xdrawOffset = 18 * Game.SCALE;
     private float ydrawOffset = 12 * Game.SCALE;
     private ArrayList<BufferedImage> hearts;
+
 
     // Flip animation when turn left or right
     private int flipX = 0 ;
@@ -44,6 +47,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         loadsAnimation();
         initHeart();
+
         // Lay hitbox cua player
         initHitbox(x , y, 20 * Game.SCALE, 38 * Game.SCALE);
     }
@@ -84,6 +88,7 @@ public class Player extends Entity {
         for(int i=0;i<hearts.size();i++){
             g.drawImage(hearts.get(i),75+50*i,30,45,45,null);
         }
+
     }
 
 
