@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import static utilz.constants.Direction.*;
 import static utilz.constants.PlayerConstants.*;
@@ -12,19 +13,19 @@ import static utilz.constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 
 import main.Game;
+import utilz.LoadSave;
 
 public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
-    private int playerDir = -1;
     private boolean moving = false, attacking = false;
     private boolean left, up, right, down, jump;
     private float playerSpeed = 2.0f;
     private int[][] lvlData;
     private float xdrawOffset = 18 * Game.SCALE;
     private float ydrawOffset = 12 * Game.SCALE;
-    
+    private ArrayList<BufferedImage> hearts;
 
     // Flip animation when turn left or right
     private int flipX = 0 ;
@@ -42,8 +43,15 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadsAnimation();
+        initHeart();
         // Lay hitbox cua player
         initHitbox(x , y, 20 * Game.SCALE, 38 * Game.SCALE);
+    }
+
+    private void initHeart(){
+        hearts = new ArrayList<>();
+        BufferedImage heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
+        for(int i=0;i<3;i++) hearts.add(heart);
     }
 
     public void update() {
@@ -69,7 +77,13 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xdrawOffset - xLvlOffset + flipX), (int)(hitbox.y - ydrawOffset), width*flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g);
+        drawHeart(g);
+    }
 
+    private void drawHeart(Graphics g) {
+        for(int i=0;i<hearts.size();i++){
+            g.drawImage(hearts.get(i),75+50*i,50,45,45,null);
+        }
     }
 
 
