@@ -22,8 +22,6 @@ public class LoadSave {
     public static final String CLOUD = "layer/cloud.png";
     public static final String HEART = "item/heart.png";
 
-
-
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage image = null;
