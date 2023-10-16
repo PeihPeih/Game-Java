@@ -82,7 +82,7 @@ public class Player extends Entity {
 
     private void drawHeart(Graphics g) {
         for(int i=0;i<hearts.size();i++){
-            g.drawImage(hearts.get(i),75+50*i,50,45,45,null);
+            g.drawImage(hearts.get(i),75+50*i,30,45,45,null);
         }
     }
 

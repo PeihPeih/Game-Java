@@ -96,7 +96,7 @@ public class Playing extends State implements Statemethods {
         for (int i = 0; i < amountBgToFillScreen; i++) {
             // LAYER 0
             if (cloud != null)
-                g.drawImage(cloud, i * bgImageWidth - bgOffset, -150, bgImageWidth, 400, null);
+                g.drawImage(cloud, i * bgImageWidth - bgOffset, -200, bgImageWidth, 400, null);
         }
     }
 
