@@ -90,8 +90,7 @@ public class HelpMethods {
     }
 
     // Check xem đạn có va chạm với tiles hay không
-    public static boolean IsProjectileHittingLevel(Bullet b, int[][] lvlData) {
+    public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
-
     }
 }

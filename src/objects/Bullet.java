@@ -17,8 +17,8 @@ public class Bullet extends GameObject {
 
     public Bullet(int x, int y, int dir, int objType) {
         super(x, y, objType);
-        int xOffset = (int) (-3 * Game.SCALE);
-        int yOffset = (int) (5 * Game.SCALE);
+        int xOffset = (int) (-5 * Game.SCALE);
+        int yOffset = (int) (2 * Game.SCALE);
 
         if (dir == 1)
             xOffset = (int) (13 * Game.SCALE);
@@ -26,6 +26,7 @@ public class Bullet extends GameObject {
         hitbox = new Rectangle2D.Float(x + xOffset, y + yOffset, BULLET_WIDTH, BULLET_HEIGHT);
         this.dir = dir;
         loadImgs();
+
     }
 
     private void loadImgs() {
@@ -48,8 +49,14 @@ public class Bullet extends GameObject {
         int flipW = dir;
 
         if (active) {
-            g.drawImage(animation[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH*flipW , BULLET_HEIGHT, null);
+            g.drawImage(animation[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
+            drawHitbox(g,xLvlOffset);
         }
+    }
+
+    private void drawHitbox(Graphics g, int xLvlOffset) {
+        g.setColor(Color.PINK);
+        g.drawRect((int) this.hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
     private void updatePos() {

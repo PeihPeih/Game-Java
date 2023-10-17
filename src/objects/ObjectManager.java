@@ -15,7 +15,7 @@ import utilz.constants;
 import javax.imageio.ImageIO;
 
 import static utilz.constants.ObjectConstants.*;
-import static utilz.HelpMethods.IsProjectileHittingLevel;
+import static utilz.HelpMethods.IsBulletsHittingLevel;
 import static utilz.constants.Bullet.*;
 
 public class ObjectManager {
@@ -34,20 +34,8 @@ public class ObjectManager {
 
 
     public void update(int[][] lvlData, Player player) {
-        updateBullet(lvlData, player);
     }
 
-    private void updateBullet(int[][] lvlData, Player player) {
-        for (Bullet b : bullets)
-            if (b.isActive()) {
-                b.update();
-//                if (p.getHitbox().intersects(player.getHitbox())) {
-//                    player.changeHealth(-25);
-//                    p.setActive(false);
-//                if (IsProjectileHittingLevel(b, lvlData))
-//                    b.setActive(false);
-            }
-    }
 
 
     public void draw(Graphics g, int xLvlOffset) {

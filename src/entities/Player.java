@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 
 import static utilz.constants.Direction.*;
@@ -32,6 +33,9 @@ public class Player extends Entity {
     private ArrayList<BufferedImage> hearts;
     private ArrayList<Bullet> bullets = new ArrayList<>();
 
+    private int timerAttack;
+    private int timerAttackMax = 40;
+    private boolean canAttack;
 
     // Flip animation when turn left or right
     private int flipX = 0;
@@ -50,9 +54,10 @@ public class Player extends Entity {
         super(x, y, width, height);
         loadsAnimation();
         initHeart();
-
         // Lay hitbox cua player
         initHitbox(x, y, 20 * Game.SCALE, 38 * Game.SCALE);
+
+        this.timerAttack = this.timerAttackMax;
     }
 
     private void initHeart() {
@@ -62,14 +67,30 @@ public class Player extends Entity {
     }
 
     public void update() {
+        updateTimer();
         updatePos();
         updateAnimationonTick();
         updateBullet();
         setAnimation();
     }
 
+    private void updateTimer() {
+        if (this.timerAttack >= this.timerAttackMax) {
+            canAttack = true;
+            this.timerAttack = 0;
+        }
+        this.timerAttack++;
+    }
+
     private void updateBullet() {
-        for (Bullet b : bullets) b.update();
+        for (Bullet b : bullets) {
+            b.update();
+            if (b.isActive()) {
+                b.update();
+                if (IsBulletsHittingLevel(b, lvlData))
+                    b.setActive(false);
+            }
+        }
     }
 
     // Lay du lieu tu lvl de chuan bi cho collision
@@ -87,7 +108,7 @@ public class Player extends Entity {
 
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
-        drawHitbox(g);
+        drawHitbox(g, xLvlOffset);
         drawBullet(g, xLvlOffset);
         drawHeart(g);
     }
@@ -192,7 +213,9 @@ public class Player extends Entity {
                 inAir = true;
             }
             // Chạm đất thì có thể bắn
-            if (attacking) shoot();
+            if (attacking && canAttack) {
+                shoot();
+            }
         }
 
         // Jump | Gravity
@@ -225,15 +248,14 @@ public class Player extends Entity {
     private void shoot() {
         if (aniTick == 0) {
             shootBullet();
+            canAttack = false;
         }
-
     }
 
-    private void shootBullet() {
-        int dir = 1;
-        if (left)
-            dir = -1;
-        bullets.add(new Bullet((int) this.hitbox.x, (int) this.hitbox.y, dir, BULLET));
+    private void shootBullet() throws ConcurrentModificationException {
+        int x = (int) (5 * Game.SCALE);
+        int y = (int) (-1 * Game.SCALE);
+        bullets.add(new Bullet((int) this.hitbox.x + x, (int) this.hitbox.y + y, flipW, BULLET));
     }
 
     private void jump() {

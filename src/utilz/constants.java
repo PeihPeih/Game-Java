@@ -14,7 +14,7 @@ public class constants {
 
         public static final int BULLET_WIDTH = (int) (Game.SCALE * BULLET_DEFAULT_WIDTH);
         public static final int BULLET_HEIGHT = (int) (Game.SCALE * BULLET_DEFAULT_HEIGHT);
-        public static final float SPEED = 0.75f * Game.SCALE;
+        public static final float SPEED = 1.2f * Game.SCALE;
     }
 
     public static class ObjectConstants {
