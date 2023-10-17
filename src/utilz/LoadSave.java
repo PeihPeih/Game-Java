@@ -20,7 +20,14 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
+
+    // Object
     public static final String HEART = "item/heart.png";
+    public static final String[] BULLET = {
+            "player/shot/shot-1.png",
+            "player/shot/shot-2.png",
+            "player/shot/shot-3.png"
+};
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -50,5 +57,14 @@ public class LoadSave {
 //            System.out.println();
         }
         return lvlData;
+    }
+
+    // Load bullet
+    public static BufferedImage[] GetBulletAnimation(){
+        BufferedImage[] bullets = new BufferedImage[BULLET.length];
+        for(int i=0;i<bullets.length;i++){
+            bullets[i] = GetSpriteAtlas(BULLET[i]);
+        }
+        return bullets;
     }
 }

@@ -25,7 +25,6 @@ public abstract class Entity {
         this.height = height;
         this.width = width;
 
-
     }
     
     // Tao hitbox cho vat the
