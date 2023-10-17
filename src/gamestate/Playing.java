@@ -4,6 +4,7 @@ import UI.PauseOverlay;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import objects.ObjectManager;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ import static main.Game.GAME_WIDTH;
 public class Playing extends State implements Statemethods {
     private LevelManager levelManager;
     private Player player;
+    private ObjectManager objectManager;
 
     private boolean paused = false;
     private PauseOverlay pauseOverlay;
@@ -43,8 +45,11 @@ public class Playing extends State implements Statemethods {
 
     private void innitClasses() throws IOException {// khoi tao
         loadBackground();
+
         levelManager = new LevelManager(game);
         player = new Player(100, 200, 82, 77);
+        objectManager = new ObjectManager(this);
+
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
     }
@@ -107,28 +112,25 @@ public class Playing extends State implements Statemethods {
         if (!paused) {
             levelManager.update();
             player.update();
+            objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+            checkCloseToBorder();
         } else
             pauseOverlay.update();
+
     }
 
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
         drawBackground(g, xLvlOffset);
-
         drawCloud(g, xLvlOffset);
 
-        if (levelManager != null) {
-            levelManager.render(g, xLvlOffset);
-        }
-
-        if (player != null) {
-            player.render(g, xLvlOffset);
-        }
+        if (levelManager != null) levelManager.render(g, xLvlOffset);
+        if (player != null) player.render(g, xLvlOffset);
+        if (objectManager != null) objectManager.draw(g, xLvlOffset);
 
         if (paused)
             pauseOverlay.draw(g);
 
-        checkCloseToBorder();
     }
 
     private void checkCloseToBorder() {
