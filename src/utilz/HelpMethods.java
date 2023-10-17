@@ -1,6 +1,7 @@
 package utilz;
 
 import main.Game;
+import objects.Bullet;
 
 import java.awt.geom.Rectangle2D;
 
@@ -86,5 +87,11 @@ public class HelpMethods {
             if (!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvData)) // bottom right check
                 return false;
         return true;
+    }
+
+    // Check xem đạn có va chạm với tiles hay không
+    public static boolean IsProjectileHittingLevel(Bullet b, int[][] lvlData) {
+        return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
+
     }
 }

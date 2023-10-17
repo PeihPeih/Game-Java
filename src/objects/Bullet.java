@@ -1,21 +1,76 @@
 package objects;
 
-import main.Game;
-import utilz.LoadSave;
-
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public class Bullet extends Object {
-    private BufferedImage[] animations;
+import main.Game;
+import utilz.LoadSave;
 
-    public Bullet(float x, float y, int width, int height) {
-        super(x, y, width, height);
-        initHitbox(x, y, (int) (15 * Game.SCALE), (int) (11 * Game.SCALE));
-        loadAnimations();
+import static utilz.constants.Bullet.*;
+
+public class Bullet extends GameObject {
+    private Rectangle2D.Float hitbox;
+    private int dir;
+    private boolean active = true;
+    private BufferedImage[] animation;
+
+    public Bullet(int x, int y, int dir, int objType) {
+        super(x, y, objType);
+        int xOffset = (int) (-3 * Game.SCALE);
+        int yOffset = (int) (5 * Game.SCALE);
+
+        if (dir == 1)
+            xOffset = (int) (13 * Game.SCALE);
+
+        hitbox = new Rectangle2D.Float(x + xOffset, y + yOffset, BULLET_WIDTH, BULLET_HEIGHT);
+        this.dir = dir;
+        loadImgs();
     }
 
-    private void loadAnimations(){
-        animations = LoadSave.GetBulletAnimation();
+    private void loadImgs() {
+        animation = new BufferedImage[3];
+
+        for (int i = 0; i < animation.length; i++)
+            animation[i] = LoadSave.GetSpriteAtlas(LoadSave.BULLET[i]);
     }
+
+    public void update() {
+        updateAnimationTick();
+        updatePos();
+    }
+
+    public void draw(Graphics g, int xLvlOffset) {
+        int flipX;
+        if (dir == 1) flipX = 0;
+        else flipX = BULLET_WIDTH;
+
+        int flipW = dir;
+
+        if (active) {
+            g.drawImage(animation[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH*flipW , BULLET_HEIGHT, null);
+        }
+    }
+
+    private void updatePos() {
+        hitbox.x += dir * SPEED;
+    }
+
+    public void setPos(int x, int y) {
+        hitbox.x = x;
+        hitbox.y = y;
+    }
+
+    public Rectangle2D.Float getHitbox() {
+        return hitbox;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
 }

@@ -9,11 +9,13 @@ import java.util.ArrayList;
 
 
 import static utilz.constants.Direction.*;
+import static utilz.constants.ObjectConstants.BULLET;
 import static utilz.constants.PlayerConstants.*;
 
 import static utilz.HelpMethods.*;
 
 import main.Game;
+import objects.Bullet;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -28,10 +30,11 @@ public class Player extends Entity {
     private float xdrawOffset = 18 * Game.SCALE;
     private float ydrawOffset = 12 * Game.SCALE;
     private ArrayList<BufferedImage> hearts;
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
 
     // Flip animation when turn left or right
-    private int flipX = 0 ;
+    private int flipX = 0;
     private int flipW = 1;
 
 
@@ -42,55 +45,65 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
-    
+
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         loadsAnimation();
         initHeart();
 
         // Lay hitbox cua player
-        initHitbox(x , y, 20 * Game.SCALE, 38 * Game.SCALE);
+        initHitbox(x, y, 20 * Game.SCALE, 38 * Game.SCALE);
     }
 
-    private void initHeart(){
+    private void initHeart() {
         hearts = new ArrayList<>();
         BufferedImage heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
-        for(int i=0;i<3;i++) hearts.add(heart);
+        for (int i = 0; i < 3; i++) hearts.add(heart);
     }
 
     public void update() {
         updatePos();
         updateAnimationonTick();
+        updateBullet();
         setAnimation();
     }
-    
+
+    private void updateBullet() {
+        for (Bullet b : bullets) b.update();
+    }
+
     // Lay du lieu tu lvl de chuan bi cho collision
-    public void loadLvlData(int[][] lvlData)
-    {
+    public void loadLvlData(int[][] lvlData) {
 
         this.lvlData = lvlData;
         // check in the air at start (nhân vật rơi xuống lúc start game)
-        if(!IsEntityOntheFloor(hitbox,lvlData)){
+        if (!IsEntityOntheFloor(hitbox, lvlData)) {
             inAir = true;
         }
     }
-    
+
     // In player ra screen
     public void render(Graphics g, int xLvlOffset) {
 
-        g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x - xdrawOffset - xLvlOffset + flipX), (int)(hitbox.y - ydrawOffset), width*flipW, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g);
+        drawBullet(g, xLvlOffset);
         drawHeart(g);
     }
 
-    private void drawHeart(Graphics g) {
-        for(int i=0;i<hearts.size();i++){
-            g.drawImage(hearts.get(i),75+50*i,30,45,45,null);
+    private void drawBullet(Graphics g, int xLvlOffset) {
+        for (Bullet b : bullets) {
+            b.draw(g, xLvlOffset);
         }
-
     }
 
+    // Draw heart at left-top corner
+    private void drawHeart(Graphics g) {
+        for (int i = 0; i < hearts.size(); i++) {
+            g.drawImage(hearts.get(i), 75 + 50 * i, 30, 45, 45, null);
+        }
+    }
 
     // Chuyển frame của mỗi animation
     private void updateAnimationonTick() {
@@ -116,17 +129,16 @@ public class Player extends Entity {
         }
 
         // Jump
-        if(jump || inAir){
+        if (jump || inAir) {
 
             playerAction = JUMP;
         }
 
         // Attack
-        if (attacking){
-            if (playerAction == RUN){
+        if (attacking) {
+            if (playerAction == RUN) {
                 playerAction = RUN_SHOOT;
-            }
-            else if(playerAction==IDLE){
+            } else if (playerAction == IDLE) {
                 playerAction = SHOOT;
             }
         }
@@ -134,7 +146,7 @@ public class Player extends Entity {
         // Nếu chuyeren hành động thì chạy animation mới
         if (startAni != playerAction) {
 //            resetAninTick();
-            if(!(startAni==RUN && playerAction == RUN_SHOOT)){
+            if (!(startAni == RUN && playerAction == RUN_SHOOT)) {
                 resetAninTick();
             }
         }
@@ -157,7 +169,6 @@ public class Player extends Entity {
         if (jump)
             jump();
 
-
         float xSpeed = 0;
 
         // Left
@@ -176,10 +187,12 @@ public class Player extends Entity {
         }
 
         // nghia là đang left hoặc right
-        if(!inAir){
-            if(!IsEntityOntheFloor(hitbox,lvlData)){
+        if (!inAir) {
+            if (!IsEntityOntheFloor(hitbox, lvlData)) {
                 inAir = true;
             }
+            // Chạm đất thì có thể bắn
+            if (attacking) shoot();
         }
 
         // Jump | Gravity
@@ -199,7 +212,7 @@ public class Player extends Entity {
                     updateXpos(xSpeed);
                 }
             }
-        }else{
+        } else {
             if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
                 hitbox.y += airSpeed;
                 airSpeed += gravity;
@@ -208,8 +221,23 @@ public class Player extends Entity {
         }
     }
 
+    // Nhân vật bắn súng
+    private void shoot() {
+        if (aniTick == 0) {
+            shootBullet();
+        }
+
+    }
+
+    private void shootBullet() {
+        int dir = 1;
+        if (left)
+            dir = -1;
+        bullets.add(new Bullet((int) this.hitbox.x, (int) this.hitbox.y, dir, BULLET));
+    }
+
     private void jump() {
-        if(inAir)
+        if (inAir)
             return; // nếu đang jump thì đang in air rồi
         airSpeed = jumSpeed; // bất cứ khi nào jump có airSpeed bằng jumpSpeed
     }
@@ -220,14 +248,12 @@ public class Player extends Entity {
     }
 
     private void updateXpos(float xSpeed) {
-        if(CanMoveHere(hitbox.x + xSpeed, hitbox.y , hitbox.width, hitbox.height, lvlData))
-        {
-        	hitbox.x += xSpeed;
-        }
-        else {
+        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+            hitbox.x += xSpeed;
+        } else {
             // đang va chạm
             // hitbox next to wall
-            hitbox.x = GetEntityXposNextToWAll(hitbox,xSpeed);
+            hitbox.x = GetEntityXposNextToWAll(hitbox, xSpeed);
 
         }
     }
@@ -317,7 +343,6 @@ public class Player extends Entity {
     }
 
 
-
     public void setAttack(boolean attacking) {
         this.attacking = attacking;
     }
@@ -347,9 +372,8 @@ public class Player extends Entity {
         attacking = false;
     }
 
-
     // jump
-    public void setJump(boolean jump){
+    public void setJump(boolean jump) {
         this.jump = jump;
     }
 
