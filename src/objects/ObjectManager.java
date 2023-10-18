@@ -14,6 +14,7 @@ import utilz.constants;
 
 import javax.imageio.ImageIO;
 
+import static utilz.HelpMethods.IsBombsHittingLevel;
 import static utilz.constants.ObjectConstants.*;
 import static utilz.HelpMethods.IsBulletsHittingLevel;
 import static utilz.constants.Bullet.*;
@@ -22,16 +23,24 @@ public class ObjectManager {
 
     private Playing playing;
     private BufferedImage heart;
+    private BufferedImage bomb;
     private ArrayList<Heart> hearts;
+    private ArrayList<Bomb> bombs;
+
+    // Spawn bomb
+    private int spawnBombTimer;
+    private int spawnBombTimerMax = 120;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImgs();
         loadObjects();
+        this.spawnBombTimer = spawnBombTimerMax;
     }
 
     private void loadImgs() {
         heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
+        bomb = LoadSave.GetSpriteAtlas(LoadSave.BOMB);
     }
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
@@ -47,28 +56,65 @@ public class ObjectManager {
 
     public void loadObjects() {
         hearts = new ArrayList<>(LoadSave.GetHearts(1));
-        System.out.println(hearts.size());
+        bombs = new ArrayList<>();
     }
 
 
     public void update(int[][] lvlData, Player player) {
+        spawnBomb(player);
+        updateBombs(lvlData, player);
+    }
+
+    private void spawnBomb(Player player) {
+        if (spawnBombTimer >= spawnBombTimerMax) {
+            bombs.add(new Bomb((int) (player.getHitbox().x - player.getHitbox().width / 2), -100, BOMB));
+            spawnBombTimer = 0;
+        }
+        spawnBombTimer++;
+    }
+
+    private void updateBombs(int[][] lvlData, Player player) {
+        for (Bomb b : bombs) {
+            if (!b.isDestroy()) {
+                b.update();
+                if (b.getHitbox().intersects(player.getHitbox())) {
+                    player.minusHeart();
+                    b.setDestroy(true);
+                } else if (IsBombsHittingLevel(b, lvlData)) {
+                    b.setDestroy(true);
+                }
+            }
+        }
     }
 
 
     public void draw(Graphics g, int xLvlOffset) {
         drawHearts(g, xLvlOffset);
+        drawBombs(g, xLvlOffset);
     }
 
     private void drawHearts(Graphics g, int xLvlOffset) {
         for (Heart h : hearts)
             if (h.isActive()) {
-                g.drawImage(heart, (int) (h.getHitbox().x - h.getxDrawOffset() - xLvlOffset), (int) (h.getHitbox().y - h.getyDrawOffset()), HEART_WIDTH, HEART_HEIGHT,null);
+                g.drawImage(heart, (int) (h.getHitbox().x - h.getxDrawOffset() - xLvlOffset), (int) (h.getHitbox().y - h.getyDrawOffset()), HEART_WIDTH, HEART_HEIGHT, null);
             }
     }
 
+    private void drawBombs(Graphics g, int xLvlOffset) {
+        for (int i = 0; i < bombs.size(); i++)
+            bombs.get(i).draw(g,xLvlOffset);
+    }
 
     public void resetAllObjects() {
         for (Heart h : hearts)
             h.reset();
+    }
+
+    public void destroy(){
+        for(int i=0;i<bombs.size();i++){
+            if(!bombs.get(i).isActive()){
+                bombs.remove(i);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package utilz;
 
 import main.Game;
+import objects.Bomb;
 import objects.Bullet;
 import objects.Heart;
 
@@ -32,7 +33,7 @@ public class HelpMethods {
 
     // Kiểm tra xem vật thể có phải vật rắn hay không
     private static boolean IsSolid(float x, float y, int[][] lvlData) {
-        if (x <= 0 || x >= lvlData[0].length*Game.TILES_SIZE) {
+        if (x <= 0 || x >= lvlData[0].length * Game.TILES_SIZE) {
             return true;
         }
 
@@ -100,7 +101,24 @@ public class HelpMethods {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
     }
 
-    // Get list of heart
+    // Check xem đạn có va chạm với tiles hay không
+    public static boolean IsBombsHittingLevel(Bomb b, int[][] lvlData) {
+        return IsBombSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height/4, lvlData);
+    }
 
+    public static boolean IsBombSolid(float x, float y, int[][] lvlData) {
+        if (y >= Game.GAME_HEIGHT) {
+            return true;
+        }
 
+        if (y <= 0) y = 0;
+        float xIndex = x / Game.TILES_SIZE;
+        float yIndex = y / Game.TILES_SIZE;
+        int value = lvlData[(int) yIndex][(int) xIndex];
+
+        if (value > 45 || value == 0 || value == 5 || value == 6 || value == 7 || value == 8 || value == 35) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -15,7 +15,7 @@ import static utilz.constants.ObjectConstants.*;
 public class LoadSave {
     // Level
     public static final String[] LEVEL_DATA = {
-            "level/level_1.png",
+            "level/test.jpg",
     };
     // Background
     public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
@@ -24,7 +24,19 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
-    public static final String MENU_BG_IMG = "UI/Menu/background-menu.png";
+    public static final String[] EXPLOSION = {
+            "explosion/1.png",
+            "explosion/2.png",
+            "explosion/3.png",
+            "explosion/4.png",
+            "explosion/5.png",
+            "explosion/6.png",
+            "explosion/7.png",
+            "explosion/8.png",
+            "explosion/9.png",
+            "explosion/10.png",
+
+    };
 
     // Object
     public static final String HEART = "item/heart.png";
@@ -38,6 +50,8 @@ public class LoadSave {
             "player/shot-hit/shot-hit-2.png",
             "player/shot-hit/shot-hit-3.png"
     };
+
+    public static final String BOMB = "item/bomb.png";
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -85,6 +99,15 @@ public class LoadSave {
             bulletsDisappear[i] = GetSpriteAtlas(BULLET_DISAPPEAR[i]);
         }
         return bulletsDisappear;
+    }
+
+    // Load explosion
+    public static BufferedImage[] GetExplosion() {
+        BufferedImage[] explosion = new BufferedImage[EXPLOSION.length];
+        for (int i = 0; i < explosion.length; i++) {
+            explosion[i] = GetSpriteAtlas(EXPLOSION[i]);
+        }
+        return explosion;
     }
 
     public static ArrayList<Heart> GetHearts(int level) {
