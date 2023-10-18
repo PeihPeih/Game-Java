@@ -15,6 +15,7 @@ public class GameObject {
     protected Rectangle2D.Float hitbox;
     protected int aniTick, aniIndex;
     protected int xDrawOffset, yDrawOffset;
+    protected boolean active = true;
 
     public GameObject(int x, int y, int objType) {
         this.x = x;
@@ -50,7 +51,6 @@ public class GameObject {
         return hitbox;
     }
 
-
     public int getxDrawOffset() {
         return xDrawOffset;
     }
@@ -65,6 +65,14 @@ public class GameObject {
 
     public int getAniTick() {
         return aniTick;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

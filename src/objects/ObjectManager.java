@@ -21,15 +21,33 @@ import static utilz.constants.Bullet.*;
 public class ObjectManager {
 
     private Playing playing;
-    private ArrayList<Bullet> bullets = new ArrayList<>();
+    private BufferedImage heart;
+    private ArrayList<Heart> hearts;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
+        loadImgs();
+        loadObjects();
+    }
+
+    private void loadImgs() {
+        heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
+    }
+
+    public void checkObjectTouched(Rectangle2D.Float hitbox) {
+        for (Heart h : hearts)
+            if (h.isActive()) {
+                if (hitbox.intersects(h.getHitbox())) {
+                    h.setActive(false);
+                    playing.getPlayer().addHeart();
+                }
+            }
     }
 
 
-    public void loadObjects(Level newLevel) {
-        bullets.clear();
+    public void loadObjects() {
+        hearts = new ArrayList<>(LoadSave.GetHearts(1));
+        System.out.println(hearts.size());
     }
 
 
@@ -37,15 +55,20 @@ public class ObjectManager {
     }
 
 
-
     public void draw(Graphics g, int xLvlOffset) {
-//        drawBullets(g, xLvlOffset);
+        drawHearts(g, xLvlOffset);
+    }
+
+    private void drawHearts(Graphics g, int xLvlOffset) {
+        for (Heart h : hearts)
+            if (h.isActive()) {
+                g.drawImage(heart, (int) (h.getHitbox().x - h.getxDrawOffset() - xLvlOffset), (int) (h.getHitbox().y - h.getyDrawOffset()), HEART_WIDTH, HEART_HEIGHT,null);
+            }
     }
 
 
     public void resetAllObjects() {
-//        loadObjects(playing.getLevelManager().getCurrentLevel());
-        for (Bullet b : bullets)
-            b.reset();
+        for (Heart h : hearts)
+            h.reset();
     }
 }

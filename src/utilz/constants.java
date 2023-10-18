@@ -19,6 +19,13 @@ public class constants {
 
     public static class ObjectConstants {
         public static final int BULLET = 0;
+        public static final int HEART = 178;
+
+        public static final int HEART_DEFAULT_WIDTH = 20;
+        public static final int HEART_DEFAULT_HEIGHT = 20;
+        public static final int HEART_WIDTH = (int)(HEART_DEFAULT_WIDTH*Game.SCALE);
+        public static final int HEART_HEIGHT = (int)(HEART_DEFAULT_HEIGHT*Game.SCALE);
+
 
         public static int GetSpriteAmount(int object_type) {
             switch (object_type) {

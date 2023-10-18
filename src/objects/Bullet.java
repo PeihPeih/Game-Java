@@ -12,8 +12,8 @@ import static utilz.constants.Bullet.*;
 public class Bullet extends GameObject {
     private Rectangle2D.Float hitbox;
     private int dir;
-    private boolean active = true;
     private BufferedImage[] animation;
+    private BufferedImage[] animation_dis;
 
     public Bullet(int x, int y, int dir, int objType) {
         super(x, y, objType);
@@ -30,10 +30,8 @@ public class Bullet extends GameObject {
     }
 
     private void loadImgs() {
-        animation = new BufferedImage[3];
-
-        for (int i = 0; i < animation.length; i++)
-            animation[i] = LoadSave.GetSpriteAtlas(LoadSave.BULLET[i]);
+        animation = LoadSave.GetBulletAnimation();
+        animation_dis = LoadSave.GetBulletDisappearAnimation();
     }
 
     public void update() {
@@ -48,9 +46,13 @@ public class Bullet extends GameObject {
 
         int flipW = dir;
 
+        reset();
         if (active) {
             g.drawImage(animation[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
-            drawHitbox(g,xLvlOffset);
+            drawHitbox(g, xLvlOffset);
+        } else {
+            g.drawImage(animation_dis[aniIndex], (int) (this.hitbox.x - 8 - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
+            drawHitbox(g, xLvlOffset);
         }
     }
 
@@ -61,6 +63,9 @@ public class Bullet extends GameObject {
 
     private void updatePos() {
         hitbox.x += dir * SPEED;
+        if (Math.abs(hitbox.x - x) >= (int) (0.7 * Game.GAME_WIDTH)) {
+            this.active = false;
+        }
     }
 
     public void setPos(int x, int y) {
@@ -72,12 +77,5 @@ public class Bullet extends GameObject {
         return hitbox;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
 
 }
