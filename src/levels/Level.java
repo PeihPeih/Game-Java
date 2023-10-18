@@ -1,7 +1,14 @@
 package levels;
 
+import objects.Heart;
+import utilz.HelpMethods;
+import utilz.LoadSave;
+
+import java.util.ArrayList;
+
 public class Level {
     private int[][] lvlData;
+    private ArrayList<Heart> hearts;
 
     // Khởi tạo
     public Level(int[][] lvlData){

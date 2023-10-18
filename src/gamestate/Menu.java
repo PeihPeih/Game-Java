@@ -36,6 +36,7 @@ public class Menu extends State implements Statemethods {
         backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
         backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
         cloud = LoadSave.GetSpriteAtlas(LoadSave.CLOUD);
+
     }
 
     private void drawBackground(Graphics g) {
@@ -51,7 +52,6 @@ public class Menu extends State implements Statemethods {
             if(cloud!=null){
                 g.drawImage(cloud,i*Game.GAME_WIDTH+scrollCloud,-150,Game.GAME_WIDTH,400,null);
             }
-
         }
     }
 

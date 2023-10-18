@@ -2,8 +2,14 @@ package utilz;
 
 import main.Game;
 import objects.Bullet;
+import objects.Heart;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import static utilz.constants.ObjectConstants.HEART;
 
 public class HelpMethods {
 
@@ -93,4 +99,8 @@ public class HelpMethods {
     public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
     }
+
+    // Get list of heart
+
+
 }

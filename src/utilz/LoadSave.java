@@ -1,11 +1,15 @@
 package utilz;
 
 import main.Game;
+import objects.Heart;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import static utilz.constants.ObjectConstants.*;
 
 // Hỗ trợ load phần hình ảnh
 public class LoadSave {
@@ -20,6 +24,7 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
+    public static final String MENU_BG_IMG = "UI/Menu/background-menu.png";
 
     // Object
     public static final String HEART = "item/heart.png";
@@ -27,7 +32,12 @@ public class LoadSave {
             "player/shot/shot-1.png",
             "player/shot/shot-2.png",
             "player/shot/shot-3.png"
-};
+    };
+    public static final String[] BULLET_DISAPPEAR = {
+            "player/shot-hit/shot-hit-1.png",
+            "player/shot-hit/shot-hit-2.png",
+            "player/shot-hit/shot-hit-3.png"
+    };
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -42,7 +52,7 @@ public class LoadSave {
 
     // Xây ma trận level theo ảnh màu pixel
     public static int[][] GetLevelData(int level) {
-        BufferedImage image = GetSpriteAtlas(LEVEL_DATA[level-1]);
+        BufferedImage image = GetSpriteAtlas(LEVEL_DATA[level - 1]);
         int height = image.getHeight(), width = image.getWidth();
         int[][] lvlData = new int[height][width];
         // Nếu muốn xem ma trận level thì comment lại 2 cái system.out ở dưới
@@ -60,11 +70,34 @@ public class LoadSave {
     }
 
     // Load bullet
-    public static BufferedImage[] GetBulletAnimation(){
+    public static BufferedImage[] GetBulletAnimation() {
         BufferedImage[] bullets = new BufferedImage[BULLET.length];
-        for(int i=0;i<bullets.length;i++){
+        for (int i = 0; i < bullets.length; i++) {
             bullets[i] = GetSpriteAtlas(BULLET[i]);
         }
         return bullets;
+    }
+
+    // Load buttet disappear
+    public static BufferedImage[] GetBulletDisappearAnimation() {
+        BufferedImage[] bulletsDisappear = new BufferedImage[BULLET_DISAPPEAR.length];
+        for (int i = 0; i < bulletsDisappear.length; i++) {
+            bulletsDisappear[i] = GetSpriteAtlas(BULLET_DISAPPEAR[i]);
+        }
+        return bulletsDisappear;
+    }
+
+    public static ArrayList<Heart> GetHearts(int level) {
+        BufferedImage image = GetSpriteAtlas(LEVEL_DATA[level - 1]);
+        ArrayList<Heart> list = new ArrayList<>();
+        for (int j = 0; j < image.getHeight(); j++) {
+            for (int i = 0; i < image.getWidth(); i++) {
+                Color color = new Color(image.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == 178)
+                    list.add(new Heart(i * Game.TILES_SIZE + Game.TILES_SIZE - HEART_WIDTH, j * Game.TILES_SIZE + Game.TILES_SIZE - HEART_HEIGHT, value));
+            }
+        }
+        return list;
     }
 }

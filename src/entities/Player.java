@@ -15,6 +15,7 @@ import static utilz.constants.PlayerConstants.*;
 
 import static utilz.HelpMethods.*;
 
+import gamestate.Playing;
 import main.Game;
 import objects.Bullet;
 import utilz.LoadSave;
@@ -49,9 +50,11 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
+    private Playing playing;
 
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
+        this.playing = playing;
         loadsAnimation();
         initHeart();
         // Lay hitbox cua player
@@ -114,8 +117,11 @@ public class Player extends Entity {
     }
 
     private void drawBullet(Graphics g, int xLvlOffset) {
-        for (Bullet b : bullets) {
-            b.draw(g, xLvlOffset);
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).draw(g, xLvlOffset);
+            if (!bullets.get(i).isActive()) {
+                bullets.remove(i);
+            }
         }
     }
 
@@ -207,6 +213,10 @@ public class Player extends Entity {
             moving = true;
         }
 
+        if (moving) {
+            checkHeartTouched();
+        }
+
         // nghia là đang left hoặc right
         if (!inAir) {
             if (!IsEntityOntheFloor(hitbox, lvlData)) {
@@ -242,6 +252,10 @@ public class Player extends Entity {
             }
             updateXpos(xSpeed);
         }
+    }
+
+    private void checkHeartTouched() {
+        playing.checkHeartTouch(hitbox);
     }
 
     // Nhân vật bắn súng
@@ -399,4 +413,9 @@ public class Player extends Entity {
         this.jump = jump;
     }
 
+    public void addHeart() {
+        if (hearts.size() < 3) {
+            this.hearts.add(LoadSave.GetSpriteAtlas(LoadSave.HEART));
+        }
+    }
 }

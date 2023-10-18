@@ -10,6 +10,7 @@ import utilz.LoadSave;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -47,7 +48,7 @@ public class Playing extends State implements Statemethods {
         loadBackground();
 
         levelManager = new LevelManager(game);
-        player = new Player(100, 200, 82, 77);
+        player = new Player(100, 200, 82, 77, this);
         objectManager = new ObjectManager(this);
 
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
@@ -104,6 +105,10 @@ public class Playing extends State implements Statemethods {
                 g.drawImage(cloud, i * bgImageWidth - bgOffset, -200, bgImageWidth, 400, null);
 
         }
+    }
+
+    public void checkHeartTouch(Rectangle2D.Float hitbox) {
+        objectManager.checkObjectTouched(hitbox);
     }
 
 
@@ -229,6 +234,10 @@ public class Playing extends State implements Statemethods {
 
     public void windowFocusLost() {
         player.resetDirBoleans();
+    }
+
+    public ObjectManager getObjectManager() {
+        return objectManager;
     }
 
     //getter Player
