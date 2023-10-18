@@ -138,6 +138,11 @@ public class Playing extends State implements Statemethods {
 
     }
 
+    public void destroy(){
+        player.destroy();
+        objectManager.destroy();
+    }
+
     private void checkCloseToBorder() {
         int playerX = (int) player.getHitbox().x;
         int diff = playerX - xLvlOffset;

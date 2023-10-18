@@ -58,7 +58,7 @@ public class Player extends Entity {
         loadsAnimation();
         initHeart();
         // Lay hitbox cua player
-        initHitbox(x, y, 20 * Game.SCALE, 38 * Game.SCALE);
+        initHitbox(x, y+10, 20 * Game.SCALE, 38 * Game.SCALE);
 
         this.timerAttack = this.timerAttackMax;
     }
@@ -119,9 +119,7 @@ public class Player extends Entity {
     private void drawBullet(Graphics g, int xLvlOffset) {
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xLvlOffset);
-            if (!bullets.get(i).isActive()) {
-                bullets.remove(i);
-            }
+
         }
     }
 
@@ -416,6 +414,21 @@ public class Player extends Entity {
     public void addHeart() {
         if (hearts.size() < 3) {
             this.hearts.add(LoadSave.GetSpriteAtlas(LoadSave.HEART));
+        }
+    }
+
+    public void minusHeart() {
+        if (hearts.size() > 0) {
+            hearts.remove(hearts.size() - 1);
+        }
+    }
+
+    // Xóa khỏi mảng khi không cần
+    public void destroy() {
+        for (int i = 0; i < bullets.size(); i++) {
+            if (!bullets.get(i).isActive()) {
+                bullets.remove(i);
+            }
         }
     }
 }
