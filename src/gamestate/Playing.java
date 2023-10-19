@@ -127,11 +127,12 @@ public class Playing extends State implements Statemethods {
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
         drawBackground(g, xLvlOffset);
-        drawCloud(g, xLvlOffset);
 
         if (levelManager != null) levelManager.render(g, xLvlOffset);
         if (player != null) player.render(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
+
+        drawCloud(g, xLvlOffset);
 
         if (paused)
             pauseOverlay.draw(g);

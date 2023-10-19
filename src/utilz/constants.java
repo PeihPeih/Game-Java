@@ -28,7 +28,7 @@ public class constants {
         public static final int HEART_HEIGHT = (int)(HEART_DEFAULT_HEIGHT*Game.SCALE);
 
         public static final int BOMB_WIDTH = 30;
-        public static final int BOMB_HEIGHT = 40;
+        public static final int BOMB_HEIGHT = 50;
 
 
         public static int GetSpriteAmount(int object_type) {

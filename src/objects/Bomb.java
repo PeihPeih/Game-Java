@@ -43,7 +43,7 @@ public class Bomb extends GameObject {
     public void draw(Graphics g, int xLvlOffset) {
         if (!isDestroy) {
             g.drawImage(image, (int) (this.hitbox.x - xDrawOffset - xLvlOffset), (int) (this.hitbox.y - yDrawOffset), BOMB_WIDTH, BOMB_HEIGHT, null);
-            drawHitbox(g,xLvlOffset);
+//            drawHitbox(g,xLvlOffset);
         } else {
             destroy(g, xLvlOffset);
         }
@@ -68,12 +68,8 @@ public class Bomb extends GameObject {
 
     private void destroy(Graphics g, int xLvlOffset) {
         if (active) {
-            g.drawImage(explosion[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset - BOMB_WIDTH / 2), (int) (this.hitbox.y - yDrawOffset) - Game.TILES_SIZE / 2, BOMB_WIDTH * 2, BOMB_HEIGHT * 2, null);
-            aniTick++;
-            if (aniTick >= 1) {
-                aniTick = 0;
-                aniIndex++;
-            }
+            g.drawImage(explosion[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset - BOMB_WIDTH), (int) (this.hitbox.y - yDrawOffset) - Game.TILES_SIZE, BOMB_WIDTH * 3, BOMB_HEIGHT * 3, null);
+            aniIndex++;
             if (aniIndex == explosion.length) active = false;
         }
     }

@@ -15,7 +15,7 @@ import static utilz.constants.ObjectConstants.*;
 public class LoadSave {
     // Level
     public static final String[] LEVEL_DATA = {
-            "level/test.jpg",
+            "level/level_1.png",
     };
     // Background
     public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
@@ -24,22 +24,10 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
-    public static final String[] EXPLOSION = {
-            "explosion/1.png",
-            "explosion/2.png",
-            "explosion/3.png",
-            "explosion/4.png",
-            "explosion/5.png",
-            "explosion/6.png",
-            "explosion/7.png",
-            "explosion/8.png",
-            "explosion/9.png",
-            "explosion/10.png",
-
-    };
 
     // Object
     public static final String HEART = "item/heart.png";
+
     public static final String[] BULLET = {
             "player/shot/shot-1.png",
             "player/shot/shot-2.png",
@@ -51,7 +39,45 @@ public class LoadSave {
             "player/shot-hit/shot-hit-3.png"
     };
 
-    public static final String BOMB = "item/bomb.png";
+    // Bomb
+    public static final String BOMB = "item/meteorite.png";
+    public static final String[] EXPLOSION = {
+            "explosion/1.png",
+            "explosion/2.png",
+            "explosion/3.png",
+            "explosion/4.png",
+            "explosion/5.png",
+            "explosion/6.png",
+            "explosion/7.png",
+            "explosion/8.png",
+            "explosion/9.png",
+            "explosion/10.png",
+            "explosion/11.png",
+            "explosion/12.png",
+            "explosion/13.png",
+            "explosion/14.png",
+            "explosion/15.png",
+            "explosion/16.png",
+            "explosion/17.png",
+            "explosion/18.png",
+            "explosion/19.png",
+            "explosion/20.png",
+            "explosion/21.png",
+            "explosion/22.png",
+            "explosion/23.png",
+            "explosion/24.png",
+            "explosion/25.png",
+            "explosion/26.png",
+            "explosion/27.png",
+            "explosion/28.png",
+            "explosion/29.png",
+            "explosion/30.png",
+            "explosion/31.png",
+            "explosion/32.png",
+            "explosion/33.png",
+            "explosion/34.png"
+    };
+
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
