@@ -74,14 +74,14 @@ public class ObjectManager {
     }
 
     private void updateBombs(int[][] lvlData, Player player) {
-        for (Bomb b : bombs) {
-            if (!b.isDestroy()) {
-                b.update();
-                if (b.getHitbox().intersects(player.getHitbox())) {
+        for (int i =0 ;i<bombs.size();i++) {
+            if (!bombs.get(i).isDestroy()) {
+                bombs.get(i).update();
+                if (bombs.get(i).getHitbox().intersects(player.getHitbox())) {
                     player.minusHeart();
-                    b.setDestroy(true);
-                } else if (IsBombsHittingLevel(b, lvlData)) {
-                    b.setDestroy(true);
+                    bombs.get(i).setDestroy(true);
+                } else if (IsBombsHittingLevel(bombs.get(i), lvlData)) {
+                    bombs.get(i).setDestroy(true);
                 }
             }
         }

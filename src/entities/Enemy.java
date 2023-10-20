@@ -8,7 +8,7 @@ import static utilz.constants.Direction.*;
 
 public abstract class Enemy extends Entity {
    protected int aniIndex, enemyState, enemyType;
-    protected int aniTick, aniSpeed = 15;
+    protected int aniTick, aniSpeed = 12;
     protected boolean firstUpdate = true;
     protected boolean inAir = false;
     protected float fallSpeed;
