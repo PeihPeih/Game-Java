@@ -50,14 +50,10 @@ public class Playing extends State implements Statemethods {
         loadBackground();
 
         levelManager = new LevelManager(game);
-<<<<<<< HEAD
         enemyManager = new EnemyManager(this);
-        player = new Player(100, 200, 82, 77);
-=======
         player = new Player(100, 200, 82, 77, this);
         objectManager = new ObjectManager(this);
 
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
     }
@@ -124,12 +120,10 @@ public class Playing extends State implements Statemethods {
         if (!paused) {
             levelManager.update();
             player.update();
-<<<<<<< HEAD
-            enemyManager.update(levelManager.getCurrentLevel().getLevelData(),player);
-=======
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+
             checkCloseToBorder();
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
         } else
             pauseOverlay.update();
 
@@ -140,29 +134,17 @@ public class Playing extends State implements Statemethods {
         drawBackground(g, xLvlOffset);
         drawCloud(g, xLvlOffset);
 
-<<<<<<< HEAD
-            enemyManager.draw(g,xLvlOffset);
-
-
-        if (levelManager != null) {
-            levelManager.render(g, xLvlOffset);
-        }
-
-        if (player != null) {
-            player.render(g, xLvlOffset);
-        }
-=======
         if (levelManager != null) levelManager.render(g, xLvlOffset);
         if (player != null) player.render(g, xLvlOffset);
+        if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
 
         if (paused)
             pauseOverlay.draw(g);
 
     }
 
-    public void destroy(){
+    public void destroy() {
         player.destroy();
         objectManager.destroy();
     }

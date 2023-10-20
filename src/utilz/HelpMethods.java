@@ -101,7 +101,6 @@ public class HelpMethods {
         return true;
     }
 
-<<<<<<< HEAD
     public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
         return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
     }
@@ -122,7 +121,6 @@ public class HelpMethods {
         else
             return IsAllTileWalkAble(firstXTile,secondXTile,yTile,lvlData);
     }
-=======
     // Check xem đạn có va chạm với tiles hay không
     public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
@@ -148,5 +146,4 @@ public class HelpMethods {
         }
         return true;
     }
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
 }

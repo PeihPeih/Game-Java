@@ -8,7 +8,7 @@ import static utilz.constants.Direction.*;
 
 public abstract class Enemy extends Entity {
    protected int aniIndex, enemyState, enemyType;
-    protected int aniTick, aniSpeed = 25;
+    protected int aniTick, aniSpeed = 15;
     protected boolean firstUpdate = true;
     protected boolean inAir = false;
     protected float fallSpeed;
@@ -21,6 +21,7 @@ public abstract class Enemy extends Entity {
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
         this.enemyType = enemyType;
+        this.enemyState = IDLE;
         initHitbox(x, y, width, height);
     }
 
@@ -50,6 +51,7 @@ public abstract class Enemy extends Entity {
             tileY = (int)(hitbox.y/Game.TILES_SIZE); // ô của enemy
         }
     }
+
     protected void move(int[][] lvlData){
         float xSpeed = 0;
 
@@ -91,7 +93,7 @@ public abstract class Enemy extends Entity {
     protected boolean isPlayerInRange(Player player) {
         // attack range
         int absValue = (int)Math.abs(player.hitbox.x - hitbox.x);
-        return absValue <= attackDistance * 5;
+        return absValue <= attackDistance * 10;
     }
     protected boolean isPlayerCloseToAttack(Player player){
         int absValue = (int)Math.abs(player.hitbox.x - hitbox.x);

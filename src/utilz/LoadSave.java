@@ -1,7 +1,7 @@
 package utilz;
 
 import entities.Demon;
-import static utilz.constants.EnemyConstants.DEMON;
+
 import main.Game;
 import objects.Heart;
 
@@ -10,17 +10,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
 
+import static utilz.constants.EnemyConstants.*;
 import static utilz.constants.ObjectConstants.*;
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
 
 // Hỗ trợ load phần hình ảnh
 public class LoadSave {
     // Level
     public static final String[] LEVEL_DATA = {
-            "level/test.jpg",
+            "level/level_1.png",
     };
     // Background
     public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
@@ -29,22 +27,6 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
-<<<<<<< HEAD
-    public static final String DEMON_SPRITE  = "fire_demon";
-=======
-    public static final String[] EXPLOSION = {
-            "explosion/1.png",
-            "explosion/2.png",
-            "explosion/3.png",
-            "explosion/4.png",
-            "explosion/5.png",
-            "explosion/6.png",
-            "explosion/7.png",
-            "explosion/8.png",
-            "explosion/9.png",
-            "explosion/10.png",
-
-    };
 
     // Object
     public static final String HEART = "item/heart.png";
@@ -60,7 +42,19 @@ public class LoadSave {
     };
 
     public static final String BOMB = "item/bomb.png";
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
+    public static final String[] EXPLOSION = {
+            "explosion/1.png",
+            "explosion/2.png",
+            "explosion/3.png",
+            "explosion/4.png",
+            "explosion/5.png",
+            "explosion/6.png",
+            "explosion/7.png",
+            "explosion/8.png",
+            "explosion/9.png",
+            "explosion/10.png",
+    };
+
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -73,6 +67,9 @@ public class LoadSave {
         return image;
     }
 
+
+
+
     // getDemons
         public static ArrayList<Demon> GetDemons(int level) {
             BufferedImage img = GetSpriteAtlas(LEVEL_DATA[level-1]);
@@ -81,8 +78,7 @@ public class LoadSave {
                 for (int i = 0; i < img.getWidth(); i++) {
                     Color color = new Color(img.getRGB(i, j));
                     int value = color.getGreen();
-                    if (value == DEMON) list.add(new Demon(i*Game.TILES_SIZE,j*Game.TILES_SIZE));
-
+                    if (value == FIRE_DEMON) list.add(new Demon(i*Game.TILES_SIZE  - DEMON_WIDTH,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
                 }
             }
             return list;

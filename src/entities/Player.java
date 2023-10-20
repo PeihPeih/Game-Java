@@ -111,12 +111,8 @@ public class Player extends Entity {
 
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
-<<<<<<< HEAD
-//        drawHitbox(g,xLvlOffset);
-=======
         drawHitbox(g, xLvlOffset);
         drawBullet(g, xLvlOffset);
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
         drawHeart(g);
     }
 

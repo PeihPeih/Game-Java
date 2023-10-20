@@ -33,17 +33,10 @@ public abstract class Entity {
 		
 	}
 	// Ve hitbox de fix loi
-<<<<<<< HEAD
 	protected void drawHitbox(Graphics g,int xLvlOffset)
 	{
 		g.setColor(Color.GREEN);
 		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
-=======
-	protected void drawHitbox(Graphics g, int xLvlOffset)
-	{
-		g.setColor(Color.GREEN);
-		g.drawRect((int) hitbox.x-xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
->>>>>>> b99dbccbbcd9dd14ac9d79c409d54fe1b29c1f8f
 	}
 	
 
