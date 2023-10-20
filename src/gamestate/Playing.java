@@ -1,6 +1,8 @@
 package gamestate;
 
 import UI.PauseOverlay;
+
+import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
@@ -19,6 +21,8 @@ import static main.Game.GAME_WIDTH;
 
 
 public class Playing extends State implements Statemethods {
+
+    private EnemyManager enemyManager;
     private LevelManager levelManager;
     private Player player;
     private ObjectManager objectManager;
@@ -48,6 +52,7 @@ public class Playing extends State implements Statemethods {
         loadBackground();
 
         levelManager = new LevelManager(game);
+        enemyManager = new EnemyManager(this);
         player = new Player(100, 200, 82, 77, this);
         objectManager = new ObjectManager(this);
 
@@ -117,7 +122,9 @@ public class Playing extends State implements Statemethods {
         if (!paused) {
             levelManager.update();
             player.update();
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+
             checkCloseToBorder();
         } else
             pauseOverlay.update();
@@ -128,18 +135,20 @@ public class Playing extends State implements Statemethods {
     public void draw(Graphics g) {// ve map nhan vat va background
         drawBackground(g, xLvlOffset);
 
+        drawCloud(g, xLvlOffset);
+
         if (levelManager != null) levelManager.render(g, xLvlOffset);
         if (player != null) player.render(g, xLvlOffset);
+        if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
-
-        drawCloud(g, xLvlOffset);
 
         if (paused)
             pauseOverlay.draw(g);
 
     }
 
-    public void destroy(){
+
+    public void destroy() {
         player.destroy();
         objectManager.destroy();
     }

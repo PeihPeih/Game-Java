@@ -1,5 +1,8 @@
 package utilz;
 
+
+import entities.Demon;
+
 import main.Game;
 import objects.Heart;
 
@@ -9,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+import static utilz.constants.EnemyConstants.*;
 import static utilz.constants.ObjectConstants.*;
 
 // Hỗ trợ load phần hình ảnh
@@ -39,8 +44,10 @@ public class LoadSave {
             "player/shot-hit/shot-hit-3.png"
     };
 
+
     // Bomb
     public static final String BOMB = "item/meteorite.png";
+
     public static final String[] EXPLOSION = {
             "explosion/1.png",
             "explosion/2.png",
@@ -53,6 +60,7 @@ public class LoadSave {
             "explosion/32.png",
             "explosion/33.png",
             "explosion/34.png"
+
     };
 
 
@@ -66,6 +74,20 @@ public class LoadSave {
         }
         return image;
     }
+
+    // getDemons
+        public static ArrayList<Demon> GetDemons(int level) {
+            BufferedImage img = GetSpriteAtlas(LEVEL_DATA[level-1]);
+            ArrayList<Demon> list = new ArrayList<>();
+            for (int j = 0; j < img.getHeight(); j++) {
+                for (int i = 0; i < img.getWidth(); i++) {
+                    Color color = new Color(img.getRGB(i, j));
+                    int value = color.getGreen();
+                    if (value == FIRE_DEMON) list.add(new Demon(i*Game.TILES_SIZE  - DEMON_WIDTH,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
+                }
+            }
+            return list;
+        }
 
     // Xây ma trận level theo ảnh màu pixel
     public static int[][] GetLevelData(int level) {

@@ -43,7 +43,9 @@ public class Bomb extends GameObject {
     public void draw(Graphics g, int xLvlOffset) {
         if (!isDestroy) {
             g.drawImage(image, (int) (this.hitbox.x - xDrawOffset - xLvlOffset), (int) (this.hitbox.y - yDrawOffset), BOMB_WIDTH, BOMB_HEIGHT, null);
+
 //            drawHitbox(g,xLvlOffset);
+
         } else {
             destroy(g, xLvlOffset);
         }

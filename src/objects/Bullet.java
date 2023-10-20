@@ -52,6 +52,7 @@ public class Bullet extends GameObject {
 //            drawHitbox(g, xLvlOffset);
         } else {
             g.drawImage(animation_dis[aniIndex], (int) (this.hitbox.x - 8 - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
+
         }
     }
 

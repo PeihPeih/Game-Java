@@ -19,7 +19,7 @@ public abstract class Entity {
     protected Rectangle2D.Float hitbox;
 
 
-    public Entity(float x, float y, int width, int height) {
+    public 	Entity(float x, float y, int width, int height) {
         this.x = x; // vị tri x ban dau
         this.y = y; // vi tri y ban dau
         this.height = height;
@@ -33,10 +33,11 @@ public abstract class Entity {
 		
 	}
 	// Ve hitbox de fix loi
-	protected void drawHitbox(Graphics g, int xLvlOffset)
+
+	protected void drawHitbox(Graphics g,int xLvlOffset)
 	{
 		g.setColor(Color.GREEN);
-		g.drawRect((int) hitbox.x-xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
 	}
 	
 
