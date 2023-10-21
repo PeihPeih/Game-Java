@@ -15,6 +15,7 @@ public class EnemyManager {
     private BufferedImage[][] animations;
     private ArrayList<Demon> demons = new ArrayList<>();
 
+    // Init
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImgs();
@@ -34,15 +35,16 @@ public class EnemyManager {
     private void drawDemons(Graphics g, int xLvlOffset) {
         for (Demon d : demons) {
             g.drawImage(animations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - DEMON_DRAWOFFSET_X  + d.flipX(), (int) d.getHitbox().y-DEMON_DRAWOFFSET_Y, DEMON_WIDTH*d.flipW(), DEMON_HEIGHT, null);
-//            d.drawHitbox(g,xLvlOffset);
+            d.drawHitbox(g,xLvlOffset);
         }
     }
 
-
+    // Load enemies from map
     private void addEnemies() {
         demons = LoadSave.GetDemons(1);
     }
 
+    // Load enemies's animation
     private void loadEnemyImgs() {
         animations = new BufferedImage[7][22];
         // IDLE
@@ -63,6 +65,7 @@ public class EnemyManager {
             }
         }
 
+        // CLEAVE
         for (int i = 0; i < GetSpriteAmount(FIRE_DEMON, CLEAVE); i++) {
             try {
                 animations[CLEAVE][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Fire Demon/03_demon_cleave/demon_cleave_" + (i + 1) + ".png"));
@@ -71,6 +74,7 @@ public class EnemyManager {
             }
         }
 
+        // TAKE_HIT
         for (int i = 0; i < GetSpriteAmount(FIRE_DEMON, TAKE_HIT); i++) {
             try {
                 animations[TAKE_HIT][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Fire Demon/04_demon_take_hit/demon_take_hit_" + (i + 1) + ".png"));
@@ -79,6 +83,7 @@ public class EnemyManager {
             }
         }
 
+        // DEATH
         for (int i = 0; i < GetSpriteAmount(FIRE_DEMON, DEATH); i++) {
             try {
                 animations[DEATH][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Fire Demon/05_demon_death/demon_death_" + (i + 1) + ".png"));

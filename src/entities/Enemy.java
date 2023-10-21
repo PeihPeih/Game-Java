@@ -13,11 +13,12 @@ public abstract class Enemy extends Entity {
     protected boolean inAir = false;
     protected float fallSpeed;
     protected float gravity = 0.04f * Game.SCALE;
-    protected float walkSpeed = 1.0f * Game.SCALE;
+    protected float walkSpeed = 0.7f * Game.SCALE;
     protected int walkDir = LEFT;
     protected int tileY;
-    protected float attackDistance = Game.TILES_SIZE; // kcanh tan cong = kcah 1 o
+    protected float attackDistance = Game.TILES_SIZE; // kcach tan cong = 1 ô
 
+    // Init
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
         this.enemyType = enemyType;
@@ -25,6 +26,7 @@ public abstract class Enemy extends Entity {
         initHitbox(x, y, width, height);
     }
 
+    // Animation
     protected void updateAnimationTicks() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -36,6 +38,8 @@ public abstract class Enemy extends Entity {
             }
         }
     }
+
+    // Enemy fall if it's in air
     protected void firstUpdateCheck(int[][] lvlData){
         if (!IsEntityOntheFloor(hitbox, lvlData)) inAir = true;
         firstUpdate = false;
@@ -52,6 +56,7 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    // Move
     protected void move(int[][] lvlData){
         float xSpeed = 0;
 
@@ -68,6 +73,8 @@ public abstract class Enemy extends Entity {
                 return;
             }
         }
+
+        // if can't move, change direction
         changeWalkDir();
     }
 
@@ -78,6 +85,7 @@ public abstract class Enemy extends Entity {
             walkDir = LEFT;
         }
     }
+
     protected boolean canSeePlayer(int[][] lvlData,Player player ){
         int playerTileY = (int)(player.getHitbox().y/Game.TILES_SIZE);
         if(playerTileY == tileY)
@@ -90,16 +98,20 @@ public abstract class Enemy extends Entity {
         return false;
     }
 
+    // check player có trong khoảng để auto di chuyển  đến không
     protected boolean isPlayerInRange(Player player) {
         // attack range
         int absValue = (int)Math.abs(player.hitbox.x - hitbox.x);
-        return absValue <= attackDistance * 10;
+        return absValue <= attackDistance * 5;
     }
+
+    // Check player đủ gần để attack không
     protected boolean isPlayerCloseToAttack(Player player){
         int absValue = (int)Math.abs(player.hitbox.x - hitbox.x);
         return absValue <= attackDistance;
     }
 
+    // Set the new state
     protected void newState(int enemyState){
         this.enemyState = enemyState;
         aniTick = 0;

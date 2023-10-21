@@ -8,11 +8,13 @@ import static utilz.constants.Direction.RIGHT;
 import static utilz.constants.EnemyConstants.*;
 
 public class Demon extends Enemy {
+    // Init
     public Demon(float x, float y) {
         super(x, y, DEMON_WIDTH, DEMON_HEIGHT, FIRE_DEMON);
         initHitbox(x, y, 25 * Game.SCALE, 40 * Game.SCALE);
     }
 
+    // Update
     public void update(int[][] lvlData, Player player) {
         updateAnimationTicks();
         updateMove(lvlData, player);
@@ -24,7 +26,7 @@ public class Demon extends Enemy {
             firstUpdateCheck(lvlData);
         }
         if (inAir) {
-            // iff in air keep falling down
+            // if in air keep falling down
             updateInAir(lvlData);
         } else {
             switch (enemyState) {
@@ -43,6 +45,7 @@ public class Demon extends Enemy {
         }
     }
 
+    // Used to flip the image, right -> left
     public int flipX() {
         if (walkDir == RIGHT)
             return width;
