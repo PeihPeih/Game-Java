@@ -44,7 +44,14 @@ public class HelpMethods {
         // Kiem tra vi tri cua nhan vat trong ma tran lvl
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
-        int value = lvlData[(int) yIndex][(int) xIndex];
+
+
+        return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
+
+    }
+
+    public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
+        int value = lvlData[yTile][xTile];
 
         // Return false vi khong phai tile  (bo comment de check tile)
         if (value > 45 || value == 0 || value == 5 || value == 6 || value == 7 || value == 8 || value == 35) {
@@ -53,7 +60,6 @@ public class HelpMethods {
         }
 //		System.out.println(value);
         return true;
-
     }
 
     // gravity
@@ -96,6 +102,27 @@ public class HelpMethods {
         return true;
     }
 
+
+    public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
+        return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+    }
+
+    public static boolean IsAllTileWalkAble(int xStart, int xEnd, int y, int[][] lvlData) {
+        for (int i = 0; i < xEnd - xStart; i++) {
+            if (IsTileSolid(xStart + i, y, lvlData)) return false;
+            if (!IsTileSolid(xStart + i, y+1, lvlData)) return false;
+        }
+        return true;
+    }
+
+    public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile) {
+        int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);
+        int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
+        if (firstXTile > secondXTile)
+            return IsAllTileWalkAble(secondXTile,firstXTile,yTile,lvlData);
+        else
+            return IsAllTileWalkAble(firstXTile,secondXTile,yTile,lvlData);
+    }
     // Check xem đạn có va chạm với tiles hay không
     public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);

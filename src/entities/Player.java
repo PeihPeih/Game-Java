@@ -58,7 +58,7 @@ public class Player extends Entity {
         loadsAnimation();
         initHeart();
         // Lay hitbox cua player
-        initHitbox(x, y+10, 20 * Game.SCALE, 38 * Game.SCALE);
+        initHitbox(x, y + 10, 20 * Game.SCALE, 38 * Game.SCALE);
 
         this.timerAttack = this.timerAttackMax;
     }
@@ -112,6 +112,7 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g, xLvlOffset);
+
         drawBullet(g, xLvlOffset);
         drawHeart(g);
     }

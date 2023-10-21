@@ -1,5 +1,8 @@
 package utilz;
 
+
+import entities.Demon;
+
 import main.Game;
 import objects.Heart;
 
@@ -9,13 +12,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+import static utilz.constants.EnemyConstants.*;
 import static utilz.constants.ObjectConstants.*;
 
 // Hỗ trợ load phần hình ảnh
 public class LoadSave {
     // Level
     public static final String[] LEVEL_DATA = {
-            "level/test.jpg",
+            "level/level_1.png",
     };
     // Background
     public static final String PLAYING_BG_IMG_1 = "layer/night_1.png";
@@ -24,22 +29,10 @@ public class LoadSave {
     public static final String PLAYING_BG_IMG_4 = "layer/night_4.png";
     public static final String PLAYING_BG_IMG_5 = "layer/night_5.png";
     public static final String CLOUD = "layer/cloud.png";
-    public static final String[] EXPLOSION = {
-            "explosion/1.png",
-            "explosion/2.png",
-            "explosion/3.png",
-            "explosion/4.png",
-            "explosion/5.png",
-            "explosion/6.png",
-            "explosion/7.png",
-            "explosion/8.png",
-            "explosion/9.png",
-            "explosion/10.png",
-
-    };
 
     // Object
     public static final String HEART = "item/heart.png";
+
     public static final String[] BULLET = {
             "player/shot/shot-1.png",
             "player/shot/shot-2.png",
@@ -51,7 +44,25 @@ public class LoadSave {
             "player/shot-hit/shot-hit-3.png"
     };
 
-    public static final String BOMB = "item/bomb.png";
+
+    // Bomb
+    public static final String BOMB = "item/meteorite.png";
+
+    public static final String[] EXPLOSION = {
+            "explosion/1.png",
+            "explosion/2.png",
+            "explosion/3.png",
+            "explosion/4.png",
+            "explosion/5.png",
+            "explosion/6.png",
+            "explosion/7.png",
+            "explosion/8.png",
+            "explosion/32.png",
+            "explosion/33.png",
+            "explosion/34.png"
+
+    };
+
 
     // Load ảnh
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -63,6 +74,20 @@ public class LoadSave {
         }
         return image;
     }
+
+    // getDemons
+        public static ArrayList<Demon> GetDemons(int level) {
+            BufferedImage img = GetSpriteAtlas(LEVEL_DATA[level-1]);
+            ArrayList<Demon> list = new ArrayList<>();
+            for (int j = 0; j < img.getHeight(); j++) {
+                for (int i = 0; i < img.getWidth(); i++) {
+                    Color color = new Color(img.getRGB(i, j));
+                    int value = color.getGreen();
+                    if (value == FIRE_DEMON) list.add(new Demon(i*Game.TILES_SIZE ,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
+                }
+            }
+            return list;
+        }
 
     // Xây ma trận level theo ảnh màu pixel
     public static int[][] GetLevelData(int level) {
