@@ -40,6 +40,12 @@ public abstract class Entity {
 		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
 	}
 	
+	// ve hitbox attack
+//	protected void drawAttackHitbox(Graphics g,int xLvlOffset)
+//	{
+//		g.setColor(Color.PINK);
+//		g.drawRect((int) hitbox.x - xLvlOffset - 60, (int) hitbox.y, (int) hitbox.width * 4, (int) hitbox.height);
+//	}
 
 	
 	public Rectangle2D.Float getHitbox()

@@ -7,20 +7,55 @@ import static utilz.constants.Direction.LEFT;
 import static utilz.constants.Direction.RIGHT;
 import static utilz.constants.EnemyConstants.*;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Float;
+
 public class Demon extends Enemy {
+	
+	private Rectangle2D.Float attackBox;
+	private int attackBoxOffsetX;
+	
     // Init
     public Demon(float x, float y) {
         super(x, y, DEMON_WIDTH, DEMON_HEIGHT, FIRE_DEMON);
         initHitbox(x, y, 25 * Game.SCALE, 40 * Game.SCALE);
+        initAttackBox();
     }
+    // Tao attackHitBox cho mob
+    private void initAttackBox() {
+		attackBox = new Rectangle2D.Float(x, y,(int) 40 * Game.SCALE,(int) 40 * Game.SCALE);
+		attackBoxOffsetX = (int) (Game.SCALE * 35);
+	}
 
-    // Update
+	// Update
     public void update(int[][] lvlData, Player player) {
         updateAnimationTicks();
-        updateMove(lvlData, player);
+        updateBehaviour(lvlData, player);
+        updateAttackBox();
     }
 
-    private void updateMove(int[][] lvlData, Player player) {
+    private void updateAttackBox() {
+    	// Update attack hitbox theo huong di cua quai
+    	if(walkDir == LEFT){
+    		attackBox.x = hitbox.x - attackBoxOffsetX;
+    	}
+    	else if(walkDir == RIGHT) {
+    		attackBox.x = hitbox.x + attackBoxOffsetX - 20;
+    	}
+		attackBox.y = hitbox.y;		
+	}
+    
+    // Ve hitbox cua attack
+    protected void drawAttackHitbox(Graphics g,int xLvlOffset)
+	{
+		g.setColor(Color.PINK);
+		g.drawRect((int) attackBox.x - xLvlOffset, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
+	}
+
+
+	private void updateBehaviour(int[][] lvlData, Player player) {
         // falling when start
         if (firstUpdate) {
             firstUpdateCheck(lvlData);
@@ -37,15 +72,25 @@ public class Demon extends Enemy {
                     if (canSeePlayer(lvlData, player)) {
                         turnTowardsPlayer(player);
                         if (isPlayerCloseToAttack(player))
-                            newState(CLEAVE);
+                        	newState(CLEAVE);
+                            
                     }
                     move(lvlData);
                     break;
+                case CLEAVE:
+                	if(aniIndex == 0)
+                		attackChecked = false;
+                	if(aniIndex == 10 && !attackChecked)
+                	{
+                		checkPlayerHit(attackBox, player);
+                	}
+                	break;
             }
         }
     }
 
-    // Used to flip the image, right -> left
+	
+	// Used to flip the image, right -> left
     public int flipX() {
         if (walkDir == RIGHT)
             return width;
