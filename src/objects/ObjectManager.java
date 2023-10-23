@@ -42,6 +42,7 @@ public class ObjectManager {
         heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
         bomb = LoadSave.GetSpriteAtlas(LoadSave.BOMB);
     }
+    
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
         for (Heart h : hearts)
@@ -61,8 +62,8 @@ public class ObjectManager {
 
 
     public void update(int[][] lvlData, Player player) {
-        spawnBomb(player);
-        updateBombs(lvlData, player);
+//        spawnBomb(player);
+//        updateBombs(lvlData, player);
     }
 
     private void spawnBomb(Player player) {

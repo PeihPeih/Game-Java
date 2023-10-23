@@ -5,6 +5,7 @@ import utilz.LoadSave;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -34,11 +35,17 @@ public class EnemyManager {
 
     private void drawDemons(Graphics g, int xLvlOffset) {
         for (Demon d : demons) {
-            g.drawImage(animations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - DEMON_DRAWOFFSET_X  + d.flipX(), (int) d.getHitbox().y-DEMON_DRAWOFFSET_Y, DEMON_WIDTH*d.flipW(), DEMON_HEIGHT, null);
-            d.drawHitbox(g,xLvlOffset);
+        	// Neu mob con song thi update
+        	if(d.isActive()){
+        		 g.drawImage(animations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - DEMON_DRAWOFFSET_X  + d.flipX(), (int) d.getHitbox().y-DEMON_DRAWOFFSET_Y, DEMON_WIDTH*d.flipW(), DEMON_HEIGHT, null);
+                 // Ve hitbox cho mob
+        		 d.drawHitbox(g,xLvlOffset);
+                 d.drawAttackHitbox(g, xLvlOffset);
+            }
         }
+           
     }
-
+    
     // Load enemies from map
     private void addEnemies() {
         demons = LoadSave.GetDemons(1);

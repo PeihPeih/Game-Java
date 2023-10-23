@@ -4,6 +4,11 @@ import main.Game;
 
 import static utilz.HelpMethods.*;
 import static utilz.constants.EnemyConstants.*;
+
+import java.awt.ActiveEvent;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Float;
+
 import static utilz.constants.Direction.*;
 
 public abstract class Enemy extends Entity {
@@ -17,7 +22,9 @@ public abstract class Enemy extends Entity {
     protected int walkDir = LEFT;
     protected int tileY;
     protected float attackDistance = Game.TILES_SIZE; // kcach tan cong = 1 ô
-
+    protected boolean active = true;
+    protected boolean attackChecked;
+    
     // Init
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height);
@@ -34,7 +41,12 @@ public abstract class Enemy extends Entity {
             aniIndex++;
             if (aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
                 aniIndex = 0;
-                if(enemyState == CLEAVE) enemyState = IDLE; // change enemy state affter attack
+                
+                switch(enemyState) {
+                case CLEAVE, TAKE_HIT -> enemyState = IDLE; // change enemy state after attack or take hit
+                case DEATH -> active = false;	// enemy is no longer active -> skip all updates
+                }
+                	
             }
         }
     }
@@ -111,6 +123,17 @@ public abstract class Enemy extends Entity {
         return absValue <= attackDistance;
     }
 
+    
+    // Check player co bi tan cong khong
+    protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
+		if(attackBox.intersects(player.getHitbox()))
+		{
+			player.minusHeart();
+			attackChecked = true;
+		}
+			
+	}
+    
     // Set the new state
     protected void newState(int enemyState){
         this.enemyState = enemyState;
@@ -128,5 +151,10 @@ public abstract class Enemy extends Entity {
     }
     public int getEnemyState(){
         return enemyState;
+    }
+    
+    public boolean isActive()
+    {
+    	return active;
     }
 }
