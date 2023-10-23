@@ -19,7 +19,7 @@ public abstract class Entity {
     protected Rectangle2D.Float hitbox;
 
 
-    public 	Entity(float x, float y, int width, int height) {
+    public Entity(float x, float y, int width, int height) {
         this.x = x; // vị tri x ban dau
         this.y = y; // vi tri y ban dau
         this.height = height;
@@ -39,14 +39,6 @@ public abstract class Entity {
 		g.setColor(Color.GREEN);
 		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
 	}
-	
-	// ve hitbox attack
-//	protected void drawAttackHitbox(Graphics g,int xLvlOffset)
-//	{
-//		g.setColor(Color.PINK);
-//		g.drawRect((int) hitbox.x - xLvlOffset - 60, (int) hitbox.y, (int) hitbox.width * 4, (int) hitbox.height);
-//	}
-
 	
 	public Rectangle2D.Float getHitbox()
 	{

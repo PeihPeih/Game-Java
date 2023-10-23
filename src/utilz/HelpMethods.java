@@ -110,7 +110,6 @@ public class HelpMethods {
     public static boolean IsAllTileWalkAble(int xStart, int xEnd, int y, int[][] lvlData) {
         for (int i = 0; i < xEnd - xStart; i++) {
             if (IsTileSolid(xStart + i, y, lvlData)) return false;
-            if (!IsTileSolid(xStart + i, y+1, lvlData)) return false;
         }
         return true;
     }
@@ -127,6 +126,7 @@ public class HelpMethods {
     public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
     }
+
 
     // Check xem đạn có va chạm với tiles hay không
     public static boolean IsBombsHittingLevel(Bomb b, int[][] lvlData) {
