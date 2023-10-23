@@ -6,6 +6,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import objects.Bullet;
 import objects.ObjectManager;
 import utilz.LoadSave;
 
@@ -45,7 +46,6 @@ public class Playing extends State implements Statemethods {
     public Playing(Game game) throws IOException {
         super(game);
         innitClasses();
-
     }
 
     private void innitClasses() throws IOException {// khoi tao
@@ -116,13 +116,17 @@ public class Playing extends State implements Statemethods {
         objectManager.checkObjectTouched(hitbox);
     }
 
+    public void checkEnemyHit(Bullet b) {
+        enemyManager.checkEnemyHit(b);
+    }
+
 
     @Override
     public void update() {//update
         if (!paused) {
             levelManager.update();
-            player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+            player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 
             checkCloseToBorder();

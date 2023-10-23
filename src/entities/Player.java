@@ -38,6 +38,7 @@ public class Player extends Entity {
     private int timerAttackMax = 40;
     private boolean canAttack;
 
+
     // Flip animation when turn left or right
     private int flipX = 0;
     private int flipW = 1;
@@ -90,6 +91,7 @@ public class Player extends Entity {
             b.update();
             if (b.isActive()) {
                 b.update();
+                playing.checkEnemyHit(b);
                 if (IsBulletsHittingLevel(b, lvlData))
                     b.setActive(false);
             }
@@ -112,7 +114,7 @@ public class Player extends Entity {
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
         drawHitbox(g, xLvlOffset);
-        
+
         drawBullet(g, xLvlOffset);
         drawHeart(g);
     }
@@ -176,6 +178,7 @@ public class Player extends Entity {
                 resetAninTick();
             }
         }
+
     }
 
     private void resetAninTick() {
@@ -267,7 +270,7 @@ public class Player extends Entity {
 
     private void shootBullet() throws ConcurrentModificationException {
         int x = (int) (5 * Game.SCALE);
-        int y = (int) (-1 * Game.SCALE);
+        int y = (int) (1 * Game.SCALE);
         bullets.add(new Bullet((int) this.hitbox.x + x, (int) this.hitbox.y + y, flipW, BULLET));
     }
 
@@ -410,6 +413,10 @@ public class Player extends Entity {
     // jump
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public ArrayList<Bullet> getBullets() {
+        return this.bullets;
     }
 
     public void addHeart() {

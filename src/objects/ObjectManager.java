@@ -29,13 +29,13 @@ public class ObjectManager {
 
     // Spawn bomb
     private int spawnBombTimer;
-    private int spawnBombTimerMax = 120;
+    private int spawnBombTimerMax = 150;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImgs();
         loadObjects();
-        this.spawnBombTimer = spawnBombTimerMax;
+        this.spawnBombTimer = this.spawnBombTimerMax;
     }
 
     private void loadImgs() {
@@ -62,8 +62,8 @@ public class ObjectManager {
 
 
     public void update(int[][] lvlData, Player player) {
-//        spawnBomb(player);
-//        updateBombs(lvlData, player);
+        spawnBomb(player);
+        updateBombs(lvlData, player);
     }
 
     private void spawnBomb(Player player) {

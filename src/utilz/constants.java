@@ -7,20 +7,30 @@ public class constants{
 
     public static class EnemyConstants {
         public static final int FIRE_DEMON = 29;
+        public static final int FROST_DEMON = 39;
+        public static final int SHADOW_DEMON = 49;
 
         public static  final int IDLE = 2;
         public static  final int WALK = 3;
         public static  final int CLEAVE = 4;
         public static final int TAKE_HIT =  5;
-        public static final int DEATH = 6;
+        public static final int DEAD = 6;
 
         public static final int DEMON_WIDTH_DEFAULT = 120;
         public static final int DEMON_HEIGHT_DEFAULT = 80;
 
         public static final int DEMON_WIDTH = (int)(DEMON_WIDTH_DEFAULT * Game.SCALE);
         public static final int DEMON_HEIGHT = (int)(DEMON_HEIGHT_DEFAULT * Game.SCALE);
-        public static final int DEMON_DRAWOFFSET_X = (int)(50 * Game.SCALE);
-        public static final int DEMON_DRAWOFFSET_Y = (int)(38 * Game.SCALE);
+
+        public static final int FIRE_DEMON_DRAWOFFSET_X = (int)(50 * Game.SCALE);
+        public static final int FIRE_DEMON_DRAWOFFSET_Y = (int)(38 * Game.SCALE);
+
+        public static final int FROST_DEMON_DRAWOFFSET_X = (int)(30 * Game.SCALE);
+        public static final int FROST_DEMON_DRAWOFFSET_Y = (int)(18 * Game.SCALE);
+
+        public static final int SHADOW_DEMON_DRAWOFFSET_X = (int)(70 * Game.SCALE);
+        public static final int SHADOW_DEMON_DRAWOFFSET_Y = (int)(38 * Game.SCALE);
+
 
         public static int GetSpriteAmount(int enemy_type,int enemy_state){
             switch(enemy_type){
@@ -34,9 +44,47 @@ public class constants{
                             return 15;
                         case TAKE_HIT:
                             return 5;
-                        case DEATH:
+                        case DEAD:
                             return 22;
                     }
+                case FROST_DEMON:
+                    switch(enemy_state){
+                        case IDLE:
+                            return 6;
+                        case WALK:
+                            return 10;
+                        case CLEAVE:
+                            return 14;
+                        case TAKE_HIT:
+                            return 7;
+                        case DEAD:
+                            return 16;
+                    }
+                case SHADOW_DEMON:
+                    switch(enemy_state){
+                        case IDLE:
+                            return 8;
+                        case WALK:
+                            return 8;
+                        case CLEAVE:
+                            return 10;
+                        case TAKE_HIT:
+                            return 3;
+                        case DEAD:
+                            return 10;
+                    }
+            }
+            return 0;
+        }
+
+        public static int GetMaxHeath(int enemy_type){
+            switch (enemy_type){
+                case FIRE_DEMON:
+                    return 100;
+                case FROST_DEMON:
+                    return 130;
+                case SHADOW_DEMON:
+                    return 60;
             }
             return 0;
         }
