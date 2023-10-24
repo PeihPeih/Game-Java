@@ -286,7 +286,7 @@ public class Playing extends State implements Statemethods {
         player.resetAll();
         enemyManager.resetEnemies();
 
-        unPaused();
+        unpausedGame();
     }
 
 
