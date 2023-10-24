@@ -1,14 +1,19 @@
 package gamestate;
 
 import UI.PauseOverlay;
+
+import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import objects.Bullet;
+import objects.ObjectManager;
 import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -17,8 +22,11 @@ import static main.Game.GAME_WIDTH;
 
 
 public class Playing extends State implements Statemethods {
+
+    private EnemyManager enemyManager;
     private LevelManager levelManager;
     private Player player;
+    private ObjectManager objectManager;
 
     private boolean paused = false;
     private PauseOverlay pauseOverlay;
@@ -38,13 +46,16 @@ public class Playing extends State implements Statemethods {
     public Playing(Game game) throws IOException {
         super(game);
         innitClasses();
-
     }
 
     private void innitClasses() throws IOException {// khoi tao
         loadBackground();
+
         levelManager = new LevelManager(game);
-        player = new Player(100, 200, 82, 77);
+        enemyManager = new EnemyManager(this);
+        player = new Player(100, 200, 82, 77, this);
+        objectManager = new ObjectManager(this);
+
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
         pauseOverlay = new PauseOverlay(this);
     }
@@ -101,14 +112,27 @@ public class Playing extends State implements Statemethods {
         }
     }
 
+    public void checkHeartTouch(Rectangle2D.Float hitbox) {
+        objectManager.checkObjectTouched(hitbox);
+    }
+
+    public void checkEnemyHit(Bullet b) {
+        enemyManager.checkEnemyHit(b);
+    }
+
 
     @Override
     public void update() {//update
         if (!paused) {
             levelManager.update();
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             player.update();
+            objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+
+            checkCloseToBorder();
         } else
             pauseOverlay.update();
+
     }
 
     @Override
@@ -117,18 +141,20 @@ public class Playing extends State implements Statemethods {
 
         drawCloud(g, xLvlOffset);
 
-        if (levelManager != null) {
-            levelManager.render(g, xLvlOffset);
-        }
-
-        if (player != null) {
-            player.render(g, xLvlOffset);
-        }
+        if (levelManager != null) levelManager.render(g, xLvlOffset);
+        if (player != null) player.render(g, xLvlOffset);
+        if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
+        if (objectManager != null) objectManager.draw(g, xLvlOffset);
 
         if (paused)
             pauseOverlay.draw(g);
 
-        checkCloseToBorder();
+    }
+
+
+    public void destroy() {
+        player.destroy();
+        objectManager.destroy();
     }
 
     private void checkCloseToBorder() {
@@ -231,6 +257,10 @@ public class Playing extends State implements Statemethods {
 
     public void windowFocusLost() {
         player.resetDirBoleans();
+    }
+
+    public ObjectManager getObjectManager() {
+        return objectManager;
     }
 
     //getter Player

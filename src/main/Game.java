@@ -128,6 +128,7 @@ public class Game implements Runnable {
             }
             case PLAYING -> {
                 playing.draw(g);
+                playing.destroy();
                 break;
             }
             default -> {
