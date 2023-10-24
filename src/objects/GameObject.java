@@ -37,6 +37,7 @@ public class GameObject {
     public void reset() {
         aniIndex = 0;
         aniTick = 0;
+        active = true;
     }
 
     protected void initHitbox(int width, int height) {

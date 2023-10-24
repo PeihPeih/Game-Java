@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 
+import static utilz.HelpMethods.IsEntityOntheFloor;
 import static utilz.constants.Direction.*;
 import static utilz.constants.ObjectConstants.BULLET;
 import static utilz.constants.PlayerConstants.*;
@@ -106,6 +107,7 @@ public class Player extends Entity {
         if (!IsEntityOntheFloor(hitbox, lvlData)) {
             inAir = true;
         }
+
     }
 
     // In player ra screen
@@ -158,7 +160,6 @@ public class Player extends Entity {
 
         // Jump
         if (jump || inAir) {
-
             playerAction = JUMP;
         }
 
@@ -247,6 +248,7 @@ public class Player extends Entity {
                     updateXpos(xSpeed);
                 }
             }
+
         } else {
             if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
                 hitbox.y += airSpeed;
@@ -254,6 +256,7 @@ public class Player extends Entity {
             }
             updateXpos(xSpeed);
         }
+
     }
 
     private void checkHeartTouched() {
@@ -401,31 +404,15 @@ public class Player extends Entity {
         this.right = right;
     }
 
-    // jump
-    public void setJump(boolean jump){
-        this.jump = jump;
-    }
-
-    //reset lai toan bo
+    // Set đứng yên
     public void resetDirBoleans() {
         left = false;
         right = false;
-        attacking = false;
     }
 
-  public void resetAll(){
-        resetDirBoleans();
-        playerAction=IDLE;
-        airSpeed = 0f;
-        left=false;
-        right=false;
-        jump=false;
-        inAir=false;
-        hitbox.x = x;
-        hitbox.y = y;
-
-        if (!IsEntityOntheFloor(hitbox, lvlData))
-            inAir = true;
+    // jump
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 
     public ArrayList<Bullet> getBullets() {
@@ -452,4 +439,24 @@ public class Player extends Entity {
             }
         }
     }
+    public void resetALl(){
+        resetDirBoleans();
+        inAir=false;
+        attacking = false;
+        moving = false;
+        airSpeed = 0f;
+        hitbox.x = x;
+        hitbox.y = y;
+        if (!IsEntityOntheFloor(hitbox, lvlData))
+            inAir = true;
+        initHeart();
+    }
+
+    public boolean IsDeath(){
+        if(hitbox.y + 38 * Game.SCALE +1 > Game.GAME_HEIGHT  )
+            hearts.clear();
+        return hearts.isEmpty();
+    }
+
+
 }
