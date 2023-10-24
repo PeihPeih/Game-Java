@@ -424,6 +424,7 @@ public class Player extends Entity {
 
         if (!IsEntityOntheFloor(hitbox, lvlData))
             inAir = true;
+  }
     // jump
     public void setJump(boolean jump) {
         this.jump = jump;
