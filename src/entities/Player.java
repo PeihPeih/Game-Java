@@ -420,6 +420,7 @@ public class Player extends Entity {
         left=false;
         right=false;
         jump=false;
+        attacking = false;
         inAir=false;
         hitbox.x = x;
         hitbox.y = y;

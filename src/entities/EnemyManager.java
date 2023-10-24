@@ -157,7 +157,7 @@ public class EnemyManager {
         // CLEAVE
         for (int i = 0; i < GetSpriteAmount(FROST_DEMON, CLEAVE); i++) {
             try {
-               frostAnimations[CLEAVE][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Frost Demon/1_atk/1_atk_" + (i + 1) + ".png"));
+                frostAnimations[CLEAVE][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Frost Demon/1_atk/1_atk_" + (i + 1) + ".png"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -184,7 +184,7 @@ public class EnemyManager {
         // Shadow demons
         shadowAnimations = new BufferedImage[7][10];
         // IDLE
-            for (int i = 0; i < GetSpriteAmount(SHADOW_DEMON, IDLE); i++) {
+        for (int i = 0; i < GetSpriteAmount(SHADOW_DEMON, IDLE); i++) {
             try {
                 shadowAnimations[IDLE][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Shadow Demon/Idle/Bringer-of-Death_Idle_" + (i + 1) + ".png"));
             } catch (Exception e) {
@@ -257,6 +257,18 @@ public class EnemyManager {
                     b.setActive(false);
                     return;
                 }
+        }
+    }
+
+    public void resetEnemies() {
+        for (FireDemon d : fireDemons) {
+            d.resetEnemy();
+        }
+        for (FrostDemon d : frostDemons) {
+            d.resetEnemy();
+        }
+        for (ShadowDemon d : shadowDemons) {
+            d.resetEnemy();
         }
     }
 }

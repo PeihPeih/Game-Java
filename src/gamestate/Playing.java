@@ -250,8 +250,11 @@ public class Playing extends State implements Statemethods {
     public void unPaused() {
         paused = false;
     }
+
     public void resetAll(){
         player.resetAll();
+        enemyManager.resetEnemies();
+
         unPaused();
     }
 
