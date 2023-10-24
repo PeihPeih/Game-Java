@@ -410,6 +410,20 @@ public class Player extends Entity {
         right = false;
     }
 
+  public void resetAll(){
+        resetDirBoleans();
+        playerAction=IDLE;
+        airSpeed = 0f;
+        left=false;
+        right=false;
+        jump=false;
+        attacking = false;
+        inAir=false;
+        hitbox.x = x;
+        hitbox.y = y;
+
+        if (!IsEntityOntheFloor(hitbox, lvlData))
+            inAir = true;
     // jump
     public void setJump(boolean jump) {
         this.jump = jump;
