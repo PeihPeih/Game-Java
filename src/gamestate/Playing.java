@@ -247,8 +247,12 @@ public class Playing extends State implements Statemethods {
 
     }
 
-    public void unpausedGame() {
+    public void unPaused() {
         paused = false;
+    }
+    public void resetAll(){
+        player.resetAll();
+        unPaused();
     }
 
     public void windowFocusLost() {

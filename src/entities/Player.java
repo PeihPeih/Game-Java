@@ -401,18 +401,31 @@ public class Player extends Entity {
         this.right = right;
     }
 
-    // Set đứng yên
+    // jump
+    public void setJump(boolean jump){
+        this.jump = jump;
+    }
+
+    //reset lai toan bo
     public void resetDirBoleans() {
         left = false;
         right = false;
-        down = false;
-        up = false;
         attacking = false;
     }
 
-    // jump
-    public void setJump(boolean jump) {
-        this.jump = jump;
+  public void resetAll(){
+        resetDirBoleans();
+        playerAction=IDLE;
+        airSpeed = 0f;
+        left=false;
+        right=false;
+        jump=false;
+        inAir=false;
+        hitbox.x = x;
+        hitbox.y = y;
+
+        if (!IsEntityOntheFloor(hitbox, lvlData))
+            inAir = true;
     }
 
     public ArrayList<Bullet> getBullets() {

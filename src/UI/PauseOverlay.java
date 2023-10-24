@@ -68,14 +68,14 @@ public class PauseOverlay {
 
     }
     public void update(){
-                musicButtons.update();
-                sfxButtons.update();
+        musicButtons.update();
+        sfxButtons.update();
 
-                menuB.update();
-                replayB.update();
-                unpauseB.update();
+        menuB.update();
+        replayB.update();
+        unpauseB.update();
 
-                volumeButton.update();
+        volumeButton.update();
     }
     public void draw(Graphics g){
         //Option background
@@ -124,7 +124,6 @@ public class PauseOverlay {
             if(musicButtons.isMousePressed()){
                 musicButtons.setMuted(!musicButtons.isMuted());
             }
-
         }
         else if(isIn(e,sfxButtons)){
             if(sfxButtons.isMousePressed()){
@@ -134,17 +133,17 @@ public class PauseOverlay {
         else if(isIn(e,menuB)){
             if(menuB.isMousePressed()){
                 Gamestate.state=Gamestate.MENU;
-                playing.unpausedGame();
+                playing.resetAll();
             }
         }
         else if(isIn(e,replayB)){
             if(replayB.isMousePressed()){
-                System.out.println("replay lv");
+                playing.resetAll();
             }
         }
         else if(isIn(e,unpauseB)){
             if(unpauseB.isMousePressed()){
-                playing.unpausedGame();
+                playing.unPaused();
             }
         }
         musicButtons.resetBools();
@@ -177,7 +176,7 @@ public class PauseOverlay {
             volumeButton.setMouseOver(true);
     }
     private boolean isIn(MouseEvent e,PasuedButtons b ){//kiem tra xem co trong hitbox cua nut ko
-            return b.getBounds().contains(e.getX(),e.getY());
+        return b.getBounds().contains(e.getX(),e.getY());
 
     }
 
