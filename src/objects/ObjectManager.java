@@ -109,6 +109,9 @@ public class ObjectManager {
     public void resetAllObjects() {
         for (Heart h : hearts)
             h.reset();
+        while (bombs.size()>0){
+            bombs.remove(0);
+        }
     }
 
     public void destroy(){
