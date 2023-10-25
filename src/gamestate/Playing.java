@@ -39,9 +39,7 @@ public class Playing extends State implements Statemethods {
     private int xLvlOffset; //
     private int leftBorder = (int) (0.2 * GAME_WIDTH);
     private int rightBorder = (int) (0.8 * GAME_WIDTH);
-    private int lvlTilesWide = LoadSave.GetLevelData(1)[0].length;
-    private int maxTilesOffset = lvlTilesWide - Game.TILES_WIDTH;
-    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int maxLvlOffsetX;
 
     // Background
     private BufferedImage[] backgroundImage;
@@ -50,6 +48,8 @@ public class Playing extends State implements Statemethods {
     public Playing(Game game) throws IOException {
         super(game);
         innitClasses();
+        calcLvlOffset();
+        loadStartLevel();
     }
 
     private void innitClasses() throws IOException {// khoi tao
@@ -60,7 +60,10 @@ public class Playing extends State implements Statemethods {
         player = new Player(100, 200, 82, 77, this);
         objectManager = new ObjectManager(this);
 
+        player = new Player(100, 200, 82, 77, this);
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+        player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
     }
@@ -115,6 +118,15 @@ public class Playing extends State implements Statemethods {
                 g.drawImage(cloud, i * bgImageWidth - bgOffset, -200, bgImageWidth, 400, null);
 
         }
+    }
+
+    private void loadStartLevel() {
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
+    }
+
+    private void calcLvlOffset() {
+        maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
     }
 
     public void checkHeartTouch(Rectangle2D.Float hitbox) {
@@ -190,6 +202,7 @@ public class Playing extends State implements Statemethods {
         paused = false;
         gameover=false;
         player.resetALl();
+        enemyManager.resetEnemies();
         objectManager.resetAllObjects();
     }
 
@@ -282,13 +295,6 @@ public class Playing extends State implements Statemethods {
         paused = false;
     }
 
-    public void resetAll(){
-        player.resetAll();
-        enemyManager.resetEnemies();
-
-        unPaused();
-    }
-
 
     public void windowFocusLost() {
         player.resetDirBoleans();
@@ -301,5 +307,13 @@ public class Playing extends State implements Statemethods {
     //getter Player
     public Player getPlayer() {
         return player;
+    }
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
+    }
+
+    public void setMaxLvlOffset(int lvlOffset) {
+        this.maxLvlOffsetX = lvlOffset;
     }
 }

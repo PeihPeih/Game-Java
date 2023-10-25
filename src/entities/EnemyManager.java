@@ -1,6 +1,7 @@
 package entities;
 
 import gamestate.Playing;
+import levels.Level;
 import objects.Bullet;
 import utilz.LoadSave;
 
@@ -24,19 +25,24 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImgs();
-        addEnemies();
     }
 
     public void update(int[][] lvlData, Player player) {
+        boolean isAnyActive = false;
         for (FireDemon d : fireDemons) {
             d.update(lvlData, player);
+            isAnyActive = true;
         }
         for (FrostDemon d : frostDemons) {
             d.update(lvlData, player);
+            isAnyActive = true;
         }
         for (ShadowDemon d : shadowDemons) {
             d.update(lvlData, player);
+            isAnyActive = true;
         }
+//        if (!isAnyActive)
+//            playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLvlOffset) {
@@ -76,13 +82,6 @@ public class EnemyManager {
                 d.drawAttackHitbox(g, xLvlOffset);
             }
         }
-    }
-
-    // Load enemies from map
-    private void addEnemies() {
-        fireDemons = LoadSave.GetFireDemons(1);
-        frostDemons = LoadSave.GetFrostDemons(1);
-        shadowDemons = LoadSave.GetShadowDemon(1);
     }
 
     // Load enemies's animation
@@ -227,6 +226,12 @@ public class EnemyManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void loadEnemies(Level level) {
+        fireDemons = level.getFireDemons();
+        frostDemons=level.getFrostDemons();
+        shadowDemons=level.getShadowDemons();
     }
 
     // Check xem bị bắn hay không

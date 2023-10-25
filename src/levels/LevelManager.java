@@ -1,5 +1,6 @@
 package levels;
 
+import gamestate.Gamestate;
 import main.Game;
 import utilz.LoadSave;
 
@@ -7,17 +8,26 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
-    private Level levelOne;
+    private ArrayList<Level> levels;
+    private int lvlIndex = 0;
 
     // Khởi tạo
     public LevelManager(Game game){
         this.game = game;
         importOutsideSprites();
-        levelOne = new Level(LoadSave.GetLevelData(1));
+        levels = new ArrayList<>();
+        buildAllLevels();
+    }
+
+    private void buildAllLevels() {
+        BufferedImage[] allLevels = LoadSave.GetAllLevels();
+        for (BufferedImage img : allLevels)
+            levels.add(new Level(img));
     }
 
     //  Load phần ảnh để xây level
@@ -75,9 +85,9 @@ public class LevelManager {
 
     // In ra screen
     public void render(Graphics g, int xLvlOffset){
-        for(int j=0;j < levelOne.getLevelData().length;j++){
-            for(int i=0;i<levelOne.getLevelData()[j].length;i++){
-                int index = levelOne.getSpriteIndex(i, j);
+        for(int j=0;j < Game.TILES_HEIGHT;j++){
+            for(int i=0;i<levels.get(lvlIndex).getLevelData()[0].length;i++){
+                int index = levels.get(lvlIndex).getSpriteIndex(i, j);
                 // Nếu là tiles thì in ra tiles theo size là 48 x 48
                 if(index <= 45){
                     g.drawImage(levelSprite[index],Game.TILES_SIZE*i - xLvlOffset,Game.TILES_SIZE*j,Game.TILES_SIZE, Game.TILES_SIZE,null);
@@ -95,8 +105,28 @@ public class LevelManager {
 
     }
 
+    public void loadNextLevel() {
+        lvlIndex++;
+        if (lvlIndex >= levels.size()) {
+            lvlIndex = 0;
+            System.out.println("No more levels! Game Completed!");
+            Gamestate.state = Gamestate.MENU;
+        }
+
+        Level newLevel = levels.get(lvlIndex);
+        game.getPlaying().getEnemyManager().loadEnemies(newLevel);
+        game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
+        game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+        game.getPlaying().getObjectManager().loadObjects(newLevel);
+    }
+
     // Lấy level hiện tại
     public Level getCurrentLevel(){
-        return levelOne;
+        return levels.get(lvlIndex);
     }
+
+    public int getAmountOfLevels() {
+        return levels.size();
+    }
+
 }
