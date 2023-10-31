@@ -7,6 +7,7 @@ import main.Game;
 import objects.Bomb;
 import objects.Bullet;
 import objects.Heart;
+import objects.ProjectileBoss;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -129,6 +130,10 @@ public class HelpMethods {
     }
     // Check xem đạn có va chạm với tiles hay không
     public static boolean IsBulletsHittingLevel(Bullet b, int[][] lvlData) {
+        return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
+    }
+
+    public static boolean IsProjectilesHittingLevel(ProjectileBoss b, int[][] lvlData) {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
     }
 

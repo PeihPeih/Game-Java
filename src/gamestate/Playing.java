@@ -4,11 +4,14 @@ import UI.GameOverOverlay;
 import UI.PauseOverlay;
 
 import entities.EnemyManager;
+import entities.FinalBoss;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import objects.Bullet;
+import objects.Laser;
 import objects.ObjectManager;
+import objects.ProjectileBoss;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -137,6 +140,13 @@ public class Playing extends State implements Statemethods {
         enemyManager.checkEnemyHit(b);
     }
 
+    public void checkPlayerHit(ProjectileBoss p) {
+        player.checkPlayerHit(p);
+    }
+
+    public void checkPlayerLaser(Laser ls){
+        player.checkLaserHit(ls);
+    }
 
     @Override
     public void update() {//update
@@ -316,4 +326,5 @@ public class Playing extends State implements Statemethods {
     public void setMaxLvlOffset(int lvlOffset) {
         this.maxLvlOffsetX = lvlOffset;
     }
+
 }

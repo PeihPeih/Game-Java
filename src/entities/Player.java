@@ -11,6 +11,7 @@ import java.util.ConcurrentModificationException;
 
 import static utilz.HelpMethods.IsEntityOntheFloor;
 import static utilz.constants.Direction.*;
+import static utilz.constants.EnemyConstants.DEAD;
 import static utilz.constants.ObjectConstants.BULLET;
 import static utilz.constants.PlayerConstants.*;
 
@@ -19,6 +20,8 @@ import static utilz.HelpMethods.*;
 import gamestate.Playing;
 import main.Game;
 import objects.Bullet;
+import objects.Laser;
+import objects.ProjectileBoss;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -427,9 +430,26 @@ public class Player extends Entity {
         }
     }
 
-    public void minusHeart() {
-        if (hearts.size() > 0) {
-            hearts.remove(hearts.size() - 1);
+    public void minusHeart(int value) {
+        for (int i = 0; i < value; i++) {
+            if (hearts.size() > 0) {
+                hearts.remove(hearts.size() - 1);
+            }
+        }
+    }
+
+    public void checkPlayerHit(ProjectileBoss b) {
+        Rectangle attackBox = b.getHitbox().getBounds();
+        if (hitbox.intersects(attackBox)) {
+            minusHeart((int) playing.getEnemyManager().getFinalBoss().getDamage());
+            b.setActive(false);
+        }
+    }
+
+    public void checkLaserHit(Laser ls) {
+        Rectangle attackBox = ls.getHitbox().getBounds();
+        if (hitbox.intersects(attackBox)) {
+            minusHeart(1);
         }
     }
 
@@ -441,9 +461,10 @@ public class Player extends Entity {
             }
         }
     }
-    public void resetALl(){
+
+    public void resetALl() {
         resetDirBoleans();
-        inAir=false;
+        inAir = false;
         attacking = false;
         moving = false;
         jump = false;
@@ -456,8 +477,8 @@ public class Player extends Entity {
         bullets.clear();
     }
 
-    public boolean IsDeath(){
-        if(hitbox.y + 38 * Game.SCALE +1 > Game.GAME_HEIGHT  )
+    public boolean IsDeath() {
+        if (hitbox.y + 38 * Game.SCALE + 1 > Game.GAME_HEIGHT)
             hearts.clear();
         return hearts.isEmpty();
     }
@@ -470,7 +491,7 @@ public class Player extends Entity {
 //        hitbox.y = y;
     }
 
-    public int getDamage(){
+    public int getDamage() {
         return this.damage;
     }
 }

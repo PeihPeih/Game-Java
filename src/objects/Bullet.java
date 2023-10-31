@@ -17,8 +17,8 @@ public class Bullet extends GameObject {
 
     public Bullet(int x, int y, int dir, int objType) {
         super(x, y, objType);
-        int xOffset = (int) (-5 * Game.SCALE);
-        int yOffset = (int) (2 * Game.SCALE);
+        int xOffset = (int) (-7 * Game.SCALE);
+        int yOffset = (int) (-1 * Game.SCALE);
 
         if (dir == 1)
             xOffset = (int) (13 * Game.SCALE);

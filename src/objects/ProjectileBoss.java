@@ -5,14 +5,14 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-import static utilz.constants.Projectile.*;
+import static utilz.constants.FinalBossConstants.*;
 
 public class ProjectileBoss extends GameObject {
     private Rectangle2D.Float hitbox;
     private BufferedImage image;
 
-    public ProjectileBoss(int x, int y, int objType) {
-        super(x, y, objType);
+    public ProjectileBoss(int x, int y) {
+        super(x, y, 123);
         hitbox = new Rectangle2D.Float(x, y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
         loadImgs();
     }
@@ -45,11 +45,6 @@ public class ProjectileBoss extends GameObject {
 
     private void updatePos() {
         hitbox.x += SPEED;
-    }
-
-    public void setPos(int x, int y) {
-        hitbox.x = x;
-        hitbox.y = y;
     }
 
     public Rectangle2D.Float getHitbox() {

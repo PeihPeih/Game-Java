@@ -61,7 +61,6 @@ public class LoadSave {
             "explosion/32.png",
             "explosion/33.png",
             "explosion/34.png"
-
     };
 
 

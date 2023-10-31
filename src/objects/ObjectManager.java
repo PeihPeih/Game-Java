@@ -16,8 +16,6 @@ import javax.imageio.ImageIO;
 
 import static utilz.HelpMethods.IsBombsHittingLevel;
 import static utilz.constants.ObjectConstants.*;
-import static utilz.HelpMethods.IsBulletsHittingLevel;
-import static utilz.constants.Bullet.*;
 
 public class ObjectManager {
 
@@ -83,7 +81,7 @@ public class ObjectManager {
             if (!bombs.get(i).isDestroy()) {
                 bombs.get(i).update();
                 if (bombs.get(i).getHitbox().intersects(player.getHitbox())) {
-                    player.minusHeart();
+                    player.minusHeart(1);
                     bombs.get(i).setDestroy(true);
                 } else if (IsBombsHittingLevel(bombs.get(i), lvlData)) {
                     bombs.get(i).setDestroy(true);
