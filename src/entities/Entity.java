@@ -18,13 +18,11 @@ public abstract class Entity {
 
     protected Rectangle2D.Float hitbox;
 
-
     public Entity(float x, float y, int width, int height) {
         this.x = x; // vị tri x ban dau
         this.y = y; // vi tri y ban dau
         this.height = height;
         this.width = width;
-
     }
     
     // Tao hitbox cho vat the

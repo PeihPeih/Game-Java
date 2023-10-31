@@ -40,7 +40,7 @@ public class Level {
     }
 
     private void calcPlayerSpawn() {
-        playerSpawn = GetPlayerSpawn(img);
+//        playerSpawn = GetPlayerSpawn(img);
     }
 
     private void calcLvlOffsets() {

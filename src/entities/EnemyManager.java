@@ -2,6 +2,7 @@ package entities;
 
 import gamestate.Playing;
 import levels.Level;
+import main.Game;
 import objects.Bullet;
 import utilz.LoadSave;
 
@@ -19,11 +20,12 @@ public class EnemyManager {
     private ArrayList<FireDemon> fireDemons = new ArrayList<>();
     private ArrayList<FrostDemon> frostDemons = new ArrayList<>();
     private ArrayList<ShadowDemon> shadowDemons = new ArrayList<>();
-
+    private FinalBoss finalBoss;
 
     // Init
     public EnemyManager(Playing playing) {
         this.playing = playing;
+        this.finalBoss = new FinalBoss(0, Game.GAME_HEIGHT/2,200,200);
         loadEnemyImgs();
     }
 
@@ -41,6 +43,7 @@ public class EnemyManager {
             d.update(lvlData, player);
             isAnyActive = true;
         }
+        finalBoss.update();
 //        if (!isAnyActive)
 //            playing.setLevelCompleted(true);
     }
@@ -82,6 +85,9 @@ public class EnemyManager {
                 d.drawAttackHitbox(g, xLvlOffset);
             }
         }
+
+        // Final boss
+        finalBoss.draw(g,xLvlOffset);
     }
 
     // Load enemies's animation
@@ -240,7 +246,7 @@ public class EnemyManager {
         for (int i = 0; i < fireDemons.size(); i++) {
             if (fireDemons.get(i).isActive() && fireDemons.get(i).getEnemyState() != DEAD)
                 if (fireDemons.get(i).getHitbox().intersects(attackBox)) {
-                    fireDemons.get(i).hurt(13);
+                    fireDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }
@@ -249,7 +255,7 @@ public class EnemyManager {
         for (int i = 0; i < frostDemons.size(); i++) {
             if (frostDemons.get(i).isActive() && frostDemons.get(i).getEnemyState() != DEAD)
                 if (frostDemons.get(i).getHitbox().intersects(attackBox)) {
-                    frostDemons.get(i).hurt(13);
+                    frostDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }
@@ -258,7 +264,7 @@ public class EnemyManager {
         for (int i = 0; i < shadowDemons.size(); i++) {
             if (shadowDemons.get(i).isActive() && shadowDemons.get(i).getEnemyState() != DEAD)
                 if (shadowDemons.get(i).getHitbox().intersects(attackBox)) {
-                    shadowDemons.get(i).hurt(13);
+                    shadowDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }

@@ -38,6 +38,7 @@ public class Player extends Entity {
     private int timerAttack;
     private int timerAttackMax = 40;
     private boolean canAttack;
+    private int damage = 15;
 
 
     // Flip animation when turn left or right
@@ -115,7 +116,7 @@ public class Player extends Entity {
 
         g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xdrawOffset - xLvlOffset + flipX), (int) (hitbox.y - ydrawOffset), width * flipW, height, null);
         // Ve hitbox cho nhan vat (xoa di khi game hoan thanh)
-        drawHitbox(g, xLvlOffset);
+//        drawHitbox(g, xLvlOffset);
 
         drawBullet(g, xLvlOffset);
         drawHeart(g);
@@ -410,21 +411,7 @@ public class Player extends Entity {
         right = false;
     }
 
-  public void resetAll(){
-        resetDirBoleans();
-        playerAction=IDLE;
-        airSpeed = 0f;
-        left=false;
-        right=false;
-        jump=false;
-        attacking = false;
-        inAir=false;
-        hitbox.x = x;
-        hitbox.y = y;
 
-        if (!IsEntityOntheFloor(hitbox, lvlData))
-            inAir = true;
-  }
     // jump
     public void setJump(boolean jump) {
         this.jump = jump;
@@ -459,12 +446,14 @@ public class Player extends Entity {
         inAir=false;
         attacking = false;
         moving = false;
+        jump = false;
         airSpeed = 0f;
         hitbox.x = x;
         hitbox.y = y;
         if (!IsEntityOntheFloor(hitbox, lvlData))
             inAir = true;
         initHeart();
+        bullets.clear();
     }
 
     public boolean IsDeath(){
@@ -475,9 +464,13 @@ public class Player extends Entity {
 
 
     public void setSpawn(Point playerSpawn) {
-        this.x = playerSpawn.x;
-        this.y = playerSpawn.y;
-        hitbox.x = x;
-        hitbox.y = y;
+//        this.x = playerSpawn.x;
+//        this.y = playerSpawn.y;
+//        hitbox.x = x;
+//        hitbox.y = y;
+    }
+
+    public int getDamage(){
+        return this.damage;
     }
 }

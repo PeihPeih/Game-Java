@@ -31,7 +31,7 @@ public class ObjectManager {
     private int startSpawnTimer = 5 * 180;
     private int timeStart = 0;
     private int spawnBombTimer;
-    private int spawnBombTimerMax = 150;
+    private int spawnBombTimerMax = 180;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;

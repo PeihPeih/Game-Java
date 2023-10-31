@@ -5,6 +5,20 @@ import main.Game;
 public class constants{
     public static int ANI_SPEED = 25;
 
+    // Final boss
+    public static class FinalBossConstants{
+        public static final int IDLE = 0;
+
+        public static int GetSpriteAmount(int boss_action) {
+            switch (boss_action){
+                case IDLE:
+                    return 4;
+            }
+            return 0;
+        }
+    }
+
+    // Enemy
     public static class EnemyConstants {
         public static final int FIRE_DEMON = 29;
         public static final int FROST_DEMON = 39;
@@ -100,6 +114,16 @@ public class constants{
         public static final float SPEED = 1.2f * Game.SCALE;
     }
 
+    // Projectile of Boss
+    public static class Projectile {
+        public static final int PROJECTILE_DEFAULT_WIDTH = 40;
+        public static final int PROJECTILE_DEFAULT_HEIGHT = 30;
+
+        public static final int PROJECTILE_WIDTH = (int) (Game.SCALE * PROJECTILE_DEFAULT_WIDTH);
+        public static final int PROJECTILE_HEIGHT = (int) (Game.SCALE * PROJECTILE_DEFAULT_HEIGHT);
+        public static final float SPEED = 1.3f * Game.SCALE;
+    }
+
     public static class ObjectConstants {
         public static final int BULLET = 0;
         public static final int BOMB = 1;
@@ -160,6 +184,7 @@ public class constants{
         public static final int DOWN = 3;
     }
 
+    // Player
     public static class PlayerConstants {
         // Chỉ số của từng hành động
         public static final int IDLE = 0;

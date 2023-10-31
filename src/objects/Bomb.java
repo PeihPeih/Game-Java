@@ -14,7 +14,7 @@ import static utilz.constants.ObjectConstants.*;
 import static utilz.constants.PlayerConstants.GetSpriteAmount;
 
 public class Bomb extends GameObject {
-    private float fallSpeed = Game.SCALE;
+    private float fallSpeed = 1.5f;
 
     private BufferedImage image;
     private BufferedImage[] explosion;
