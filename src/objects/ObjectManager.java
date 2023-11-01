@@ -122,6 +122,7 @@ public class ObjectManager {
 
     public void resetAllObjects() {
         timeStart = 0;
+        isSpawn = true;
         for (Heart h : hearts)
             h.reset();
         while (bombs.size() > 0) {

@@ -180,6 +180,7 @@ public abstract class Enemy extends Entity {
         currentHealth = maxHeath;
         newState(IDLE);
         active = true;
+        isDead = false;
     }
 
     public int getAniIndex() {

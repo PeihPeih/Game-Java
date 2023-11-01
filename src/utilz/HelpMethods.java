@@ -134,7 +134,7 @@ public class HelpMethods {
     }
 
     public static boolean IsProjectilesHittingLevel(ProjectileBoss b, int[][] lvlData) {
-        return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
+        return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y, lvlData) || IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y+b.getHitbox().height, lvlData) || IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y+b.getHitbox().height/2, lvlData);
     }
 
 

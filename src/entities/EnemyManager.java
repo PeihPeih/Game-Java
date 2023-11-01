@@ -64,8 +64,8 @@ public class EnemyManager {
             if (d.isActive()) {
                 g.drawImage(fireAnimations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - FIRE_DEMON_DRAWOFFSET_X + d.flipX(), (int) d.getHitbox().y - FIRE_DEMON_DRAWOFFSET_Y, DEMON_WIDTH * d.flipW(), DEMON_HEIGHT, null);
 
-                d.drawHitbox(g, xLvlOffset);
-                d.drawAttackHitbox(g, xLvlOffset);
+//                d.drawHitbox(g, xLvlOffset);
+//                d.drawAttackHitbox(g, xLvlOffset);
             }
         }
 
@@ -74,8 +74,8 @@ public class EnemyManager {
             if (d.isActive()) {
                 g.drawImage(frostAnimations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - FROST_DEMON_DRAWOFFSET_X + d.flipX(), (int) d.getHitbox().y - FROST_DEMON_DRAWOFFSET_Y, DEMON_WIDTH * d.flipW(), DEMON_HEIGHT, null);
 
-                d.drawHitbox(g, xLvlOffset);
-                d.drawAttackHitbox(g, xLvlOffset);
+//                d.drawHitbox(g, xLvlOffset);
+//                d.drawAttackHitbox(g, xLvlOffset);
             }
         }
 
@@ -84,8 +84,8 @@ public class EnemyManager {
             if (d.isActive()) {
                 g.drawImage(shadowAnimations[d.getEnemyState()][d.getAniIndex()], (int) (d.getHitbox().x) - xLvlOffset - SHADOW_DEMON_DRAWOFFSET_X + d.flipX(), (int) d.getHitbox().y - SHADOW_DEMON_DRAWOFFSET_Y, DEMON_WIDTH * d.flipW(), DEMON_HEIGHT, null);
 
-                d.drawHitbox(g, xLvlOffset);
-                d.drawAttackHitbox(g, xLvlOffset);
+//                d.drawHitbox(g, xLvlOffset);
+//                d.drawAttackHitbox(g, xLvlOffset);
             }
         }
 

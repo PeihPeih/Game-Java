@@ -80,6 +80,7 @@ public class Player extends Entity {
         updatePos();
         updateAnimationonTick();
         updateBullet();
+
         setAnimation();
     }
 
@@ -101,6 +102,7 @@ public class Player extends Entity {
                     b.setActive(false);
             }
         }
+        System.out.println(bullets.size());
     }
 
     // Lay du lieu tu lvl de chuan bi cho collision
