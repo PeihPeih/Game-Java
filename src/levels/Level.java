@@ -71,6 +71,10 @@ public class Level {
         return maxLvlOffsetX;
     }
 
+    public int getWidthLevel(){
+        return img.getWidth()*Game.TILES_SIZE;
+    }
+
     public ArrayList<FireDemon> getFireDemons() {
         return fireDemons;
     }

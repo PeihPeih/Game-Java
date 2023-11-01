@@ -18,7 +18,7 @@ public class Laser extends GameObject {
 
     public Laser(int x, int y) {
         super(x, y, 123);
-        hitbox = new Rectangle2D.Float(x+8, y+13, LASER_WIDTH, (int)(23*1.5*Game.SCALE));
+        hitbox = new Rectangle2D.Float(x+29, y+13, LASER_WIDTH, (int)(23*1.5*Game.SCALE));
         this.active = false;
         loadAnimations();
     }
@@ -50,7 +50,7 @@ public class Laser extends GameObject {
     }
 
     public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(animations[aniIndex], (int) (this.hitbox.x - xLvlOffset - xOffset), (int) (this.hitbox.y - yOffset), LASER_WIDTH, LASER_HEIGHT, null);
+        g.drawImage(animations[aniIndex], (int) (this.hitbox.x - xOffset)-xLvlOffset, (int) (this.hitbox.y - yOffset), LASER_WIDTH* -1, LASER_HEIGHT, null);
 //        drawHitbox(g, xLvlOffset);
     }
 

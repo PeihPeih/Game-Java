@@ -28,6 +28,14 @@ public class constants{
         public static final int PROJECTILE_HEIGHT = (int) (Game.SCALE * PROJECTILE_DEFAULT_HEIGHT);
         public static final float SPEED = 1.5f * Game.SCALE;
 
+        public static int GetAniSpeedAction(int boss_action){
+            switch (boss_action){
+                case DEAD:
+                    return 32;
+            }
+            return 25;
+        }
+
         public static int GetSpriteAmount(int boss_action) {
             switch (boss_action){
                 case IDLE:

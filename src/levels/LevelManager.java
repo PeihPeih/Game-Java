@@ -14,7 +14,7 @@ public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
-    private int lvlIndex = 0;
+    private int lvlIndex = 1;
 
     // Khởi tạo
     public LevelManager(Game game){
@@ -102,7 +102,6 @@ public class LevelManager {
 
     // Update
     public void update(){
-
     }
 
     public void loadNextLevel() {
@@ -127,6 +126,10 @@ public class LevelManager {
 
     public int getAmountOfLevels() {
         return levels.size();
+    }
+
+    public int getLvlIndex(){
+        return lvlIndex;
     }
 
 }

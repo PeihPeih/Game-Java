@@ -33,18 +33,11 @@ public class ProjectileBoss extends GameObject {
 
     public void draw(Graphics g, int xLvlOffset) {
         if (active) {
-            g.drawImage(image, (int) (this.hitbox.x - xLvlOffset), (int) (this.hitbox.y), PROJECTILE_WIDTH, PROJECTILE_HEIGHT, null);
-//            drawHitbox(g, xLvlOffset);
+            g.drawImage(image, (int) (this.hitbox.x)+PROJECTILE_WIDTH-xLvlOffset, (int) (this.hitbox.y), PROJECTILE_WIDTH*-1, PROJECTILE_HEIGHT, null);
         }
     }
-
-    private void drawHitbox(Graphics g, int xLvlOffset) {
-        g.setColor(Color.PINK);
-        g.drawRect((int) this.hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
-    }
-
     private void updatePos() {
-        hitbox.x += SPEED;
+        hitbox.x -= SPEED;
     }
 
     public Rectangle2D.Float getHitbox() {

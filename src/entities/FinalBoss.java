@@ -19,13 +19,13 @@ public class FinalBoss extends Entity {
     private Playing playing;
 
     private BufferedImage[][] animations;
-    private int maxHeath = 150;
+    private int maxHeath = 1500;
     private int currentHealth;
     private int aniIndex, enemyState;
-    private int aniTick, aniSpeed = 25;
+    private int aniTick;
     private int airDir = UP;
     private float airSpeed = 0.3f * Game.SCALE;
-    private boolean active = true;
+    private boolean active = false;
     private ArrayList<ProjectileBoss> projectiles;
     private Laser laser;
 
@@ -154,7 +154,7 @@ public class FinalBoss extends Entity {
 
     private void updateAnimationTicks() {
         aniTick++;
-        if (aniTick >= aniSpeed) {
+        if (aniTick >= GetAniSpeedAction(enemyState)) {
             aniTick = 0;
             aniIndex++;
             if (enemyState == SHOOT) {
@@ -192,11 +192,11 @@ public class FinalBoss extends Entity {
     }
 
     private void shoot() {
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x + 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 4)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x + 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 2)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x + 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x + 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 2)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x + 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 4)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 4)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 2)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 2)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 4)));
         canShoot = false;
     }
 
@@ -220,8 +220,7 @@ public class FinalBoss extends Entity {
 
     public void draw(Graphics g, int xLvlOffset) {
         if (active) {
-            g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xLvlOffset - xOffset), (int) (hitbox.y - yOffset), width, height, null);
-//            drawHitbox(g, xLvlOffset);
+            g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset)-xLvlOffset + width, (int) (hitbox.y - yOffset), width*-1, height, null);
             drawProjectiles(g, xLvlOffset);
             drawLaser(g, xLvlOffset);
         }

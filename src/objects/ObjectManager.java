@@ -26,6 +26,7 @@ public class ObjectManager {
     private ArrayList<Bomb> bombs;
 
     // Spawn bomb
+    private boolean isSpawn = true;
     private int startSpawnTimer = 5 * 180;
     private int timeStart = 0;
     private int spawnBombTimer;
@@ -63,8 +64,10 @@ public class ObjectManager {
     public void update(int[][] lvlData, Player player) {
         timeStart++;
         if (timeStart >= startSpawnTimer) {
-            spawnBomb(player);
-            updateBombs(lvlData, player);
+            if(isSpawn){
+                spawnBomb(player);
+                updateBombs(lvlData, player);
+            }
         }
     }
 
@@ -74,6 +77,10 @@ public class ObjectManager {
             spawnBombTimer = 0;
         }
         spawnBombTimer++;
+    }
+
+    public void setSpawn(boolean isSpawn){
+        this.isSpawn = isSpawn;
     }
 
     private void updateBombs(int[][] lvlData, Player player) {

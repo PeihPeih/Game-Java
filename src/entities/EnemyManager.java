@@ -25,7 +25,11 @@ public class EnemyManager {
     // Init
     public EnemyManager(Playing playing) {
         this.playing = playing;
-        this.finalBoss = new FinalBoss(1, Game.GAME_HEIGHT/2-FINAL_BOSS_HEIGHT/2,FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
+
+        int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel()-1-FINAL_BOSS_WIDTH/2;
+        int finalBossY = Game.GAME_HEIGHT/2-FINAL_BOSS_HEIGHT/2;
+        this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
+
         loadEnemyImgs();
     }
 
