@@ -69,6 +69,11 @@ public class ObjectManager {
                 updateBombs(lvlData, player);
             }
         }
+        if(!isSpawn){
+            for(Bomb b:bombs){
+                b.setActive(false);
+            }
+        }
     }
 
     private void spawnBomb(Player player) {
@@ -117,6 +122,7 @@ public class ObjectManager {
 
     public void resetAllObjects() {
         timeStart = 0;
+        isSpawn = true;
         for (Heart h : hearts)
             h.reset();
         while (bombs.size() > 0) {

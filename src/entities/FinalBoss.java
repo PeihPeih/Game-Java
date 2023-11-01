@@ -247,7 +247,7 @@ public class FinalBoss extends Entity {
     }
 
     public void resetAll() {
-        active = true;
+        active = false;
         isDead = false;
         canLaser = true;
         canShoot = true;
