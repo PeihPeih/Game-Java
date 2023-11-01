@@ -48,6 +48,8 @@ public class Playing extends State implements Statemethods {
     private BufferedImage[] backgroundImage;
     private BufferedImage cloud;
 
+    private boolean bossCombat = true;
+
     public Playing(Game game) throws IOException {
         super(game);
         innitClasses();
@@ -157,9 +159,10 @@ public class Playing extends State implements Statemethods {
             player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
-                if (player.getHitbox().x == levelManager.getCurrentLevel().getWidthLevel() - GAME_WIDTH) {
+                if (player.getHitbox().x >= levelManager.getCurrentLevel().getWidthLevel() - GAME_WIDTH && bossCombat) {
                     enemyManager.getFinalBoss().setActive(true);
                     objectManager.setSpawn(false);
+                    bossCombat = false;
                 }
             }
             checkCloseToBorder();
@@ -215,6 +218,7 @@ public class Playing extends State implements Statemethods {
     public void resetALL() {
         paused = false;
         gameover = false;
+        bossCombat = true;
         player.resetALl();
         enemyManager.resetEnemies();
         objectManager.resetAllObjects();
@@ -307,13 +311,6 @@ public class Playing extends State implements Statemethods {
 
     public void unpausedGame() {
         paused = false;
-    }
-
-    public void resetAll(){
-        player.resetAll();
-        enemyManager.resetEnemies();
-
-        unpausedGame();
     }
 
 

@@ -69,6 +69,11 @@ public class ObjectManager {
                 updateBombs(lvlData, player);
             }
         }
+        if(!isSpawn){
+            for(Bomb b:bombs){
+                b.setActive(false);
+            }
+        }
     }
 
     private void spawnBomb(Player player) {
