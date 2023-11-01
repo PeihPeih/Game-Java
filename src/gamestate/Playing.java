@@ -4,11 +4,14 @@ import UI.GameOverOverlay;
 import UI.PauseOverlay;
 
 import entities.EnemyManager;
+import entities.FinalBoss;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import objects.Bullet;
+import objects.Laser;
 import objects.ObjectManager;
+import objects.ProjectileBoss;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -31,7 +34,7 @@ public class Playing extends State implements Statemethods {
 
     private boolean paused = false;
 
-    private boolean gameover ;
+    private boolean gameover;
     private PauseOverlay pauseOverlay;
     private GameOverOverlay gameOverOverlay;
 
@@ -39,9 +42,7 @@ public class Playing extends State implements Statemethods {
     private int xLvlOffset; //
     private int leftBorder = (int) (0.2 * GAME_WIDTH);
     private int rightBorder = (int) (0.8 * GAME_WIDTH);
-    private int lvlTilesWide = LoadSave.GetLevelData(1)[0].length;
-    private int maxTilesOffset = lvlTilesWide - Game.TILES_WIDTH;
-    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int maxLvlOffsetX;
 
     // Background
     private BufferedImage[] backgroundImage;
@@ -50,6 +51,8 @@ public class Playing extends State implements Statemethods {
     public Playing(Game game) throws IOException {
         super(game);
         innitClasses();
+        calcLvlOffset();
+        loadStartLevel();
     }
 
     private void innitClasses() throws IOException {// khoi tao
@@ -60,7 +63,10 @@ public class Playing extends State implements Statemethods {
         player = new Player(100, 200, 82, 77, this);
         objectManager = new ObjectManager(this);
 
+        player = new Player(100, 200, 82, 77, this);
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+        player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
     }
@@ -117,6 +123,15 @@ public class Playing extends State implements Statemethods {
         }
     }
 
+    private void loadStartLevel() {
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
+    }
+
+    private void calcLvlOffset() {
+        maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
+    }
+
     public void checkHeartTouch(Rectangle2D.Float hitbox) {
         objectManager.checkObjectTouched(hitbox);
     }
@@ -125,16 +140,28 @@ public class Playing extends State implements Statemethods {
         enemyManager.checkEnemyHit(b);
     }
 
+    public void checkPlayerHit(ProjectileBoss p) {
+        player.checkPlayerHit(p);
+    }
+
+    public void checkPlayerLaser(Laser ls) {
+        player.checkLaserHit(ls);
+    }
 
     @Override
     public void update() {//update
-        gameover=player.IsDeath();
+        gameover = player.IsDeath();
         if (!paused && !gameover) {
             levelManager.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
-
+            if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
+                if (player.getHitbox().x == levelManager.getCurrentLevel().getWidthLevel() - GAME_WIDTH) {
+                    enemyManager.getFinalBoss().setActive(true);
+                    objectManager.setSpawn(false);
+                }
+            }
             checkCloseToBorder();
         }
         if (gameover)
@@ -146,7 +173,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
-        gameover=player.IsDeath();
+        gameover = player.IsDeath();
         drawBackground(g, xLvlOffset);
 
         drawCloud(g, xLvlOffset);
@@ -160,8 +187,7 @@ public class Playing extends State implements Statemethods {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
-        }
-        else if(gameover){
+        } else if (gameover) {
             gameOverOverlay.draw(g);
         }
     }
@@ -186,10 +212,11 @@ public class Playing extends State implements Statemethods {
             xLvlOffset = 0;
     }
 
-    public void resetALL(){
+    public void resetALL() {
         paused = false;
-        gameover=false;
+        gameover = false;
         player.resetALl();
+        enemyManager.resetEnemies();
         objectManager.resetAllObjects();
     }
 
@@ -202,7 +229,7 @@ public class Playing extends State implements Statemethods {
     public void mousePressd(MouseEvent e) {
         if (paused)
             pauseOverlay.mousePressd(e);
-        else if(gameover)
+        else if (gameover)
             gameOverOverlay.mousePressed(e);
     }
 
@@ -210,7 +237,7 @@ public class Playing extends State implements Statemethods {
     public void mouseReleased(MouseEvent e) {
         if (paused)
             pauseOverlay.mouseReleased(e);
-        else if(gameover)
+        else if (gameover)
             gameOverOverlay.mouseReleased(e);
 
     }
@@ -219,7 +246,7 @@ public class Playing extends State implements Statemethods {
     public void mouseMoved(MouseEvent e) {
         if (paused)
             pauseOverlay.mouseMoved(e);
-        else if(gameover)
+        else if (gameover)
             gameOverOverlay.mouseMoved(e);
     }
 
@@ -230,7 +257,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void keyPressed(KeyEvent e) {// dieu khien nhan vat
-        if(!gameover){
+        if (!gameover) {
             switch (e.getKeyCode()) {
                 // Move
                 case KeyEvent.VK_A:
@@ -258,7 +285,7 @@ public class Playing extends State implements Statemethods {
     @Override
     public void keyReleased(KeyEvent e) {
         // thả key thì k di chuyển
-        if(!gameover){
+        if (!gameover) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_W:
                     player.setJump(false);
@@ -301,5 +328,21 @@ public class Playing extends State implements Statemethods {
     //getter Player
     public Player getPlayer() {
         return player;
+    }
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
+    }
+
+    public void setMaxLvlOffset(int lvlOffset) {
+        this.maxLvlOffsetX = lvlOffset;
+    }
+
+    public int getMaxLvlOffset() {
+        return maxLvlOffsetX;
+    }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
     }
 }

@@ -5,6 +5,59 @@ import main.Game;
 public class constants{
     public static int ANI_SPEED = 25;
 
+    // Final boss
+    public static class FinalBossConstants{
+        public static final int IDLE = 0;
+        public static final int BUFF_DAMAGE = 1;
+        public static final int SHOOT = 2;
+        public static final int HURT = 3;
+        public static final int PUNCH = 4;
+        public static final int LASER_CASTING = 5;
+        public static final int BUFF_ARMOR = 6;
+        public static final int DEAD = 7;
+
+        public static final int FINAL_BOSS_WIDTH_DEFAULT = 300;
+        public static final int FINAL_BOSS_HEIGHT_DEFAULT = 300;
+        public static final int FINAL_BOSS_WIDTH = (int)(FINAL_BOSS_WIDTH_DEFAULT*Game.SCALE);
+        public static final int FINAL_BOSS_HEIGHT = (int)(FINAL_BOSS_HEIGHT_DEFAULT*Game.SCALE);
+
+        public static final int PROJECTILE_DEFAULT_WIDTH = 32*3;
+        public static final int PROJECTILE_DEFAULT_HEIGHT = 14*3;
+
+        public static final int PROJECTILE_WIDTH = (int) (Game.SCALE * PROJECTILE_DEFAULT_WIDTH);
+        public static final int PROJECTILE_HEIGHT = (int) (Game.SCALE * PROJECTILE_DEFAULT_HEIGHT);
+        public static final float SPEED = 1.5f * Game.SCALE;
+
+        public static int GetAniSpeedAction(int boss_action){
+            switch (boss_action){
+                case DEAD:
+                    return 32;
+            }
+            return 25;
+        }
+
+        public static int GetSpriteAmount(int boss_action) {
+            switch (boss_action){
+                case IDLE:
+                    return 4;
+                case BUFF_DAMAGE:
+                    return 8;
+                case SHOOT:
+                    return 14;
+                case PUNCH:
+                    return 7;
+                case LASER_CASTING:
+                    return 18;
+                case BUFF_ARMOR:
+                    return 10;
+                case DEAD:
+                    return 14;
+            }
+            return 8;
+        }
+    }
+
+    // Enemy
     public static class EnemyConstants {
         public static final int FIRE_DEMON = 29;
         public static final int FROST_DEMON = 39;
@@ -92,12 +145,22 @@ public class constants{
 
     // Bullet
     public static class Bullet {
-        public static final int BULLET_DEFAULT_WIDTH = 16;
-        public static final int BULLET_DEFAULT_HEIGHT = 13;
+        public static final int BULLET_DEFAULT_WIDTH = 20;
+        public static final int BULLET_DEFAULT_HEIGHT = 16;
 
         public static final int BULLET_WIDTH = (int) (Game.SCALE * BULLET_DEFAULT_WIDTH);
         public static final int BULLET_HEIGHT = (int) (Game.SCALE * BULLET_DEFAULT_HEIGHT);
         public static final float SPEED = 1.2f * Game.SCALE;
+    }
+
+    // Projectile of Boss
+
+    public static class Laser{
+        public static final int LASER_DEFAULT_WIDTH = 1500;
+        public static final int LASER_DEFAULT_HEIGHT = 150;
+
+        public static final int LASER_WIDTH = (int) (Game.SCALE * LASER_DEFAULT_WIDTH);
+        public static final int LASER_HEIGHT = (int) (Game.SCALE * LASER_DEFAULT_HEIGHT);
     }
 
     public static class ObjectConstants {
@@ -160,6 +223,7 @@ public class constants{
         public static final int DOWN = 3;
     }
 
+    // Player
     public static class PlayerConstants {
         // Chỉ số của từng hành động
         public static final int IDLE = 0;

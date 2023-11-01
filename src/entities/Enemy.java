@@ -23,6 +23,7 @@ public abstract class Enemy extends Entity {
     protected int tileY;
     protected float attackDistance = Game.TILES_SIZE; // kcach tan cong = 1 ô
     protected boolean active = true;
+    protected boolean isDead = false;
     protected boolean attackChecked;
     protected Rectangle2D.Float attackBox;
     protected int attackBoxOffsetX;
@@ -144,7 +145,7 @@ public abstract class Enemy extends Entity {
     // Check player co bi tan cong khong
     protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
         if (attackBox.intersects(player.getHitbox())) {
-            player.minusHeart();
+            player.minusHeart(1);
             attackChecked = true;
         }
     }
@@ -152,8 +153,10 @@ public abstract class Enemy extends Entity {
     //Enemy bị tấn công
     public void hurt(int amount) {
         currentHealth -= amount;
-        if (currentHealth <= 0)
+        if (currentHealth <= 0){
             newState(DEAD);
+            isDead=true;
+        }
         else
             newState(TAKE_HIT);
     }
@@ -189,5 +192,9 @@ public abstract class Enemy extends Entity {
 
     public boolean isActive() {
         return active;
+    }
+
+    public boolean isDead(){
+        return isDead;
     }
 }

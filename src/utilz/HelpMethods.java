@@ -1,16 +1,22 @@
 package utilz;
 
+import entities.FireDemon;
+import entities.FrostDemon;
+import entities.ShadowDemon;
 import main.Game;
 import objects.Bomb;
 import objects.Bullet;
 import objects.Heart;
+import objects.ProjectileBoss;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static utilz.constants.ObjectConstants.HEART;
+import static utilz.constants.EnemyConstants.*;
+import static utilz.constants.EnemyConstants.DEMON_HEIGHT;
+import static utilz.constants.ObjectConstants.*;
 
 public class HelpMethods {
 
@@ -127,6 +133,10 @@ public class HelpMethods {
         return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
     }
 
+    public static boolean IsProjectilesHittingLevel(ProjectileBoss b, int[][] lvlData) {
+        return IsSolid(b.getHitbox().x + b.getHitbox().width / 2, b.getHitbox().y + b.getHitbox().height / 2, lvlData);
+    }
+
 
     // Check xem đạn có va chạm với tiles hay không
     public static boolean IsBombsHittingLevel(Bomb b, int[][] lvlData) {
@@ -148,4 +158,69 @@ public class HelpMethods {
         }
         return true;
     }
+
+    public static int[][] GetLevelData(BufferedImage img) {
+        int[][] lvlData = new int[img.getHeight()][img.getWidth()];
+        for (int j = 0; j < img.getHeight(); j++)
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getRed();
+                if (value >= 98)
+                    value = 0;
+                lvlData[j][i] = value;
+            }
+        return lvlData;
+    }
+
+    public static ArrayList<Heart> GetHearts(BufferedImage image) {
+        ArrayList<Heart> list = new ArrayList<>();
+        for (int j = 0; j < image.getHeight(); j++) {
+            for (int i = 0; i < image.getWidth(); i++) {
+                Color color = new Color(image.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == 178)
+                    list.add(new Heart(i * Game.TILES_SIZE + Game.TILES_SIZE - HEART_WIDTH, j * Game.TILES_SIZE + Game.TILES_SIZE - HEART_HEIGHT, value));
+            }
+        }
+        return list;
+    }
+
+    // getDemons
+    public static ArrayList<FireDemon> GetFireDemons(BufferedImage img) {
+        ArrayList<FireDemon> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == FIRE_DEMON) list.add(new FireDemon(i*Game.TILES_SIZE ,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<FrostDemon> GetFrostDemons(BufferedImage img) {
+        ArrayList<FrostDemon> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == FROST_DEMON) list.add(new FrostDemon(i*Game.TILES_SIZE ,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<ShadowDemon> GetShadowDemon(BufferedImage img) {
+        ArrayList<ShadowDemon> list = new ArrayList<>();
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == SHADOW_DEMON) list.add(new ShadowDemon(i*Game.TILES_SIZE ,j*Game.TILES_SIZE+ Game.TILES_SIZE-DEMON_HEIGHT));
+            }
+        }
+        return list;
+    }
+
+
 }

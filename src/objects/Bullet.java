@@ -17,8 +17,8 @@ public class Bullet extends GameObject {
 
     public Bullet(int x, int y, int dir, int objType) {
         super(x, y, objType);
-        int xOffset = (int) (-5 * Game.SCALE);
-        int yOffset = (int) (2 * Game.SCALE);
+        int xOffset = (int) (-7 * Game.SCALE);
+        int yOffset = (int) (-1 * Game.SCALE);
 
         if (dir == 1)
             xOffset = (int) (13 * Game.SCALE);
@@ -48,7 +48,7 @@ public class Bullet extends GameObject {
 
         if (active) {
             g.drawImage(animation[aniIndex], (int) (this.hitbox.x - xDrawOffset - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
-            drawHitbox(g, xLvlOffset);
+//            drawHitbox(g, xLvlOffset);
         } else {
             g.drawImage(animation_dis[aniIndex], (int) (this.hitbox.x - 8 - xLvlOffset) + flipX, (int) (this.hitbox.y - yDrawOffset), BULLET_WIDTH * flipW, BULLET_HEIGHT, null);
 

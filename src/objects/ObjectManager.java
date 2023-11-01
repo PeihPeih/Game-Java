@@ -16,8 +16,6 @@ import javax.imageio.ImageIO;
 
 import static utilz.HelpMethods.IsBombsHittingLevel;
 import static utilz.constants.ObjectConstants.*;
-import static utilz.HelpMethods.IsBulletsHittingLevel;
-import static utilz.constants.Bullet.*;
 
 public class ObjectManager {
 
@@ -28,13 +26,15 @@ public class ObjectManager {
     private ArrayList<Bomb> bombs;
 
     // Spawn bomb
+    private boolean isSpawn = true;
+    private int startSpawnTimer = 5 * 180;
+    private int timeStart = 0;
     private int spawnBombTimer;
-    private int spawnBombTimerMax = 150;
+    private int spawnBombTimerMax = 180;
 
     public ObjectManager(Playing playing) {
         this.playing = playing;
         loadImgs();
-        loadObjects();
         this.spawnBombTimer = this.spawnBombTimerMax;
     }
 
@@ -42,7 +42,7 @@ public class ObjectManager {
         heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
         bomb = LoadSave.GetSpriteAtlas(LoadSave.BOMB);
     }
-    
+
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {
         for (Heart h : hearts)
@@ -55,15 +55,20 @@ public class ObjectManager {
     }
 
 
-    public void loadObjects() {
-        hearts = new ArrayList<>(LoadSave.GetHearts(1));
+    public void loadObjects(Level newLevel) {
+        hearts = new ArrayList<>(newLevel.getHearts());
         bombs = new ArrayList<>();
     }
 
 
     public void update(int[][] lvlData, Player player) {
-        spawnBomb(player);
-        updateBombs(lvlData, player);
+        timeStart++;
+        if (timeStart >= startSpawnTimer) {
+            if(isSpawn){
+                spawnBomb(player);
+                updateBombs(lvlData, player);
+            }
+        }
     }
 
     private void spawnBomb(Player player) {
@@ -74,12 +79,16 @@ public class ObjectManager {
         spawnBombTimer++;
     }
 
+    public void setSpawn(boolean isSpawn){
+        this.isSpawn = isSpawn;
+    }
+
     private void updateBombs(int[][] lvlData, Player player) {
-        for (int i =0 ;i<bombs.size();i++) {
+        for (int i = 0; i < bombs.size(); i++) {
             if (!bombs.get(i).isDestroy()) {
                 bombs.get(i).update();
                 if (bombs.get(i).getHitbox().intersects(player.getHitbox())) {
-                    player.minusHeart();
+                    player.minusHeart(1);
                     bombs.get(i).setDestroy(true);
                 } else if (IsBombsHittingLevel(bombs.get(i), lvlData)) {
                     bombs.get(i).setDestroy(true);
@@ -103,20 +112,21 @@ public class ObjectManager {
 
     private void drawBombs(Graphics g, int xLvlOffset) {
         for (int i = 0; i < bombs.size(); i++)
-            bombs.get(i).draw(g,xLvlOffset);
+            bombs.get(i).draw(g, xLvlOffset);
     }
 
     public void resetAllObjects() {
+        timeStart = 0;
         for (Heart h : hearts)
             h.reset();
-        while (bombs.size()>0){
+        while (bombs.size() > 0) {
             bombs.remove(0);
         }
     }
 
-    public void destroy(){
-        for(int i=0;i<bombs.size();i++){
-            if(!bombs.get(i).isActive()){
+    public void destroy() {
+        for (int i = 0; i < bombs.size(); i++) {
+            if (!bombs.get(i).isActive()) {
                 bombs.remove(i);
             }
         }
