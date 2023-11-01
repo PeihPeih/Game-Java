@@ -309,6 +309,13 @@ public class Playing extends State implements Statemethods {
         paused = false;
     }
 
+    public void resetAll(){
+        player.resetAll();
+        enemyManager.resetEnemies();
+
+        unpausedGame();
+    }
+
 
     public void windowFocusLost() {
         player.resetDirBoleans();
