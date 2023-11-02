@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import static utilz.HelpMethods.*;
 import static utilz.constants.Direction.*;
 import static utilz.constants.FinalBossConstants.*;
+import static utilz.constants.Laser.LASER_WIDTH;
 
 public class FinalBoss extends Entity {
     private Playing playing;
@@ -24,8 +25,9 @@ public class FinalBoss extends Entity {
     private int aniIndex, enemyState;
     private int aniTick;
     private int airDir = UP;
-    private float airSpeed = 0.3f * Game.SCALE;
-    private boolean active = false;
+    private float airSpeed = 0.5f * Game.SCALE;
+    private boolean active = true;
+    private boolean canMove = false;
     private ArrayList<ProjectileBoss> projectiles;
     private Laser laser;
 
@@ -35,12 +37,13 @@ public class FinalBoss extends Entity {
     private boolean isDead = false;
     private boolean canShoot = true;
     private boolean canLaser = true;
+    private boolean hurted = true;
 
     private float damage = 1;
     private float armor = 0;
 
     // Time
-    private int timerMax = 12 * 180;
+    private int timerMax = 20 * 180;
     private int timer = 0;
 
 
@@ -52,7 +55,7 @@ public class FinalBoss extends Entity {
         this.currentHealth = maxHeath;
         this.enemyState = IDLE;
         this.projectiles = new ArrayList<>();
-        this.laser = new Laser((int) (hitbox.x + 72 * Game.SCALE), (int) (hitbox.y));
+        this.laser = new Laser((int) (hitbox.x + 72 * Game.SCALE - LASER_WIDTH), (int) (hitbox.y));
     }
 
     private void loadsAnimation() {
@@ -70,12 +73,19 @@ public class FinalBoss extends Entity {
             for (int i = 7; i < 18; i++) {
                 animations[LASER_CASTING][i] = animations[LASER_CASTING][6];
             }
+            for (int j = 8; j < 16; j++) {
+                animations[HURT][j] = animations[HURT][7];
+            }
+            for (int j = 7; j < 15; j++) {
+                animations[PUNCH][j] = animations[PUNCH][6];
+            }
             for (int j = 0; j < 10; j++) {
                 animations[DEAD][j] = image.getSubimage(j * 100, 7 * 100, 100, 100);
             }
             for (int j = 10; j < 14; j++) {
                 animations[DEAD][j] = image.getSubimage((j - 10) * 100, 8 * 100, 100, 100);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,13 +98,15 @@ public class FinalBoss extends Entity {
     }
 
     public void update(int[][] lvlData) {
-        updateTimer();
-        updateAnimationTicks();
-        if (!(enemyState == LASER_CASTING && aniIndex >= 7)) {
-            updatePos(lvlData);
+        if(canMove){
+            updateTimer();
+            updateAnimationTicks();
+            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState!=HURT && enemyState != PUNCH) {
+                updatePos(lvlData);
+            }
+            updateProjectile(lvlData);
+            updateLaser();
         }
-        updateProjectile(lvlData);
-        updateLaser();
     }
 
     private void updateLaser() {
@@ -136,19 +148,26 @@ public class FinalBoss extends Entity {
             timer -= timerMax;
         }
         switch (timer) {
-            case 3 * 180:
+            case 0 * 180:
                 setState(BUFF_ARMOR);
                 return;
-            case 8 * 180:
-                setState(BUFF_DAMAGE);
+            case 2*180:
+                setState(PUNCH);
                 return;
             case 6 * 180:
+                setState(BUFF_DAMAGE);
+                return;
+            case 7 * 180:
+                canLaser = true;
+                setState(LASER_CASTING);
+                return;
+            case 12 * 180:
                 canShoot = true;
                 setState(SHOOT);
                 return;
-            case 11 * 180:
-                canLaser = true;
-                setState(LASER_CASTING);
+            case 17 * 180:
+                hurted = false;
+                setState(HURT);
         }
     }
 
@@ -172,6 +191,7 @@ public class FinalBoss extends Entity {
                 switch (enemyState) {
                     case DEAD:
                         active = false;
+                        canMove = false;
                         return;
                     case BUFF_ARMOR:
                         armor += 0.1;
@@ -182,6 +202,10 @@ public class FinalBoss extends Entity {
                         return;
                     case BUFF_DAMAGE:
                         damage += 0.1;
+                        setState(IDLE);
+                        return;
+                    case HURT:
+                        hurted = true;
                         setState(IDLE);
                         return;
                     default:
@@ -220,7 +244,7 @@ public class FinalBoss extends Entity {
 
     public void draw(Graphics g, int xLvlOffset) {
         if (active) {
-            g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset)-xLvlOffset + width, (int) (hitbox.y - yOffset), width*-1, height, null);
+            g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset) - xLvlOffset + width, (int) (hitbox.y - yOffset), width * -1, height, null);
             drawProjectiles(g, xLvlOffset);
             drawLaser(g, xLvlOffset);
         }
@@ -243,11 +267,13 @@ public class FinalBoss extends Entity {
         if (currentHealth <= 0) {
             setState(DEAD);
             isDead = true;
+
         }
     }
 
     public void resetAll() {
-        active = false;
+        active = true;
+        canMove = false;
         isDead = false;
         canLaser = true;
         canShoot = true;
@@ -268,6 +294,10 @@ public class FinalBoss extends Entity {
         this.active = active;
     }
 
+    public void setCanMove(boolean canMove){
+        this.canMove = canMove;
+    }
+
     public boolean isDead() {
         return isDead;
     }
@@ -282,5 +312,9 @@ public class FinalBoss extends Entity {
 
     public float getDamage() {
         return damage;
+    }
+
+    public boolean isHurt() {
+        return hurted;
     }
 }

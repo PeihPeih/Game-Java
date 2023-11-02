@@ -65,15 +65,11 @@ public class ObjectManager {
         timeStart++;
         if (timeStart >= startSpawnTimer) {
             if(isSpawn){
-                spawnBomb(player);
-                updateBombs(lvlData, player);
+                spawnBombTimer++;
             }
+            spawnBomb(player);
         }
-        if(!isSpawn){
-            for(Bomb b:bombs){
-                b.setActive(false);
-            }
-        }
+        updateBombs(lvlData, player);
     }
 
     private void spawnBomb(Player player) {
@@ -81,7 +77,6 @@ public class ObjectManager {
             bombs.add(new Bomb((int) (player.getHitbox().x - player.getHitbox().width / 2), -100, BOMB));
             spawnBombTimer = 0;
         }
-        spawnBombTimer++;
     }
 
     public void setSpawn(boolean isSpawn){

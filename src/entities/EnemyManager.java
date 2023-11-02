@@ -260,8 +260,10 @@ public class EnemyManager {
 
         if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
             if(finalBoss.getHitbox().intersects(attackBox)){
-                finalBoss.hurt(playing.getPlayer().getDamage() - (int)finalBoss.getArmor());
-                b.setActive(false);
+                if(finalBoss.isHurt()){
+                    finalBoss.hurt(playing.getPlayer().getDamage() - (int)finalBoss.getArmor());
+                    b.setActive(false);
+                }
             }
         }
     }

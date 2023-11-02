@@ -45,13 +45,15 @@ public class constants{
                 case SHOOT:
                     return 14;
                 case PUNCH:
-                    return 7;
+                    return 15;
                 case LASER_CASTING:
-                    return 18;
+                    return 26;
                 case BUFF_ARMOR:
                     return 10;
                 case DEAD:
                     return 14;
+                case HURT:
+                    return 16;
             }
             return 8;
         }
