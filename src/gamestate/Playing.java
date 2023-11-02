@@ -33,6 +33,7 @@ public class Playing extends State implements Statemethods {
     private ObjectManager objectManager;
 
     private boolean paused = false;
+    private boolean checkBorder = true;
 
     private boolean gameover;
     private PauseOverlay pauseOverlay;
@@ -47,8 +48,6 @@ public class Playing extends State implements Statemethods {
     // Background
     private BufferedImage[] backgroundImage;
     private BufferedImage cloud;
-
-    private boolean bossCombat = true;
 
     public Playing(Game game) throws IOException {
         super(game);
@@ -158,15 +157,21 @@ public class Playing extends State implements Statemethods {
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+
+
             if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
-                if (player.getHitbox().x >= levelManager.getCurrentLevel().getWidthLevel() - GAME_WIDTH && bossCombat) {
-                    enemyManager.getFinalBoss().setActive(true);
+                if (player.getHitbox().x >= levelManager.getCurrentLevel().getWidthLevel() * 97 / 100) {
+                    enemyManager.getFinalBoss().setCanMove(true);
                     objectManager.setSpawn(false);
-                    bossCombat = false;
+                    checkBorder = false;
                 }
             }
-            checkCloseToBorder();
+            if (checkBorder) {
+                checkCloseToBorder();
+            }
         }
+
+
         if (gameover)
             gameOverOverlay.update();
         else
@@ -218,7 +223,7 @@ public class Playing extends State implements Statemethods {
     public void resetALL() {
         paused = false;
         gameover = false;
-        bossCombat = true;
+        checkBorder = true;
         player.resetALl();
         enemyManager.resetEnemies();
         objectManager.resetAllObjects();
@@ -313,7 +318,7 @@ public class Playing extends State implements Statemethods {
         paused = false;
     }
 
-  
+
     public void windowFocusLost() {
         player.resetDirBoleans();
     }
@@ -333,10 +338,6 @@ public class Playing extends State implements Statemethods {
 
     public void setMaxLvlOffset(int lvlOffset) {
         this.maxLvlOffsetX = lvlOffset;
-    }
-
-    public int getMaxLvlOffset() {
-        return maxLvlOffsetX;
     }
 
     public LevelManager getLevelManager() {

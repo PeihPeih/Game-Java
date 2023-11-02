@@ -32,6 +32,9 @@ public class Laser extends GameObject {
             for (int i = 0; i < animations.length; i++) {
                 animations[i] = image.getSubimage(0, i * height, width, height);
             }
+            for (int i = 14; i < 20; i++) {
+                animations[i] = animations[i-6];
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,7 +45,7 @@ public class Laser extends GameObject {
         if (aniTick >= ANI_SPEED) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= 14) {
+            if (aniIndex >= animations.length) {
                 aniIndex = 0;
                 active = false;
             }
@@ -50,7 +53,7 @@ public class Laser extends GameObject {
     }
 
     public void draw(Graphics g, int xLvlOffset) {
-        g.drawImage(animations[aniIndex], (int) (this.hitbox.x - xOffset)-xLvlOffset, (int) (this.hitbox.y - yOffset), LASER_WIDTH* -1, LASER_HEIGHT, null);
+        g.drawImage(animations[aniIndex], (int) (this.hitbox.x - xOffset)-xLvlOffset+LASER_WIDTH, (int) (this.hitbox.y - yOffset), LASER_WIDTH* -1, LASER_HEIGHT, null);
 //        drawHitbox(g, xLvlOffset);
     }
 

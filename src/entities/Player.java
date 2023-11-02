@@ -93,7 +93,8 @@ public class Player extends Entity {
     }
 
     private void updateBullet() {
-        for (Bullet b : bullets) {
+        for (int i =0;i<bullets.size();i++) {
+            Bullet b = bullets.get(i);
             b.update();
             if (b.isActive()) {
                 b.update();
@@ -480,7 +481,7 @@ public class Player extends Entity {
     }
 
     public boolean IsDeath() {
-        if (hitbox.y + 38 * Game.SCALE + 1 > Game.GAME_HEIGHT)
+        if (hitbox.y + hitbox.height + 1 > Game.GAME_HEIGHT)
             hearts.clear();
         return hearts.isEmpty();
     }
