@@ -271,7 +271,7 @@ public class Playing extends State implements Statemethods {
                     player.setRight(true);
                     break;
                 //jump
-                case KeyEvent.VK_W:
+                case KeyEvent.VK_W, KeyEvent.VK_SPACE:
                     player.setJump(true);
                     break;
                 // Attack
@@ -291,7 +291,7 @@ public class Playing extends State implements Statemethods {
         // thả key thì k di chuyển
         if (!gameover) {
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_W:
+                case KeyEvent.VK_W, KeyEvent.VK_SPACE:
                     player.setJump(false);
                     break;
                 case KeyEvent.VK_A:
