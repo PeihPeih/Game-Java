@@ -45,7 +45,6 @@ public class LoadSave {
             "player/shot-hit/shot-hit-3.png"
     };
 
-
     // Bomb
     public static final String BOMB = "item/meteorite.png";
 

@@ -25,14 +25,17 @@ public class Laser extends GameObject {
 
     private void loadAnimations() {
         try {
-            animations = new BufferedImage[14];
+            animations = new BufferedImage[26];
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/demon/Final Boss/laser.png"));
             int width = image.getWidth();
             int height = 100;
-            for (int i = 0; i < animations.length; i++) {
+            for (int i = 0; i < 14; i++) {
                 animations[i] = image.getSubimage(0, i * height, width, height);
             }
             for (int i = 14; i < 20; i++) {
+                animations[i] = animations[i-6];
+            }
+            for (int i = 20; i < 26; i++) {
                 animations[i] = animations[i-6];
             }
         } catch (Exception e) {
@@ -41,13 +44,15 @@ public class Laser extends GameObject {
     }
 
     public void update() {
-        aniTick++;
-        if (aniTick >= ANI_SPEED) {
-            aniTick = 0;
-            aniIndex++;
-            if (aniIndex >= animations.length) {
-                aniIndex = 0;
-                active = false;
+        if(active){
+            aniTick++;
+            if (aniTick >= 18) {
+                aniTick = 0;
+                aniIndex++;
+                if (aniIndex >= animations.length) {
+                    aniIndex = 0;
+                    active = false;
+                }
             }
         }
     }
@@ -62,7 +67,8 @@ public class Laser extends GameObject {
         g.drawRect((int) this.hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
-    public void changeHitbox(int y){
+    public void changeHitbox(int x,int y){
+        hitbox.x = x;
         hitbox.y = y;
     }
 }

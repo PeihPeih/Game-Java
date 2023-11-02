@@ -26,7 +26,7 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
 
-        int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel()-1-FINAL_BOSS_WIDTH/2;
+        int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel()+50 ;
         int finalBossY = Game.GAME_HEIGHT/2-FINAL_BOSS_HEIGHT/2;
         this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
 
@@ -34,24 +34,18 @@ public class EnemyManager {
     }
 
     public void update(int[][] lvlData, Player player) {
-        boolean isAnyActive = false;
         for (FireDemon d : fireDemons) {
             d.update(lvlData, player);
-            isAnyActive = true;
         }
         for (FrostDemon d : frostDemons) {
             d.update(lvlData, player);
-            isAnyActive = true;
         }
         for (ShadowDemon d : shadowDemons) {
             d.update(lvlData, player);
-            isAnyActive = true;
         }
         if(finalBoss.isActive()){
             finalBoss.update(lvlData);
         }
-//        if (!isAnyActive)
-//            playing.setLevelCompleted(true);
     }
 
     public void draw(Graphics g, int xLvlOffset) {
