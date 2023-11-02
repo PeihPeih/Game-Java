@@ -158,7 +158,6 @@ public class Playing extends State implements Statemethods {
             player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 
-
             if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
                 if (player.getHitbox().x >= levelManager.getCurrentLevel().getWidthLevel() * 97 / 100) {
                     enemyManager.getFinalBoss().setCanMove(true);

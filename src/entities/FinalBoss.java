@@ -28,6 +28,7 @@ public class FinalBoss extends Entity {
     private float airSpeed = 0.5f * Game.SCALE;
     private boolean active = true;
     private boolean canMove = false;
+    private boolean canUpdate = false;
     private ArrayList<ProjectileBoss> projectiles;
     private Laser laser;
 
@@ -55,11 +56,11 @@ public class FinalBoss extends Entity {
         this.currentHealth = maxHeath;
         this.enemyState = IDLE;
         this.projectiles = new ArrayList<>();
-        this.laser = new Laser((int) (hitbox.x + 72 * Game.SCALE - LASER_WIDTH), (int) (hitbox.y));
+        this.laser = new Laser((int) (hitbox.x), (int) (hitbox.y));
     }
 
     private void loadsAnimation() {
-        this.animations = new BufferedImage[8][18];
+        this.animations = new BufferedImage[8][26];
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/demon/Final Boss/sprite_sheet.png"));
             for (int i = 0; i < 7; i++) {
@@ -70,7 +71,7 @@ public class FinalBoss extends Entity {
             for (int i = 9; i < 14; i++) {
                 animations[SHOOT][i] = animations[SHOOT][8];
             }
-            for (int i = 7; i < 18; i++) {
+            for (int i = 7; i < 26; i++) {
                 animations[LASER_CASTING][i] = animations[LASER_CASTING][6];
             }
             for (int j = 8; j < 16; j++) {
@@ -98,12 +99,15 @@ public class FinalBoss extends Entity {
     }
 
     public void update(int[][] lvlData) {
-        if(canMove){
-            updateTimer();
-            updateAnimationTicks();
-            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState!=HURT && enemyState != PUNCH) {
+        if (canMove) {
+            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState != HURT && enemyState != PUNCH) {
                 updatePos(lvlData);
             }
+        }
+        if (canUpdate) {
+            updateTimer();
+            updateAnimationTicks();
+
             updateProjectile(lvlData);
             updateLaser();
         }
@@ -119,11 +123,19 @@ public class FinalBoss extends Entity {
 
     private void updatePos(int[][] lvlData) {
         float ySpeed = 0;
+        float xSpeed = -0.25f * Game.SCALE;
 
         if (airDir == UP) {
             ySpeed = -airSpeed;
         } else {
             ySpeed = airSpeed;
+        }
+
+        hitbox.x += xSpeed;
+        if (hitbox.x <= playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2) {
+            hitbox.x = playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2;
+            canUpdate = true;
+
         }
 
         if (CanMoveHere(hitbox.x, hitbox.y + ySpeed, hitbox.width, hitbox.height, lvlData)) {
@@ -151,7 +163,7 @@ public class FinalBoss extends Entity {
             case 0 * 180:
                 setState(BUFF_ARMOR);
                 return;
-            case 2*180:
+            case 2 * 180:
                 setState(PUNCH);
                 return;
             case 6 * 180:
@@ -216,16 +228,16 @@ public class FinalBoss extends Entity {
     }
 
     private void shoot() {
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 4)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE - PROJECTILE_HEIGHT * 2)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 2)));
-        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 36 * 3 * Game.SCALE), (int) (hitbox.y + 6 * 3 * Game.SCALE + PROJECTILE_HEIGHT * 4)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * 2)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * 1)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * 0)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * -1)));
+        this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * -2)));
         canShoot = false;
     }
 
     private void laser() {
-        laser.changeHitbox((int) hitbox.y + 10);
+        laser.changeHitbox((int) (hitbox.x + 92 * Game.SCALE - LASER_WIDTH), (int) hitbox.y + 10);
         laser.setActive(true);
         canLaser = false;
     }
@@ -294,7 +306,7 @@ public class FinalBoss extends Entity {
         this.active = active;
     }
 
-    public void setCanMove(boolean canMove){
+    public void setCanMove(boolean canMove) {
         this.canMove = canMove;
     }
 

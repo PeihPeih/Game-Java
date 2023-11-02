@@ -2,11 +2,11 @@ package utilz;
 
 import main.Game;
 
-public class constants{
+public class constants {
     public static int ANI_SPEED = 25;
 
     // Final boss
-    public static class FinalBossConstants{
+    public static class FinalBossConstants {
         public static final int IDLE = 0;
         public static final int BUFF_DAMAGE = 1;
         public static final int SHOOT = 2;
@@ -18,18 +18,18 @@ public class constants{
 
         public static final int FINAL_BOSS_WIDTH_DEFAULT = 300;
         public static final int FINAL_BOSS_HEIGHT_DEFAULT = 300;
-        public static final int FINAL_BOSS_WIDTH = (int)(FINAL_BOSS_WIDTH_DEFAULT*Game.SCALE);
-        public static final int FINAL_BOSS_HEIGHT = (int)(FINAL_BOSS_HEIGHT_DEFAULT*Game.SCALE);
+        public static final int FINAL_BOSS_WIDTH = (int) (FINAL_BOSS_WIDTH_DEFAULT * Game.SCALE);
+        public static final int FINAL_BOSS_HEIGHT = (int) (FINAL_BOSS_HEIGHT_DEFAULT * Game.SCALE);
 
-        public static final int PROJECTILE_DEFAULT_WIDTH = 32*3;
-        public static final int PROJECTILE_DEFAULT_HEIGHT = 14*3;
+        public static final int PROJECTILE_DEFAULT_WIDTH = 100 * 3;
+        public static final int PROJECTILE_DEFAULT_HEIGHT = 100 * 3;
 
         public static final int PROJECTILE_WIDTH = (int) (Game.SCALE * PROJECTILE_DEFAULT_WIDTH);
         public static final int PROJECTILE_HEIGHT = (int) (Game.SCALE * PROJECTILE_DEFAULT_HEIGHT);
-        public static final float SPEED = 1.5f * Game.SCALE;
+        public static final float SPEED = 1.7f * Game.SCALE;
 
-        public static int GetAniSpeedAction(int boss_action){
-            switch (boss_action){
+        public static int GetAniSpeedAction(int boss_action) {
+            switch (boss_action) {
                 case DEAD:
                     return 32;
             }
@@ -37,7 +37,7 @@ public class constants{
         }
 
         public static int GetSpriteAmount(int boss_action) {
-            switch (boss_action){
+            switch (boss_action) {
                 case IDLE:
                     return 4;
                 case BUFF_DAMAGE:
@@ -65,32 +65,32 @@ public class constants{
         public static final int FROST_DEMON = 39;
         public static final int SHADOW_DEMON = 49;
 
-        public static  final int IDLE = 2;
-        public static  final int WALK = 3;
-        public static  final int CLEAVE = 4;
-        public static final int TAKE_HIT =  5;
+        public static final int IDLE = 2;
+        public static final int WALK = 3;
+        public static final int CLEAVE = 4;
+        public static final int TAKE_HIT = 5;
         public static final int DEAD = 6;
 
         public static final int DEMON_WIDTH_DEFAULT = 120;
         public static final int DEMON_HEIGHT_DEFAULT = 80;
 
-        public static final int DEMON_WIDTH = (int)(DEMON_WIDTH_DEFAULT * Game.SCALE);
-        public static final int DEMON_HEIGHT = (int)(DEMON_HEIGHT_DEFAULT * Game.SCALE);
+        public static final int DEMON_WIDTH = (int) (DEMON_WIDTH_DEFAULT * Game.SCALE);
+        public static final int DEMON_HEIGHT = (int) (DEMON_HEIGHT_DEFAULT * Game.SCALE);
 
-        public static final int FIRE_DEMON_DRAWOFFSET_X = (int)(50 * Game.SCALE);
-        public static final int FIRE_DEMON_DRAWOFFSET_Y = (int)(38 * Game.SCALE);
+        public static final int FIRE_DEMON_DRAWOFFSET_X = (int) (50 * Game.SCALE);
+        public static final int FIRE_DEMON_DRAWOFFSET_Y = (int) (38 * Game.SCALE);
 
-        public static final int FROST_DEMON_DRAWOFFSET_X = (int)(30 * Game.SCALE);
-        public static final int FROST_DEMON_DRAWOFFSET_Y = (int)(18 * Game.SCALE);
+        public static final int FROST_DEMON_DRAWOFFSET_X = (int) (30 * Game.SCALE);
+        public static final int FROST_DEMON_DRAWOFFSET_Y = (int) (18 * Game.SCALE);
 
-        public static final int SHADOW_DEMON_DRAWOFFSET_X = (int)(70 * Game.SCALE);
-        public static final int SHADOW_DEMON_DRAWOFFSET_Y = (int)(38 * Game.SCALE);
+        public static final int SHADOW_DEMON_DRAWOFFSET_X = (int) (70 * Game.SCALE);
+        public static final int SHADOW_DEMON_DRAWOFFSET_Y = (int) (38 * Game.SCALE);
 
 
-        public static int GetSpriteAmount(int enemy_type,int enemy_state){
-            switch(enemy_type){
+        public static int GetSpriteAmount(int enemy_type, int enemy_state) {
+            switch (enemy_type) {
                 case FIRE_DEMON:
-                    switch(enemy_state){
+                    switch (enemy_state) {
                         case IDLE:
                             return 6;
                         case WALK:
@@ -103,7 +103,7 @@ public class constants{
                             return 22;
                     }
                 case FROST_DEMON:
-                    switch(enemy_state){
+                    switch (enemy_state) {
                         case IDLE:
                             return 6;
                         case WALK:
@@ -116,7 +116,7 @@ public class constants{
                             return 16;
                     }
                 case SHADOW_DEMON:
-                    switch(enemy_state){
+                    switch (enemy_state) {
                         case IDLE:
                             return 8;
                         case WALK:
@@ -132,8 +132,8 @@ public class constants{
             return 0;
         }
 
-        public static int GetMaxHeath(int enemy_type){
-            switch (enemy_type){
+        public static int GetMaxHeath(int enemy_type) {
+            switch (enemy_type) {
                 case FIRE_DEMON:
                     return 100;
                 case FROST_DEMON:
@@ -152,12 +152,12 @@ public class constants{
 
         public static final int BULLET_WIDTH = (int) (Game.SCALE * BULLET_DEFAULT_WIDTH);
         public static final int BULLET_HEIGHT = (int) (Game.SCALE * BULLET_DEFAULT_HEIGHT);
-        public static final float SPEED = 1.2f * Game.SCALE;
+        public static final float SPEED = 1.2f * 2 * Game.SCALE;
     }
 
     // Projectile of Boss
 
-    public static class Laser{
+    public static class Laser {
         public static final int LASER_DEFAULT_WIDTH = 1500;
         public static final int LASER_DEFAULT_HEIGHT = 150;
 
@@ -168,12 +168,13 @@ public class constants{
     public static class ObjectConstants {
         public static final int BULLET = 0;
         public static final int BOMB = 1;
+        public static final int PROJECTILES = 123;
         public static final int HEART = 178;
 
         public static final int HEART_DEFAULT_WIDTH = 20;
         public static final int HEART_DEFAULT_HEIGHT = 20;
-        public static final int HEART_WIDTH = (int)(HEART_DEFAULT_WIDTH*Game.SCALE);
-        public static final int HEART_HEIGHT = (int)(HEART_DEFAULT_HEIGHT*Game.SCALE);
+        public static final int HEART_WIDTH = (int) (HEART_DEFAULT_WIDTH * Game.SCALE);
+        public static final int HEART_HEIGHT = (int) (HEART_DEFAULT_HEIGHT * Game.SCALE);
 
         public static final int BOMB_WIDTH = 30;
         public static final int BOMB_HEIGHT = 50;
@@ -182,6 +183,8 @@ public class constants{
             switch (object_type) {
                 case BULLET:
                     return 3;
+                case PROJECTILES:
+                    return 6;
             }
             return 1;
         }
