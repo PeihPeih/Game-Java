@@ -247,6 +247,7 @@ public class Playing extends State implements Statemethods {
     }
     public void  resetLvl(){
         resetALL();
+        lvlcompleted=false;
         levelManager.loadLevel();
 
     }
