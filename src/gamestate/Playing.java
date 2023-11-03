@@ -208,8 +208,11 @@ public class Playing extends State implements Statemethods {
         } else if (gameover) {
             gameOverOverlay.draw(g);
         }
-        else if(lvlcompleted)
+        else if(lvlcompleted){
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             levelCompletedOverlay.draw(g);
+        }
     }
 
     public void destroy() {
