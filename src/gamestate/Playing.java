@@ -238,9 +238,15 @@ public class Playing extends State implements Statemethods {
         gameover = false;
         lvlcompleted=false;
         checkBorder = true;
+        levelCompletedOverlay.setAniIndex(0);
         player.resetALl();
         enemyManager.resetEnemies();
         objectManager.resetAllObjects();
+    }
+    public void  resetLvl(){
+        resetALL();
+        levelManager.loadLevel();
+
     }
 
     @Override
@@ -366,6 +372,8 @@ public class Playing extends State implements Statemethods {
     public LevelManager getLevelManager() {
         return levelManager;
     }
+
+
 
 
 }

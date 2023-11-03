@@ -94,8 +94,8 @@ public class LevelCompletedOverlay {
     public void mouseReleased(MouseEvent e){
         if(isIn(menu,e))
             if(menu.isMousePressed()){
+                playing.resetLvl();
                 Gamestate.state=Gamestate.MENU;
-                playing.resetALL();
             }
         if(isIn(next,e))
             if(next.isMousePressed()){
@@ -111,5 +111,10 @@ public class LevelCompletedOverlay {
             menu.setMousePressed(true);
         if(isIn(next,e))
             next.setMousePressed(true);
+    }
+
+    public void setAniIndex(int aniIndex) {
+        this.aniIndex = aniIndex;
+        check=false;
     }
 }
