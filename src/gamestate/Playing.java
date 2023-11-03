@@ -160,7 +160,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void update() {//update
-       // gameover = player.IsDeath();
+       gameover = player.IsDeath();
 
         if (!paused && !gameover && !lvlcompleted) {
             levelManager.update();
@@ -191,7 +191,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
-       // gameover = player.IsDeath();
+        gameover = player.IsDeath();
         drawBackground(g, xLvlOffset);
 
         drawCloud(g, xLvlOffset);
