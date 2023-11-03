@@ -3,9 +3,7 @@ package gamestate;
 import UI.GameOverOverlay;
 import UI.LevelCompletedOverlay;
 import UI.PauseOverlay;
-
 import entities.EnemyManager;
-import entities.FinalBoss;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
@@ -35,6 +33,7 @@ public class Playing extends State implements Statemethods {
 
     private boolean paused = false;
     private boolean checkBorder = true;
+    private boolean existBoss = false;
 
     private boolean gameover;
     private boolean lvlcompleted = false ;
@@ -169,8 +168,13 @@ public class Playing extends State implements Statemethods {
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 
             if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
+                if(!existBoss){
+                    existBoss = true;
+                    enemyManager.getFinalBoss().setExist(true);
+                }
+
                 if (player.getHitbox().x >= levelManager.getCurrentLevel().getWidthLevel() * 97 / 100) {
-                  //  enemyManager.getFinalBoss().setCanMove(true);
+                    enemyManager.getFinalBoss().setCanMove(true);
                     objectManager.setSpawn(false);
                     checkBorder = false;
                 }
@@ -240,6 +244,7 @@ public class Playing extends State implements Statemethods {
         gameover = false;
         lvlcompleted=false;
         checkBorder = true;
+        existBoss = false;
         levelCompletedOverlay.setAniIndex(0);
         player.resetALl();
         enemyManager.resetEnemies();

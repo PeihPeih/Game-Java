@@ -20,7 +20,7 @@ public class EnemyManager {
     private ArrayList<FireDemon> fireDemons = new ArrayList<>();
     private ArrayList<FrostDemon> frostDemons = new ArrayList<>();
     private ArrayList<ShadowDemon> shadowDemons = new ArrayList<>();
-    // private FinalBoss finalBoss;
+     private FinalBoss finalBoss;
 
     // Init
     public EnemyManager(Playing playing) {
@@ -37,6 +37,7 @@ public class EnemyManager {
     }
 
     public void update(int[][] lvlData, Player player) {
+        boolean isAnyActive = false;
         for (FireDemon d : fireDemons) {
             d.update(lvlData, player);
             if(d.isActive()) isAnyActive = true;
@@ -49,7 +50,7 @@ public class EnemyManager {
             d.update(lvlData, player);
             if(d.isActive())  isAnyActive = true;
         }
-         if(finalBoss.isActive()){
+         if(finalBoss.isExist()){
             finalBoss.update(lvlData);
             isAnyActive = true;
         }

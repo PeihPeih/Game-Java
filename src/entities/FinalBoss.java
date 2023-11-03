@@ -39,6 +39,7 @@ public class FinalBoss extends Entity {
     private boolean canShoot = true;
     private boolean canLaser = true;
     private boolean hurted = true;
+    private boolean exist = false;
 
     private float damage = 1;
     private float armor = 0;
@@ -100,7 +101,7 @@ public class FinalBoss extends Entity {
 
     public void update(int[][] lvlData) {
         if (canMove) {
-            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState != HURT && enemyState != PUNCH) {
+            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState != HURT && enemyState != PUNCH && enemyState != DEAD) {
                 updatePos(lvlData);
             }
         }
@@ -132,10 +133,9 @@ public class FinalBoss extends Entity {
         }
 
         hitbox.x += xSpeed;
-        if (hitbox.x <= playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2) {
+        if (hitbox.x <= playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2 ) {
             hitbox.x = playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2;
             canUpdate = true;
-
         }
 
         if (CanMoveHere(hitbox.x, hitbox.y + ySpeed, hitbox.width, hitbox.height, lvlData)) {
@@ -204,6 +204,8 @@ public class FinalBoss extends Entity {
                     case DEAD:
                         active = false;
                         canMove = false;
+                        canUpdate = false;
+                        exist = false;
                         return;
                     case BUFF_ARMOR:
                         armor += 0.1;
@@ -284,15 +286,17 @@ public class FinalBoss extends Entity {
     }
 
     public void resetAll() {
+        setState(IDLE);
         active = true;
         canMove = false;
         isDead = false;
+        exist = false;
         canLaser = true;
         canShoot = true;
+        canUpdate = false;
         hitbox.x = x;
         hitbox.y = y;
         currentHealth = maxHeath;
-        setState(IDLE);
         projectiles.clear();
         laser.setActive(false);
         timer = 0;
@@ -309,6 +313,7 @@ public class FinalBoss extends Entity {
     public void setCanMove(boolean canMove) {
         this.canMove = canMove;
     }
+
 
     public boolean isDead() {
         return isDead;
@@ -328,5 +333,13 @@ public class FinalBoss extends Entity {
 
     public boolean isHurt() {
         return hurted;
+    }
+
+    public void setExist(boolean exist){
+        this.exist = exist;
+    }
+
+    public boolean isExist(){
+        return exist;
     }
 }
