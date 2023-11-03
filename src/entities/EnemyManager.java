@@ -20,32 +20,41 @@ public class EnemyManager {
     private ArrayList<FireDemon> fireDemons = new ArrayList<>();
     private ArrayList<FrostDemon> frostDemons = new ArrayList<>();
     private ArrayList<ShadowDemon> shadowDemons = new ArrayList<>();
-    private FinalBoss finalBoss;
+    // private FinalBoss finalBoss;
 
     // Init
     public EnemyManager(Playing playing) {
         this.playing = playing;
+
 
         int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel()+50 ;
         int finalBossY = Game.GAME_HEIGHT/2-FINAL_BOSS_HEIGHT/2;
         this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
 
         loadEnemyImgs();
+        loadEnemyImgs();
+
     }
 
     public void update(int[][] lvlData, Player player) {
         for (FireDemon d : fireDemons) {
             d.update(lvlData, player);
+            if(d.isActive()) isAnyActive = true;
         }
         for (FrostDemon d : frostDemons) {
             d.update(lvlData, player);
+            if(d.isActive())  isAnyActive = true;
         }
         for (ShadowDemon d : shadowDemons) {
             d.update(lvlData, player);
+            if(d.isActive())  isAnyActive = true;
         }
-        if(finalBoss.isActive()){
+         if(finalBoss.isActive()){
             finalBoss.update(lvlData);
+            isAnyActive = true;
         }
+        playing.setLvlcompleted(!isAnyActive);
+
     }
 
     public void draw(Graphics g, int xLvlOffset) {
@@ -84,7 +93,7 @@ public class EnemyManager {
         }
 
         // Final boss
-        finalBoss.draw(g,xLvlOffset);
+         finalBoss.draw(g,xLvlOffset);
     }
 
     // Load enemies's animation
@@ -218,8 +227,8 @@ public class EnemyManager {
 
     public void loadEnemies(Level level) {
         fireDemons = level.getFireDemons();
-        frostDemons=level.getFrostDemons();
-        shadowDemons=level.getShadowDemons();
+        frostDemons = level.getFrostDemons();
+        shadowDemons = level.getShadowDemons();
     }
 
     // Check xem bị bắn hay không
@@ -252,7 +261,7 @@ public class EnemyManager {
                 }
         }
 
-        if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
+     if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
             if(finalBoss.getHitbox().intersects(attackBox)){
                 if(finalBoss.isHurt()){
                     finalBoss.hurt(playing.getPlayer().getDamage() - (int)finalBoss.getArmor());
@@ -263,7 +272,7 @@ public class EnemyManager {
     }
 
     public FinalBoss getFinalBoss(){
-        return finalBoss;
+      return finalBoss;
     }
 
     public void resetEnemies() {

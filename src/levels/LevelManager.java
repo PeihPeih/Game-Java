@@ -14,7 +14,7 @@ public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
-    private int lvlIndex = 1;
+    public int lvlIndex = 0;
 
     // Khởi tạo
     public LevelManager(Game game){
@@ -119,6 +119,15 @@ public class LevelManager {
         game.getPlaying().getObjectManager().loadObjects(newLevel);
     }
 
+    public void loadLevel(){
+        lvlIndex=0;
+        Level newLevel = levels.get(lvlIndex);
+        game.getPlaying().getEnemyManager().loadEnemies(newLevel);
+        game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
+        game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+        game.getPlaying().getObjectManager().loadObjects(newLevel);
+    }
+
     // Lấy level hiện tại
     public Level getCurrentLevel(){
         return levels.get(lvlIndex);
@@ -131,5 +140,6 @@ public class LevelManager {
     public int getLvlIndex(){
         return lvlIndex;
     }
+
 
 }

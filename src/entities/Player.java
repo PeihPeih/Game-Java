@@ -442,7 +442,7 @@ public class Player extends Entity {
     public void checkPlayerHit(ProjectileBoss b) {
         Rectangle attackBox = b.getHitbox().getBounds();
         if (hitbox.intersects(attackBox)) {
-            minusHeart((int) playing.getEnemyManager().getFinalBoss().getDamage());
+           // minusHeart((int) playing.getEnemyManager().getFinalBoss().getDamage());
             b.setActive(false);
         }
     }

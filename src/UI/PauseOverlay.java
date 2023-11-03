@@ -2,6 +2,7 @@ package UI;
 
 import gamestate.Gamestate;
 import gamestate.Playing;
+import levels.LevelManager;
 import main.Game;
 import utilz.constants;
 
@@ -133,9 +134,9 @@ public class PauseOverlay {
         }
         else if(isIn(e,menuB)){
             if(menuB.isMousePressed()){
-                Gamestate.state=Gamestate.MENU;
+                playing.resetLvl();
                 playing.unpausedGame();
-                playing.resetALL();
+                Gamestate.state=Gamestate.MENU;
             }
         }
         else if(isIn(e,replayB)){
