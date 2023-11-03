@@ -26,9 +26,10 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
 
-        int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2;
-        int finalBossY = Game.GAME_HEIGHT / 2 - FINAL_BOSS_HEIGHT / 2;
-        //   this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
+
+        int finalBossX = playing.getLevelManager().getCurrentLevel().getWidthLevel()+50 ;
+        int finalBossY = Game.GAME_HEIGHT/2-FINAL_BOSS_HEIGHT/2;
+        this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
 
         loadEnemyImgs();
         loadEnemyImgs();
@@ -36,7 +37,6 @@ public class EnemyManager {
     }
 
     public void update(int[][] lvlData, Player player) {
-        boolean isAnyActive = false;
         for (FireDemon d : fireDemons) {
             d.update(lvlData, player);
             if(d.isActive()) isAnyActive = true;
@@ -49,9 +49,10 @@ public class EnemyManager {
             d.update(lvlData, player);
             if(d.isActive())  isAnyActive = true;
         }
-        //  if(finalBoss.isActive()){
-        //     finalBoss.update(lvlData);
-        //}
+         if(finalBoss.isActive()){
+            finalBoss.update(lvlData);
+            isAnyActive = true;
+        }
         playing.setLvlcompleted(!isAnyActive);
 
     }
@@ -92,7 +93,7 @@ public class EnemyManager {
         }
 
         // Final boss
-        // finalBoss.draw(g,xLvlOffset);
+         finalBoss.draw(g,xLvlOffset);
     }
 
     // Load enemies's animation
@@ -260,19 +261,19 @@ public class EnemyManager {
                 }
         }
 
-//        if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
-//            if(finalBoss.getHitbox().intersects(attackBox)){
-//                if(finalBoss.isHurt()){
-//                    finalBoss.hurt(playing.getPlayer().getDamage() - (int)finalBoss.getArmor());
-//                    b.setActive(false);
-//                }
-//            }
-//        }
+     if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
+            if(finalBoss.getHitbox().intersects(attackBox)){
+                if(finalBoss.isHurt()){
+                    finalBoss.hurt(playing.getPlayer().getDamage() - (int)finalBoss.getArmor());
+                    b.setActive(false);
+                }
+            }
+        }
     }
 
-    //public FinalBoss getFinalBoss(){
-    //  return finalBoss;
-    //  }
+    public FinalBoss getFinalBoss(){
+      return finalBoss;
+    }
 
     public void resetEnemies() {
         for (FireDemon d : fireDemons) {
@@ -284,6 +285,6 @@ public class EnemyManager {
         for (ShadowDemon d : shadowDemons) {
             d.resetEnemy();
         }
-        //finalBoss.resetAll();
+        finalBoss.resetAll();
     }
 }

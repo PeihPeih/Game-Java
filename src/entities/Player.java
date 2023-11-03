@@ -95,7 +95,6 @@ public class Player extends Entity {
     private void updateBullet() {
         for (int i =0;i<bullets.size();i++) {
             Bullet b = bullets.get(i);
-            b.update();
             if (b.isActive()) {
                 b.update();
                 playing.checkEnemyHit(b);
@@ -103,7 +102,6 @@ public class Player extends Entity {
                     b.setActive(false);
             }
         }
-        System.out.println(bullets.size());
     }
 
     // Lay du lieu tu lvl de chuan bi cho collision
