@@ -14,3 +14,7 @@ Tuần 3, 4 đã làm được:
 1. Thêm quái, thiên thạch
 2. Thêm phần combat: Thiên thạch vs player, player vs quái
 3. Thêm phần death screen, replay game
+
+Tuần 5 làm được:
+1. Update phần next level
+2. Thêm boss
