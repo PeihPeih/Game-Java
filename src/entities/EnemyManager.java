@@ -54,7 +54,7 @@ public class EnemyManager {
             finalBoss.update(lvlData);
             isAnyActive = true;
         }
-        playing.setLvlcompleted(!isAnyActive);
+        playing.setLvlcompleted(false);
 
     }
 

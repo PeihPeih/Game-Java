@@ -14,7 +14,7 @@ public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
-    public int lvlIndex = 0;
+    public int lvlIndex = 2;
 
     // Khởi tạo
     public LevelManager(Game game){

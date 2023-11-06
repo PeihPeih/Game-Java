@@ -63,6 +63,10 @@ public class Level {
         return lvlData[y][x];
     }
 
+    public BufferedImage getImage(){
+        return this.img;
+    }
+
     public int[][] getLevelData() {
         return lvlData;
     }

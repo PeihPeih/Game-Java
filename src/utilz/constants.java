@@ -1,6 +1,7 @@
 package utilz;
 
 import main.Game;
+import objects.Trap;
 
 public class constants {
     public static int ANI_SPEED = 25;
@@ -23,10 +24,15 @@ public class constants {
 
         public static final int PROJECTILE_DEFAULT_WIDTH = 100 * 3;
         public static final int PROJECTILE_DEFAULT_HEIGHT = 100 * 3;
-
         public static final int PROJECTILE_WIDTH = (int) (Game.SCALE * PROJECTILE_DEFAULT_WIDTH);
         public static final int PROJECTILE_HEIGHT = (int) (Game.SCALE * PROJECTILE_DEFAULT_HEIGHT);
         public static final float SPEED = 1.7f * Game.SCALE;
+
+        public static final int TRAP_WIDTH_DEFAULT = 16;
+        public static final int TRAP_HEIGHT_DEFAULT = 32;
+        public static final int TRAP_WIDTH = (int)(TRAP_WIDTH_DEFAULT*Game.SCALE);
+        public static final int TRAP_HEIGHT = (int)(TRAP_HEIGHT_DEFAULT*Game.SCALE);
+
 
         public static int GetAniSpeedAction(int boss_action) {
             switch (boss_action) {
@@ -53,7 +59,7 @@ public class constants {
                 case DEAD:
                     return 14;
                 case HURT:
-                    return 16;
+                    return 21;
             }
             return 8;
         }
@@ -169,6 +175,7 @@ public class constants {
         public static final int BULLET = 0;
         public static final int BOMB = 1;
         public static final int PROJECTILES = 123;
+        public static final int TRAP = 234;
         public static final int HEART = 178;
 
         public static final int HEART_DEFAULT_WIDTH = 20;
@@ -185,6 +192,8 @@ public class constants {
                     return 3;
                 case PROJECTILES:
                     return 6;
+                case TRAP:
+                    return 15;
             }
             return 1;
         }

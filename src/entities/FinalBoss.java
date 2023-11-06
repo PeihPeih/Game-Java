@@ -1,20 +1,24 @@
 package entities;
 
 import gamestate.Playing;
+import levels.Level;
 import main.Game;
 import objects.Bullet;
 import objects.Laser;
 import objects.ProjectileBoss;
+import objects.Trap;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static utilz.HelpMethods.*;
 import static utilz.constants.Direction.*;
 import static utilz.constants.FinalBossConstants.*;
 import static utilz.constants.Laser.LASER_WIDTH;
+import static utilz.constants.ObjectConstants.TRAP;
 
 public class FinalBoss extends Entity {
     private Playing playing;
@@ -31,6 +35,8 @@ public class FinalBoss extends Entity {
     private boolean canUpdate = false;
     private ArrayList<ProjectileBoss> projectiles;
     private Laser laser;
+    private int[][] trapPos;
+    private ArrayList<Trap> traps;
 
     private int xOffset = (int) (75 * Game.SCALE);
     private int yOffset = (int) (72 * Game.SCALE);
@@ -40,12 +46,13 @@ public class FinalBoss extends Entity {
     private boolean canLaser = true;
     private boolean hurted = true;
     private boolean exist = false;
+    private boolean canSetTrap = false;
 
     private float damage = 1;
     private float armor = 0;
 
     // Time
-    private int timerMax = 20 * 180;
+    private int timerMax = 22 * 180;
     private int timer = 0;
 
 
@@ -57,7 +64,9 @@ public class FinalBoss extends Entity {
         this.currentHealth = maxHeath;
         this.enemyState = IDLE;
         this.projectiles = new ArrayList<>();
+        this.traps = new ArrayList<>();
         this.laser = new Laser((int) (hitbox.x), (int) (hitbox.y));
+        this.trapPos = getTrapPos(playing.getLevelManager().getCurrentLevel());
     }
 
     private void loadsAnimation() {
@@ -75,8 +84,12 @@ public class FinalBoss extends Entity {
             for (int i = 7; i < 26; i++) {
                 animations[LASER_CASTING][i] = animations[LASER_CASTING][6];
             }
-            for (int j = 8; j < 16; j++) {
+            for (int j = 8; j < 14; j++) {
                 animations[HURT][j] = animations[HURT][7];
+            }
+            for(int j = 14; j < 21;j++){
+                animations[HURT][j] = animations[HURT][20-j];
+
             }
             for (int j = 7; j < 15; j++) {
                 animations[PUNCH][j] = animations[PUNCH][6];
@@ -111,6 +124,13 @@ public class FinalBoss extends Entity {
 
             updateProjectile(lvlData);
             updateLaser();
+            updateTrap();
+        }
+    }
+
+    private void updateTrap() {
+        for(int i=0;i< traps.size();i++){
+            traps.get(i).update();
         }
     }
 
@@ -133,7 +153,7 @@ public class FinalBoss extends Entity {
         }
 
         hitbox.x += xSpeed;
-        if (hitbox.x <= playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2 ) {
+        if (hitbox.x <= playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2) {
             hitbox.x = playing.getLevelManager().getCurrentLevel().getWidthLevel() - 1 - FINAL_BOSS_WIDTH / 2;
             canUpdate = true;
         }
@@ -164,6 +184,7 @@ public class FinalBoss extends Entity {
                 setState(BUFF_ARMOR);
                 return;
             case 2 * 180:
+                canSetTrap = true;
                 setState(PUNCH);
                 return;
             case 6 * 180:
@@ -198,6 +219,11 @@ public class FinalBoss extends Entity {
                     if (canLaser) laser();
                 }
             }
+            if(enemyState == PUNCH){
+                if(aniIndex>=6){
+                    if(canSetTrap) setTrap();
+                }
+            }
             if (aniIndex >= GetSpriteAmount(enemyState)) {
                 aniIndex = 0;
                 switch (enemyState) {
@@ -229,6 +255,17 @@ public class FinalBoss extends Entity {
         }
     }
 
+    private void setTrap() {
+
+        for(int i=0;i<trapPos.length;i++){
+            for(int j=0;j<trapPos[i].length;j++){
+                if(trapPos[i][j]==1) this.traps.add(new Trap((int)(j*Game.TILES_SIZE+(Game.TILES_SIZE/2-TRAP_WIDTH/2)), (int)(i*Game.TILES_SIZE), TRAP));
+            }
+            System.out.println();
+        }
+        canSetTrap = false;
+    }
+
     private void shoot() {
         this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * 2)));
         this.projectiles.add(new ProjectileBoss((int) (hitbox.x - 15 * Game.SCALE), (int) (hitbox.y + 32 - 120 * 1)));
@@ -254,6 +291,7 @@ public class FinalBoss extends Entity {
                 }
             }
         }
+
     }
 
     public void draw(Graphics g, int xLvlOffset) {
@@ -261,6 +299,7 @@ public class FinalBoss extends Entity {
             g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset) - xLvlOffset + width, (int) (hitbox.y - yOffset), width * -1, height, null);
             drawProjectiles(g, xLvlOffset);
             drawLaser(g, xLvlOffset);
+            drawTraps(g,xLvlOffset);
         }
     }
 
@@ -276,6 +315,12 @@ public class FinalBoss extends Entity {
         }
     }
 
+    private void drawTraps(Graphics g, int xLvlOffset){
+        for(int i=0;i<traps.size();i++){
+            traps.get(i).draw(g,xLvlOffset);
+        }
+    }
+
     public void hurt(int amount) {
         currentHealth -= amount;
         if (currentHealth <= 0) {
@@ -283,6 +328,22 @@ public class FinalBoss extends Entity {
             isDead = true;
 
         }
+    }
+
+    // Cái đầu là chiều dọc, cái sau là chiều ngang
+    private int[][] getTrapPos(Level level) {
+        int[][] pos = new int[Game.TILES_HEIGHT][level.getWidthLevel() / Game.TILES_SIZE];
+        BufferedImage image = level.getImage();
+        for (int j = 0; j < image.getHeight(); j++) {
+            for (int i = 0; i < image.getWidth(); i++) {
+                Color color = new Color(image.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == 234) {
+                    pos[j][i] = 1;
+                }
+            }
+        }
+        return pos;
     }
 
     public void resetAll() {
@@ -335,11 +396,11 @@ public class FinalBoss extends Entity {
         return hurted;
     }
 
-    public void setExist(boolean exist){
+    public void setExist(boolean exist) {
         this.exist = exist;
     }
 
-    public boolean isExist(){
+    public boolean isExist() {
         return exist;
     }
 }

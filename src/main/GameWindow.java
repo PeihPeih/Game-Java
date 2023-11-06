@@ -15,7 +15,7 @@ public class GameWindow {
 		jframe.setResizable(false); // K có nút điều chinh size window
 		jframe.pack(); // Fit the size of the window to the prefered size of the component
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Tạo nút exit (dấu X) ở góc
-
+		jframe.setTitle("Doom");
 		jframe.setLocationRelativeTo(null);        			   // dat game ve giua man hinh khi bat len
 
 		jframe.setVisible(true);	 						   // hien thi man hinh game (dat o cuoi de tranh loi)
