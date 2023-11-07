@@ -5,8 +5,10 @@ import java.awt.Graphics;
 import java.io.IOException;
 import java.util.Random;
 
+import UI.AudioOptions;
 import gamestate.Gamestate;
 import gamestate.Menu;
+import gamestate.Option;
 import gamestate.Playing;
 import utilz.LoadSave;
 
@@ -20,6 +22,8 @@ public class Game implements Runnable {
     private Gamestate gamestate;
     private Menu menu;
     private Playing playing;
+    private Option option;
+    private AudioOptions audioOptions;
 
     // SYSTEM
     private final int FPS_CAP = 120;    // FPS (frame per second) gioi han 1 giay lam moi bao nhieu frame
@@ -52,8 +56,10 @@ public class Game implements Runnable {
 
     // khởi tạo 1 đối tượng nh player, enemy,..
     private void innitClasses() throws IOException {
+        audioOptions = new AudioOptions();
         menu = new Menu(this);
         playing = new Playing(this);
+        option = new Option(this);
     }
     public void startGameLoop() {
         gameThread = new Thread(this);
@@ -108,7 +114,7 @@ public class Game implements Runnable {
                 break;
             }
             case OPTION -> {
-
+                option.update();
             }
             case QUIT -> {
                 System.exit(0);
@@ -131,6 +137,9 @@ public class Game implements Runnable {
                 playing.destroy();
                 break;
             }
+            case OPTION -> {
+                option.draw(g);
+            }
             default -> {
                 break;
             }
@@ -150,4 +159,11 @@ public class Game implements Runnable {
         return playing;
     }
 
+    public Option getOption() {
+        return option;
+    }
+
+    public AudioOptions getAudioOptions() {
+        return audioOptions;
+    }
 }
