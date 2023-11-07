@@ -22,6 +22,7 @@ import main.Game;
 import objects.Bullet;
 import objects.Laser;
 import objects.ProjectileBoss;
+import objects.Trap;
 import utilz.LoadSave;
 
 public class Player extends Entity {
@@ -454,6 +455,14 @@ public class Player extends Entity {
         }
     }
 
+    public void checkPlayerTrap(Trap t) {
+        Rectangle attackBox = t.getHitbox().getBounds();
+        if(hitbox.intersects(attackBox) && t.isActive()){
+            minusHeart(1);
+            t.setCanDamage(false);
+        }
+    }
+
     // Xóa khỏi mảng khi không cần
     public void destroy() {
         for (int i = 0; i < bullets.size(); i++) {
@@ -495,4 +504,6 @@ public class Player extends Entity {
     public int getDamage() {
         return this.damage;
     }
+
+
 }

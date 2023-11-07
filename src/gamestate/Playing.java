@@ -7,10 +7,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
-import objects.Bullet;
-import objects.Laser;
-import objects.ObjectManager;
-import objects.ProjectileBoss;
+import objects.*;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -157,6 +154,10 @@ public class Playing extends State implements Statemethods {
         player.checkLaserHit(ls);
     }
 
+    public void checkPlayerTrap(Trap t) {
+        player.checkPlayerTrap(t);
+    }
+
     @Override
     public void update() {//update
        gameover = player.IsDeath();
@@ -201,6 +202,9 @@ public class Playing extends State implements Statemethods {
         drawCloud(g, xLvlOffset);
 
         if (levelManager != null) levelManager.render(g, xLvlOffset);
+        if(enemyManager!=null){
+            enemyManager.getFinalBoss().drawTraps(g,xLvlOffset);
+        }
         if (player != null) player.render(g, xLvlOffset);
         if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
@@ -380,7 +384,6 @@ public class Playing extends State implements Statemethods {
     public LevelManager getLevelManager() {
         return levelManager;
     }
-
 
 
 

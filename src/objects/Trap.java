@@ -8,21 +8,21 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import static utilz.constants.ANI_SPEED;
 import static utilz.constants.FinalBossConstants.*;
-import static utilz.constants.ObjectConstants.*;
 import static utilz.constants.ObjectConstants.GetSpriteAmount;
 
 public class Trap extends GameObject {
 
     private BufferedImage[] image;
     private Rectangle2D.Float hitbox;
-
+    private boolean canDamage;
+    private boolean ok = true;
 
     public Trap(int x, int y, int objType) {
         super(x, y, objType);
         hitbox = new Rectangle2D.Float(x, y, TRAP_WIDTH, TRAP_HEIGHT);
         this.active = true;
+        this.canDamage = false;
         loadImages();
     }
 
@@ -33,14 +33,13 @@ public class Trap extends GameObject {
             for (int i = 0; i < 6; i++) {
                 image[i] = tmp.getSubimage(i * 16, 0, 16, 32);
             }
-            for (int i = 6; i < 10; i++) {
+            for(int i=6;i<9;i++){
                 image[i]=image[5];
             }
-            for(int i=10;i<15;i++){
-                image[i]=image[15-i];
+            for (int i = 9; i < 14; i++) {
+                image[i] = image[14 - i];
             }
 
-            System.out.println(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,12 +53,18 @@ public class Trap extends GameObject {
 
     private void updateAnimation() {
         aniTick++;
-        if (aniTick >= ANI_SPEED) {
+        if (aniTick >= 20) {
             aniTick = 0;
             aniIndex++;
+            if (ok && aniIndex >= 2) {
+                this.canDamage = true;
+                ok = false;
+            }
             if (aniIndex >= GetSpriteAmount(objType)) {
                 aniIndex = 0;
                 this.active = false;
+                ok = true;
+                this.canDamage = false;
             }
         }
     }
@@ -67,8 +72,8 @@ public class Trap extends GameObject {
     public void draw(Graphics g, int xLvlOffset) {
         if (active) {
             g.drawImage(image[aniIndex], (int) (this.hitbox.x - xLvlOffset), (int) (this.hitbox.y), TRAP_WIDTH, TRAP_HEIGHT, null);
-//            drawHitbox(g, xLvlOffset);
         }
+
     }
 
     private void drawHitbox(Graphics g, int xLvlOffset) {
@@ -78,5 +83,13 @@ public class Trap extends GameObject {
 
     public Rectangle2D.Float getHitbox() {
         return hitbox;
+    }
+
+    public void setCanDamage(boolean canDamage) {
+        this.canDamage = canDamage;
+    }
+
+    public boolean isCanDamage() {
+        return canDamage;
     }
 }
