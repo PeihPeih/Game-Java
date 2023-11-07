@@ -1,6 +1,6 @@
 package levels;
 
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -21,6 +21,7 @@ public class Level {
     private ArrayList<FrostDemon> frostDemons;
     private ArrayList<ShadowDemon> shadowDemons;
     private ArrayList<Heart> hearts;
+    private int[][] trapPos;
     private int lvlTilesWide;
     private int maxTilesOffset;
     private int maxLvlOffsetX;
@@ -33,6 +34,7 @@ public class Level {
         createHearts();
         calcLvlOffsets();
         calcPlayerSpawn();
+        createTrapPos();
     }
 
     private void createHearts() {
@@ -99,4 +101,20 @@ public class Level {
         return hearts;
     }
 
+    private void createTrapPos() {
+        trapPos = new int[Game.GAME_HEIGHT][img.getWidth()];
+        for (int j = 0; j < img.getHeight(); j++) {
+            for (int i = 0; i < img.getWidth(); i++) {
+                Color color = new Color(img.getRGB(i, j));
+                int value = color.getBlue();
+                if (value == 234) {
+                    trapPos[j][i] = 1;
+                }
+            }
+        }
+    }
+
+    public int[][] getTrapPos(){
+        return trapPos;
+    }
 }

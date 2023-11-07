@@ -67,7 +67,6 @@ public class FinalBoss extends Entity {
         this.projectiles = new ArrayList<>();
         this.traps = new ArrayList<>();
         this.laser = new Laser((int) (hitbox.x), (int) (hitbox.y));
-        this.trapPos = getTrapPos(playing.getLevelManager().getCurrentLevel());
     }
 
     private void loadsAnimation() {
@@ -145,6 +144,7 @@ public class FinalBoss extends Entity {
             }
         }
     }
+
 
     private void updateLaser() {
         laser.update();
@@ -374,19 +374,8 @@ public class FinalBoss extends Entity {
     }
 
     // Cái đầu là chiều dọc, cái sau là chiều ngang
-    private int[][] getTrapPos(Level level) {
-        int[][] pos = new int[Game.TILES_HEIGHT][level.getWidthLevel() / Game.TILES_SIZE];
-        BufferedImage image = level.getImage();
-        for (int j = 0; j < image.getHeight(); j++) {
-            for (int i = 0; i < image.getWidth(); i++) {
-                Color color = new Color(image.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == 234) {
-                    pos[j][i] = 1;
-                }
-            }
-        }
-        return pos;
+    public void loadTraps(Level level) {
+        this.trapPos = level.getTrapPos();
     }
 
     public void resetAll() {
@@ -410,7 +399,7 @@ public class FinalBoss extends Entity {
 
     private void resetTrap() {
         for (int i = 0; i < traps.size(); i++) {
-            traps.get(i).setActive(false);
+            traps.get(i).setActive(true);
         }
     }
 

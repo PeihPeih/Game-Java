@@ -32,7 +32,6 @@ public class EnemyManager {
         this.finalBoss = new FinalBoss(finalBossX, finalBossY, FINAL_BOSS_WIDTH,FINAL_BOSS_HEIGHT, playing);
 
         loadEnemyImgs();
-        loadEnemyImgs();
 
     }
 

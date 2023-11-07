@@ -81,7 +81,6 @@ public class Player extends Entity {
         updatePos();
         updateAnimationonTick();
         updateBullet();
-
         setAnimation();
     }
 
