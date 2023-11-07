@@ -270,7 +270,6 @@ public class FinalBoss extends Entity {
     }
 
     private void setTrap() {
-
         Random random = new Random();
         List<Integer> randomNumbers = new ArrayList<>();
         boolean[] selectedNumbers = new boolean[9];

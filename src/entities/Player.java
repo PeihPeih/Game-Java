@@ -42,7 +42,7 @@ public class Player extends Entity {
     private int timerAttack;
     private int timerAttackMax = 40;
     private boolean canAttack;
-    private int damage = 1500;
+    private int damage = 15;
 
 
     // Flip animation when turn left or right
