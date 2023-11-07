@@ -18,6 +18,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
             case PLAYING -> {
             gamePanel.getGame().getPlaying().mouseClicked(e);
             }
+            case OPTION -> {
+                gamePanel.getGame().getOption().mouseClicked(e);
+            }
             default -> {
             }
         }
@@ -30,6 +33,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
             }
             case PLAYING -> {
                 gamePanel.getGame().getPlaying().mouseMoved(e);
+            }
+            case OPTION -> {
+                gamePanel.getGame().getOption().mouseMoved(e);
+                break;
             }
             default -> {
 
@@ -46,6 +53,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
             case PLAYING -> {
                 gamePanel.getGame().getPlaying().mousePressd(e);
             }
+            case OPTION -> {
+                gamePanel.getGame().getOption().mousePressd(e);
+                break;
+            }
             default -> {
 
             }
@@ -60,6 +71,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
             }
             case PLAYING -> {
                 gamePanel.getGame().getPlaying().mouseReleased(e);
+            }
+            case OPTION -> {
+                gamePanel.getGame().getOption().mouseReleased(e);
             }
             default -> {
 
@@ -82,6 +96,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
         switch (Gamestate.state){
             case PLAYING -> {
                 gamePanel.getGame().getPlaying().mouseDragged(e);
+            }
+            case OPTION -> {
+                gamePanel.getGame().getOption().mouseDragged(e);
             }
             default -> {
 
