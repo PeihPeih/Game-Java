@@ -1,6 +1,7 @@
 package gamestate;
 
 import UI.MenuButtons;
+import audio.AudioPlayer;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
@@ -125,6 +126,8 @@ public class Menu extends State implements Statemethods {
             if(IsIn(e,mb)){
                 if(mb.isMousePressed())
                     mb.applyGameState();
+                if(mb.getState() == Gamestate.PLAYING)
+                	game.getAudioPlayer().playSong(AudioPlayer.PLAY);
                 break;
             }
         }
@@ -159,4 +162,9 @@ public class Menu extends State implements Statemethods {
     public void keyReleased(KeyEvent e) {
 
     }
+    
+//    public Gamestate getState()
+//    {
+//    	return state;
+//    }
 }

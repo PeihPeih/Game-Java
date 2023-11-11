@@ -3,6 +3,9 @@ package objects;
 import main.Game;
 
 import javax.imageio.ImageIO;
+
+import gamestate.Playing;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;

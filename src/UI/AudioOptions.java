@@ -13,13 +13,18 @@ import static utilz.constants.UI.VolumeButtons.SLIDER_WIDTH;
 import static utilz.constants.UI.VolumeButtons.VOLUME_HEIGHT;
 
 public class AudioOptions {
-    private SoundButtons musicButtons,sfxButtons;
+    
+	private SoundButtons musicButtons,sfxButtons;
     private VolumeButton volumeButton;
-
-    public AudioOptions() throws IOException {
+    private Game game;
+    
+    
+    public AudioOptions(Game game) throws IOException {
+    	this.game = game;
         createSoundButtons();
         createVolumeButtons();
     }
+    
     private void createVolumeButtons() {
         int vX=(int)(340* Game.SCALE);
         int vY = (int)(335*Game.SCALE);
@@ -34,6 +39,8 @@ public class AudioOptions {
         musicButtons = new SoundButtons(soundX,musicY,SOUND_SIZE,SOUND_SIZE);
         sfxButtons = new  SoundButtons(soundX,sfxY,SOUND_SIZE,SOUND_SIZE);
     }
+    
+    
     public void update(){
         musicButtons.update();
         sfxButtons.update();
@@ -47,10 +54,15 @@ public class AudioOptions {
         //volume Slider
         volumeButton.draw(g);
     }
+    
     public void mouseDragged(MouseEvent e){
-        if(volumeButton.isMousePressed()){
-            volumeButton.ChangeX(e.getX());
-        }
+    	if (volumeButton.isMousePressed()) {
+			float valueBefore = volumeButton.getFloatValue();
+			volumeButton.ChangeX(e.getX());
+			float valueAfter = volumeButton.getFloatValue();
+			if(valueBefore != valueAfter)
+				game.getAudioPlayer().setVolume(valueAfter);
+		}
     }
 
 
@@ -73,12 +85,14 @@ public class AudioOptions {
         if(isIn(e,musicButtons)){
             if(musicButtons.isMousePressed()){
                 musicButtons.setMuted(!musicButtons.isMuted());
+                game.getAudioPlayer().toggleSongMute();
             }
 
         }
         else if(isIn(e,sfxButtons)){
             if(sfxButtons.isMousePressed()){
                 sfxButtons.setMuted(!sfxButtons.isMuted());
+                game.getAudioPlayer().toggleEffectMute();
             }
         }
         musicButtons.resetBools();

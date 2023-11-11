@@ -9,9 +9,14 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 
+import audio.AudioPlayer;
+
 import static utilz.constants.Direction.*;
 
-public abstract class Enemy extends Entity {
+import gamestate.Playing;
+
+public abstract class Enemy extends Entity{
+	private Playing playing;
     protected int aniIndex, enemyState, enemyType;
     protected int aniTick, aniSpeed = 12;
     protected boolean firstUpdate = true;
@@ -29,6 +34,7 @@ public abstract class Enemy extends Entity {
     protected int attackBoxOffsetX;
     protected int maxHeath;
     protected int currentHealth;
+    protected boolean canPlayMusic = true;
 
     // Init
     public Enemy(float x, float y, int width, int height, int enemyType) {
@@ -49,9 +55,13 @@ public abstract class Enemy extends Entity {
             aniIndex++;
             if (aniIndex >= GetSpriteAmount(enemyType, enemyState)) {
                 aniIndex = 0;
-
+                
                 switch (enemyState) {
-                    case CLEAVE, TAKE_HIT -> enemyState = IDLE; // change enemy state after attack or take hit
+                
+                    case CLEAVE, TAKE_HIT -> {	// change enemy state after attack or take hit
+                    	enemyState = IDLE;
+                    }	
+                    
                     case DEAD -> active = false;    // enemy is no longer active -> skip all updates
                 }
 
@@ -145,7 +155,7 @@ public abstract class Enemy extends Entity {
     // Check player co bi tan cong khong
     protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
         if (attackBox.intersects(player.getHitbox())) {
-            player.minusHeart(1);
+            player.minusHeart(1); 
             attackChecked = true;
         }
     }
@@ -153,9 +163,9 @@ public abstract class Enemy extends Entity {
     //Enemy bị tấn công
     public void hurt(int amount) {
         currentHealth -= amount;
-        if (currentHealth <= 0){
+        if (currentHealth <= 0){        		
             newState(DEAD);
-            isDead=true;
+            isDead = true;
         }
         else
             newState(TAKE_HIT);
@@ -197,5 +207,14 @@ public abstract class Enemy extends Entity {
 
     public boolean isDead(){
         return isDead;
+    }
+    
+    public boolean canPlayMusic()
+    {
+    	return canPlayMusic;
+    }
+    public void setCanPlayMusic(boolean state)
+    {
+    	this.canPlayMusic = state;
     }
 }

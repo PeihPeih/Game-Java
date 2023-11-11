@@ -7,10 +7,13 @@ import java.io.IOException;
 import static utilz.constants.UI.PauseButtons.*;
 
 public class SoundButtons extends PasuedButtons {
-    private BufferedImage[][] soundImgs;
+    
+	private BufferedImage[][] soundImgs;
     private boolean mouseOver,mousePressed;
     private boolean muted;
     private int rowIndex,colIndex;
+    
+    
     public SoundButtons(int x, int y, int width,int Height) throws IOException {
         super(x, y, width, Height);
         loadSoundImgs();

@@ -1,6 +1,7 @@
 package entities;
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 
 import java.awt.geom.Rectangle2D;
@@ -42,5 +43,6 @@ public abstract class Entity {
 	{
 		return hitbox;
 	}
+	
 
 }

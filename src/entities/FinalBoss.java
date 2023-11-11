@@ -9,6 +9,9 @@ import objects.ProjectileBoss;
 import objects.Trap;
 
 import javax.imageio.ImageIO;
+
+import audio.AudioPlayer;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
@@ -206,7 +209,9 @@ public class FinalBoss extends Entity {
                 return;
             case 7 * 180:
                 canLaser = true;
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.BOSS_LASER_CASTING);
                 setState(LASER_CASTING);
+                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.BOSS_LASER);
                 return;
             case 12 * 180:
                 canShoot = true;
@@ -225,12 +230,19 @@ public class FinalBoss extends Entity {
             aniIndex++;
             if (enemyState == SHOOT) {
                 if (aniIndex >= 7) {
-                    if (canShoot) shoot();
+                    if (canShoot)
+                    {
+                    	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.BOSS_SHOOT);
+                    	shoot();
+                    }
                 }
             }
             if (enemyState == LASER_CASTING) {
                 if (aniIndex >= 7) {
-                    if (canLaser) laser();
+                    if (canLaser) 
+                    	{
+                    		laser();
+                    	}
                 }
             }
             if (enemyState == PUNCH) {
@@ -322,6 +334,7 @@ public class FinalBoss extends Entity {
 
     private void laser() {
         laser.changeHitbox((int) (hitbox.x + 92 * Game.SCALE - LASER_WIDTH), (int) hitbox.y + 10);
+        
         laser.setActive(true);
         canLaser = false;
     }
@@ -367,7 +380,9 @@ public class FinalBoss extends Entity {
     public void hurt(int amount) {
         currentHealth -= amount;
         if (currentHealth <= 0) {
+        	
             setState(DEAD);
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.BOSS_DEAD);
             isDead = true;
 
         }

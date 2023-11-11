@@ -6,6 +6,9 @@ import gamestate.Playing;
 import main.Game;
 
 import javax.imageio.ImageIO;
+
+import audio.AudioPlayer;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -13,7 +16,7 @@ import java.io.IOException;
 
 import static utilz.constants.UI.UrmButtons.URM_SIZE;
 
-public class GameOverOverlay {
+public class GameOverOverlay{
     Playing playing;
     private BufferedImage gameover;
     private int imgX, imgY, imgW, imgH;
@@ -73,11 +76,12 @@ public class GameOverOverlay {
         if (isIn(menu, e)) {
             if (menu.isMousePressed()) {
                 playing.resetLvl();
-                Gamestate.state=Gamestate.MENU;
+                playing.setGamestate(Gamestate.MENU);
             }
         } else if (isIn(play, e))
             if (play.isMousePressed()) {
                 playing.resetLvl();
+                playing.setGamestate(Gamestate.PLAYING);
             }
         menu.resetBools();
         play.resetBools();
