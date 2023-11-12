@@ -1,8 +1,8 @@
 package gamestate;
 
-import UI.AudioOptions;
 import UI.PasuedButtons;
 import UI.UrmButtons;
+import levels.LevelManager;
 import main.Game;
 import utilz.LoadSave;
 
@@ -11,28 +11,29 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import static utilz.constants.UI.UrmButtons.URM_SIZE;
 
-public class Option extends State implements Statemethods {
+public class LeaderBoard extends State implements Statemethods {
     private BufferedImage[] backgroundImage;
     private BufferedImage cloud;
     private int scrollCloud;
-    AudioOptions audioOptions;
-    private BufferedImage OptionBackground;
-
+    private BufferedImage LeaderBoardBackGround;
     private  int bgX,bgY,bgW,bgH;
     private UrmButtons menuB;
+    private ArrayList<Double> record =new ArrayList<>();
+    private LevelManager levelManager;
 
-
-    public Option(Game game) {
+   public LeaderBoard(Game game){
         super(game);
-        audioOptions = game.getAudioOptions();
         createUrmButtons();
-        loadMenuBackground();
         loadBackground();
+        loadLeaderBoardBackground();
+        levelManager = new LevelManager(game);
     }
     private void loadBackground() {//ve background
         backgroundImage = new BufferedImage[5];
@@ -54,9 +55,9 @@ public class Option extends State implements Statemethods {
             g.drawImage(backgroundImage[4], Game.GAME_WIDTH - (int) (backgroundImage[4].getWidth() * 1.5), (int) (Game.GAME_HEIGHT - backgroundImage[4].getHeight() * 1.5), (int) (backgroundImage[4].getWidth() * 1.5), (int) (backgroundImage[4].getHeight() * 1.5), null);
         if (backgroundImage[3] != null)
             g.drawImage(backgroundImage[3], 0, (int) (Game.GAME_HEIGHT - backgroundImage[3].getHeight() * 2), (int) (backgroundImage[3].getWidth() * 2), (int) (backgroundImage[3].getHeight() * 2), null);
-        for(int i=0;i<2;i++){
-            if(cloud!=null){
-                g.drawImage(cloud,i*Game.GAME_WIDTH+scrollCloud,-150,Game.GAME_WIDTH,400,null);
+        for (int i = 0; i < 2; i++) {
+            if (cloud != null) {
+                g.drawImage(cloud, i * Game.GAME_WIDTH + scrollCloud, -150, Game.GAME_WIDTH, 400, null);
             }
         }
     }
@@ -65,12 +66,11 @@ public class Option extends State implements Statemethods {
         int bY=(int)(390*Game.SCALE);
         menuB=new UrmButtons(menuX,bY,URM_SIZE,URM_SIZE,0);
     }
-
-    public void loadMenuBackground(){//load anh menu
+    private void loadLeaderBoardBackground(){//load anh menu
         try {
-            OptionBackground = ImageIO.read(getClass().getResourceAsStream("/UI/Option/Option.png"));
-            bgW=(int)(OptionBackground.getWidth()* Game.SCALE);
-            bgH=(int)(OptionBackground.getHeight()*Game.SCALE);
+            LeaderBoardBackGround = ImageIO.read(getClass().getResourceAsStream("/UI/LeaderBoard/LeaderBoardBackGround.png"));
+            bgW=(int)(LeaderBoardBackGround.getWidth()* Game.SCALE);
+            bgH=(int)(LeaderBoardBackGround.getHeight()*Game.SCALE);
             bgX=Game.GAME_WIDTH/2 -bgW/2;
             bgY=(int)(50*Game.SCALE);
         } catch (IOException e) {
@@ -81,20 +81,27 @@ public class Option extends State implements Statemethods {
     @Override
     public void update() {
         menuB.update();
-        audioOptions.update();
     }
 
     @Override
     public void draw(Graphics g) {
-            drawBackground(g);
-            g.drawImage(OptionBackground,bgX,bgY,bgW,bgH,null);
-            audioOptions.draw(g);
-            menuB.draw(g);
+        record=levelManager.getRecordlist();
+        drawBackground(g);
+        g.drawImage(LeaderBoardBackGround,bgX,bgY,bgW,bgH,null);
+        menuB.draw(g);
+        g.setFont(new Font("GravityRegular5", Font.PLAIN,20));
+        g.setColor(Color.white);
+        int count=1;
+        for (Double i : record){
+            g.drawString(" Player "+count+" "+Math.floor(i*100)/100,Game.GAME_WIDTH/2-160,215+35*count);
+            count++;
+        }
+        for (int i=count;i<=10;i++){
+            g.drawString(" Player "+i+" "+0.00,Game.GAME_WIDTH/2-160,215+35*i);
+        }
+
     }
 
-    public void mouseDragged(MouseEvent e){
-        audioOptions.mouseDragged(e);
-    }
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -104,7 +111,6 @@ public class Option extends State implements Statemethods {
     public void mousePressd(MouseEvent e) {
         if(isIn(e,menuB))
             menuB.setMousePressed(true);
-        else audioOptions.mousePressd(e);
     }
 
     @Override
@@ -114,9 +120,6 @@ public class Option extends State implements Statemethods {
                 Gamestate.state=Gamestate.MENU;
             }
         }
-        else
-            audioOptions.mouseReleased(e);
-
         menuB.resetBools();
     }
 
@@ -126,8 +129,6 @@ public class Option extends State implements Statemethods {
         //neu no ko nam trong pham vi
         if(isIn(e,menuB))
             menuB.setMouseOver(true);
-        else
-            audioOptions.mouseMoved(e);
     }
 
     @Override
@@ -143,5 +144,4 @@ public class Option extends State implements Statemethods {
         return b.getBounds().contains(e.getX(),e.getY());
 
     }
-
 }
