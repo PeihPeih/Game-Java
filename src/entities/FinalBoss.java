@@ -3,10 +3,8 @@ package entities;
 import gamestate.Playing;
 import levels.Level;
 import main.Game;
-import objects.Bullet;
-import objects.Laser;
-import objects.ProjectileBoss;
-import objects.Trap;
+import objects.*;
+import utilz.LoadSave;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,6 +23,7 @@ public class FinalBoss extends Entity {
     private Playing playing;
 
     private BufferedImage[][] animations;
+
     private int maxHeath = 1500;
     private int currentHealth;
     private int aniIndex, enemyState;
@@ -34,6 +33,7 @@ public class FinalBoss extends Entity {
     private boolean active = true;
     private boolean canMove = false;
     private boolean canUpdate = false;
+    private boolean canSetWarning = false;
     private ArrayList<ProjectileBoss> projectiles;
     private Laser laser;
     private int[][] trapPos;
@@ -49,6 +49,12 @@ public class FinalBoss extends Entity {
     private boolean exist = false;
     private boolean canSetTrap = false;
 
+    // Trap
+    private Random random = new Random();
+    private List<Integer> randomNumbers = new ArrayList<>();
+    private boolean[] selectedNumbers = new boolean[9];
+    private ArrayList<Warning> warnings;
+
     private float damage = 1;
     private float armor = 0;
 
@@ -56,6 +62,17 @@ public class FinalBoss extends Entity {
     private int timerMax = 22 * 180;
     private int timer = 0;
 
+    // Health bar
+    private BufferedImage healthBar = LoadSave.GetSpriteAtlas("demon/Final Boss/health_bar.png");
+    private int statusBarWidth = healthBar.getWidth();
+    private int statusBarX = Game.GAME_WIDTH / 2 - statusBarWidth / 2;
+    private int statusBarY = -156;
+
+    private int healthBarWidth = 767;
+    private int healthBarHeight = 27;
+    private int healthBarXStart = 51;
+    private int healthBarYStart = 23;
+    private int healthWidth = healthBarWidth;
 
     public FinalBoss(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -65,12 +82,17 @@ public class FinalBoss extends Entity {
         this.currentHealth = maxHeath;
         this.enemyState = IDLE;
         this.projectiles = new ArrayList<>();
+        this.warnings = new ArrayList<>();
         this.traps = new ArrayList<>();
         this.laser = new Laser((int) (hitbox.x), (int) (hitbox.y));
     }
 
+    public void loadWarning(Level level) {
+        this.warnings = level.getWarning();
+    }
+
     private void loadsAnimation() {
-        this.animations = new BufferedImage[8][26];
+        this.animations = new BufferedImage[8][27];
         try {
             BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/demon/Final Boss/sprite_sheet.png"));
             for (int i = 0; i < 7; i++) {
@@ -94,6 +116,7 @@ public class FinalBoss extends Entity {
             for (int j = 7; j < 15; j++) {
                 animations[PUNCH][j] = animations[PUNCH][6];
             }
+
             for (int j = 0; j < 10; j++) {
                 animations[DEAD][j] = image.getSubimage(j * 100, 7 * 100, 100, 100);
             }
@@ -114,7 +137,7 @@ public class FinalBoss extends Entity {
 
     public void update(int[][] lvlData) {
         if (canMove) {
-            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState != HURT && enemyState != PUNCH && enemyState != DEAD) {
+            if (!(enemyState == LASER_CASTING && aniIndex >= 7) && enemyState != HURT && !(enemyState == PUNCH && aniIndex >= 15) && enemyState != DEAD) {
                 updatePos(lvlData);
             }
         }
@@ -123,9 +146,21 @@ public class FinalBoss extends Entity {
             updateAnimationTicks();
             updateProjectile(lvlData);
             updateLaser();
+            updateWarning();
             updateTrap();
             updateCollisionPlayer();
+            updateHealthBar();
         }
+    }
+
+    private void updateWarning() {
+        for (int i = 0; i < warnings.size(); i++) {
+            warnings.get(i).update();
+        }
+    }
+
+    private void updateHealthBar() {
+        healthWidth = (int) ((currentHealth / (float) maxHeath) * healthBarWidth);
     }
 
     private void updateCollisionPlayer() {
@@ -199,6 +234,7 @@ public class FinalBoss extends Entity {
                 return;
             case 2 * 180:
                 canSetTrap = true;
+                canSetWarning = true;
                 setState(PUNCH);
                 return;
             case 6 * 180:
@@ -234,7 +270,11 @@ public class FinalBoss extends Entity {
                 }
             }
             if (enemyState == PUNCH) {
-                if (aniIndex >= 6) {
+                if (canSetWarning) {
+                    setWarning();
+                    canSetWarning = false;
+                }
+                if (aniIndex >= 9) {
                     if (canSetTrap) setTrap();
                 }
             }
@@ -269,23 +309,28 @@ public class FinalBoss extends Entity {
         }
     }
 
-    private void setTrap() {
-        Random random = new Random();
-        List<Integer> randomNumbers = new ArrayList<>();
-        boolean[] selectedNumbers = new boolean[9];
-        while (randomNumbers.size() < 4) {
-            int randomNumber = random.nextInt(9) + 1; // Tạo số từ 1 đến 9
+    private void setWarning() {
+        randomNumbers.clear();
+        for (int i = 0; i < selectedNumbers.length; i++) {
+            selectedNumbers[i] = false;
+        }
+        int numOfTrap = random.nextInt(8)+1;
+        while (randomNumbers.size() < numOfTrap) {
+            int randomNumber = random.nextInt(9) + 1; // Tạo số từ 1 đến 8
             if (!selectedNumbers[randomNumber - 1]) {
                 selectedNumbers[randomNumber - 1] = true;
                 randomNumbers.add(randomNumber);
+                this.warnings.get(randomNumber-1).setActive(true);
             }
         }
+    }
 
+    private void setTrap() {
         int index = 1;
         for (int i = 0; i < trapPos.length; i++) {
             for (int j = 0; j < trapPos[i].length; j++) {
                 if (trapPos[i][j] == 1) {
-                    if(randomNumbers.contains(index)){
+                    if (randomNumbers.contains(index)) {
                         switch (index) {
                             case 1, 2, 3, 4, 8:
                                 this.traps.add(new Trap((int) (j * Game.TILES_SIZE + (Game.TILES_SIZE / 2 - TRAP_WIDTH / 2)) - Game.TILES_SIZE, (int) (i * Game.TILES_SIZE), TRAP));
@@ -309,6 +354,7 @@ public class FinalBoss extends Entity {
             }
         }
         canSetTrap = false;
+
     }
 
     private void shoot() {
@@ -343,6 +389,17 @@ public class FinalBoss extends Entity {
             g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset) - xLvlOffset + width, (int) (hitbox.y - yOffset), width * -1, height, null);
             drawProjectiles(g, xLvlOffset);
             drawLaser(g, xLvlOffset);
+        }
+    }
+
+    public void drawHealthBar(Graphics g) {
+        if (canMove) {
+            g.setColor(new Color(40, 0, 0));
+            g.fillRect(statusBarX + healthBarXStart, 13 + healthBarYStart, healthBarWidth, healthBarHeight);
+            g.setColor(new Color(255, 3, 3));
+            g.fillRect(statusBarX + healthBarXStart, 13 + healthBarYStart, healthWidth, healthBarHeight);
+            g.drawImage(healthBar, statusBarX, statusBarY, null);
+
         }
     }
 
@@ -388,6 +445,7 @@ public class FinalBoss extends Entity {
         canShoot = true;
         canUpdate = false;
         canSetTrap = true;
+        canSetWarning = false;
         hitbox.x = x;
         hitbox.y = y;
         currentHealth = maxHeath;
@@ -395,6 +453,13 @@ public class FinalBoss extends Entity {
         laser.setActive(false);
         timer = 0;
         resetTrap();
+        resetWarning();
+    }
+
+    private void resetWarning() {
+        for(int i=0;i<warnings.size();i++){
+            warnings.get(i).setActive(false);
+        }
     }
 
     private void resetTrap() {
@@ -442,5 +507,11 @@ public class FinalBoss extends Entity {
 
     public boolean isExist() {
         return exist;
+    }
+
+    public void drawWarnings(Graphics g, int xLvlOffset) {
+        for (int i = 0; i < warnings.size(); i++) {
+            warnings.get(i).draw(g, xLvlOffset);
+        }
     }
 }

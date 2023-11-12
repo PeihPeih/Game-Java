@@ -89,6 +89,7 @@ public class Playing extends State implements Statemethods {
         backgroundImage[3] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_4);
         backgroundImage[4] = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_5);
         cloud = LoadSave.GetSpriteAtlas(LoadSave.CLOUD);
+
     }
 
 
@@ -134,6 +135,7 @@ public class Playing extends State implements Statemethods {
                 g.drawImage(cloud, i * bgImageWidth - bgOffset, -200, bgImageWidth, 400, null);
 
         }
+
     }
 
     private void loadStartLevel() {
@@ -219,17 +221,21 @@ public class Playing extends State implements Statemethods {
 
         if (levelManager != null) levelManager.render(g, xLvlOffset);
         if(enemyManager!=null){
+            enemyManager.getFinalBoss().drawWarnings(g,xLvlOffset);
             enemyManager.getFinalBoss().drawTraps(g,xLvlOffset);
         }
         if (player != null) player.render(g, xLvlOffset);
         if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
+        if(enemyManager!=null){
+            enemyManager.getFinalBoss().drawHealthBar(g);
+        }
 
         g.setFont(font);
         g.setColor(Color.white);
-        g.drawString("Times",400,32);
+        g.drawString("Times:",1144,53);
         TimeCounter();
-        g.drawString(String.valueOf(Playingtime),500,32);
+        g.drawString(String.valueOf(Playingtime),1244,53);
 
 
         if (paused) {
