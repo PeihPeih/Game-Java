@@ -7,14 +7,20 @@ import utilz.LoadSave;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 
 public class LevelManager {
     private Game game;
     private BufferedImage[] levelSprite;
     private ArrayList<Level> levels;
     public int lvlIndex = 0;
+    private ArrayList<Double> recordlist= new ArrayList<>();
+
 
     // Khởi tạo
     public LevelManager(Game game){
@@ -22,6 +28,7 @@ public class LevelManager {
         importOutsideSprites();
         levels = new ArrayList<>();
         buildAllLevels();
+        loadRecord();
     }
 
     private void buildAllLevels() {
@@ -104,12 +111,14 @@ public class LevelManager {
     public void update(){
     }
 
-    public void loadNextLevel() {
+    public void loadNextLevel() throws IOException {
         lvlIndex++;
         if (lvlIndex >= levels.size()) {
             lvlIndex = 0;
             System.out.println("No more levels! Game Completed!");
             Gamestate.state = Gamestate.MENU;
+            renewRecord();
+            loadRecord();
         }
 
         Level newLevel = levels.get(lvlIndex);
@@ -128,6 +137,39 @@ public class LevelManager {
         game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
         game.getPlaying().getObjectManager().loadObjects(newLevel);
     }
+    private void loadRecord(){
+        try {
+            File record = new File("record.txt");
+            Scanner ip = new Scanner(record);
+            while (ip.hasNext()){
+                Double a = Math.floor(Double.parseDouble(ip.nextLine())*100)/100;
+                recordlist.add(a);
+            }
+            Collections.sort(recordlist);
+        }
+        catch (IOException e){
+
+        }
+    }
+    public void renewRecord() throws IOException {
+            File record = new File("Record.txt");
+            File newrecord = new File("newrecord.txt");
+            FileWriter fileWriter = new FileWriter(newrecord);
+            Double end = game.getPlaying().getPlayingtime();
+            recordlist.add(end);
+            recordlist.sort(Collections.reverseOrder());
+            if(recordlist.size()>10)
+                recordlist.removeLast();
+            for(Double i : recordlist){
+                    fileWriter.write(i +"\n");
+            }
+            fileWriter.close();
+            if(record.delete()){
+                System.out.println("delete old record");
+            }
+            if(newrecord.renameTo(record))
+                System.out.println("newrecord");
+    }
 
     // Lấy level hiện tại
     public Level getCurrentLevel(){
@@ -142,5 +184,7 @@ public class LevelManager {
         return lvlIndex;
     }
 
-
+    public ArrayList<Double> getRecordlist() {
+        return recordlist;
+    }
 }

@@ -37,6 +37,12 @@ public class Playing extends State implements Statemethods {
     private PauseOverlay pauseOverlay;
     private GameOverOverlay gameOverOverlay;
     private LevelCompletedOverlay levelCompletedOverlay;
+    private Font font;
+    double Playingtime;
+    double Gaptime=0;
+    long currentTime;
+    boolean timeacivate=false;
+
 
 
     // Camera
@@ -71,6 +77,7 @@ public class Playing extends State implements Statemethods {
         pauseOverlay = new PauseOverlay(this);
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
+        font = new Font("GravityRegular5", Font.PLAIN,16);
     }
 
     // BACKGROUND
@@ -110,7 +117,7 @@ public class Playing extends State implements Statemethods {
         }
 
     }
-    public void loadNextlevel(){
+    public void loadNextlevel() throws IOException {
         resetALL();
         levelManager.loadNextLevel();
     }
@@ -158,9 +165,13 @@ public class Playing extends State implements Statemethods {
         player.checkPlayerTrap(t);
     }
 
+    private double CountTimes(){
+        return (double) ((System.currentTimeMillis()-currentTime)/10);
+    }
+
     @Override
     public void update() {//update
-       gameover = player.IsDeath();
+      // gameover = player.IsDeath();
 
         if (!paused && !gameover && !lvlcompleted) {
             levelManager.update();
@@ -195,7 +206,13 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {// ve map nhan vat va background
-        gameover = player.IsDeath();
+        //gameover = player.IsDeath();
+
+        if(!timeacivate){
+            currentTime = System.currentTimeMillis();
+            timeacivate=true;
+        }
+
         drawBackground(g, xLvlOffset);
 
         drawCloud(g, xLvlOffset);
@@ -208,6 +225,13 @@ public class Playing extends State implements Statemethods {
         if (enemyManager != null) enemyManager.draw(g, xLvlOffset);
         if (objectManager != null) objectManager.draw(g, xLvlOffset);
 
+        g.setFont(font);
+        g.setColor(Color.white);
+        g.drawString("Times",400,32);
+        TimeCounter();
+        g.drawString(String.valueOf(Playingtime),500,32);
+
+
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -219,6 +243,15 @@ public class Playing extends State implements Statemethods {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             levelCompletedOverlay.draw(g);
+        }
+    }
+    public void TimeCounter(){
+        if(!paused && !lvlcompleted && !gameover){
+            Playingtime =CountTimes()/100-Gaptime;
+            Playingtime =((double) Math.floor(Playingtime*100)/100);
+        }
+        else {
+            Gaptime=CountTimes()/100-Playingtime;
         }
     }
 
@@ -258,7 +291,12 @@ public class Playing extends State implements Statemethods {
         resetALL();
         lvlcompleted=false;
         levelManager.loadLevel();
-
+    }
+    public void resetTime(){
+        timeacivate=false;
+        Playingtime=0;
+        Gaptime=0;
+        currentTime = System.currentTimeMillis();
     }
 
     @Override
@@ -277,7 +315,7 @@ public class Playing extends State implements Statemethods {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) throws IOException {
         if (paused)
             pauseOverlay.mouseReleased(e);
         else if (gameover)
@@ -385,6 +423,7 @@ public class Playing extends State implements Statemethods {
         return levelManager;
     }
 
-
-
+    public double getPlayingtime() {
+        return Playingtime;
+    }
 }

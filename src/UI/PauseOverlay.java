@@ -98,6 +98,7 @@ public class PauseOverlay {
             if(menuB.isMousePressed()){
                 playing.resetLvl();
                 playing.unpausedGame();
+                playing.resetTime();
                 Gamestate.state=Gamestate.MENU;
             }
         }

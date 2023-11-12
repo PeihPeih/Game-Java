@@ -91,10 +91,11 @@ public class LevelCompletedOverlay {
         if(isIn(next,e))
             next.setMouseOver(true);
     }
-    public void mouseReleased(MouseEvent e){
+    public void mouseReleased(MouseEvent e) throws IOException {
         if(isIn(menu,e))
             if(menu.isMousePressed()){
                 playing.resetLvl();
+                playing.resetTime();
                 Gamestate.state=Gamestate.MENU;
             }
         if(isIn(next,e))
