@@ -159,7 +159,7 @@ public class LevelManager {
             recordlist.add(end);
             recordlist.sort(Collections.reverseOrder());
             if(recordlist.size()>10)
-                recordlist.removeLast();
+                recordlist.remove(recordlist.size()-1);
             for(Double i : recordlist){
                     fileWriter.write(i +"\n");
             }

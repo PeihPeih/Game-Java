@@ -171,7 +171,7 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void update() {//update
-      // gameover = player.IsDeath();
+       gameover = player.IsDeath();
 
         if (!paused && !gameover && !lvlcompleted) {
             levelManager.update();
