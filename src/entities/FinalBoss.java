@@ -251,6 +251,10 @@ public class FinalBoss extends Entity {
             case 17 * 180:
                 hurted = false;
                 setState(HURT);
+                return;
+            case 21*180:
+                resetTrap();
+
         }
     }
 
@@ -388,7 +392,9 @@ public class FinalBoss extends Entity {
         if (active) {
             g.drawImage(animations[enemyState][aniIndex], (int) (hitbox.x - xOffset) - xLvlOffset + width, (int) (hitbox.y - yOffset), width * -1, height, null);
             drawProjectiles(g, xLvlOffset);
-            drawLaser(g, xLvlOffset);
+            if(enemyState != DEAD){
+                drawLaser(g, xLvlOffset);
+            }
         }
     }
 
@@ -449,6 +455,7 @@ public class FinalBoss extends Entity {
         hitbox.x = x;
         hitbox.y = y;
         currentHealth = maxHeath;
+        healthWidth = healthBarWidth;
         projectiles.clear();
         laser.setActive(false);
         timer = 0;
@@ -463,9 +470,7 @@ public class FinalBoss extends Entity {
     }
 
     private void resetTrap() {
-        for (int i = 0; i < traps.size(); i++) {
-            traps.get(i).setActive(true);
-        }
+        traps.clear();
     }
 
     public boolean isActive() {
