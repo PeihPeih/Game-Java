@@ -9,6 +9,7 @@ import entities.FrostDemon;
 import entities.ShadowDemon;
 import main.Game;
 import objects.Heart;
+import objects.Warning;
 import utilz.HelpMethods;
 
 import static utilz.HelpMethods.*;
@@ -53,8 +54,8 @@ public class Level {
 
     private void createEnemies() {
         fireDemons = GetFireDemons(this.img);
-        frostDemons=GetFrostDemons(this.img);
-        shadowDemons=GetShadowDemon(this.img);
+        frostDemons = GetFrostDemons(this.img);
+        shadowDemons = GetShadowDemon(this.img);
     }
 
     private void createLevelData() {
@@ -65,7 +66,7 @@ public class Level {
         return lvlData[y][x];
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage() {
         return this.img;
     }
 
@@ -77,8 +78,8 @@ public class Level {
         return maxLvlOffsetX;
     }
 
-    public int getWidthLevel(){
-        return img.getWidth()*Game.TILES_SIZE;
+    public int getWidthLevel() {
+        return img.getWidth() * Game.TILES_SIZE;
     }
 
     public ArrayList<FireDemon> getFireDemons() {
@@ -114,7 +115,19 @@ public class Level {
         }
     }
 
-    public int[][] getTrapPos(){
+    public int[][] getTrapPos() {
         return trapPos;
+    }
+
+    public ArrayList<Warning> getWarning() {
+        ArrayList<Warning> warnings = new ArrayList<>();
+        for (int j = 0; j < trapPos.length;j++) {
+            for (int i = 0; i < trapPos[i].length; i++) {
+                if (trapPos[j][i] == 1) {
+                    warnings.add(new Warning(i * Game.TILES_SIZE, j * Game.TILES_SIZE, 456));
+                }
+            }
+        }
+        return warnings;
     }
 }

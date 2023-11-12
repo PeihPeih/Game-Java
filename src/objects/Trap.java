@@ -73,7 +73,6 @@ public class Trap extends GameObject {
         if (active) {
             g.drawImage(image[aniIndex], (int) (this.hitbox.x - xLvlOffset), (int) (this.hitbox.y), TRAP_WIDTH, TRAP_HEIGHT, null);
         }
-
     }
 
     private void drawHitbox(Graphics g, int xLvlOffset) {

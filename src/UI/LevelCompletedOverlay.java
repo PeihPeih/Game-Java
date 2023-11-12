@@ -17,7 +17,7 @@ public class LevelCompletedOverlay {
     private UrmButtons menu,next;
     private BufferedImage[] imgs;
     private int bgX,bgY,bgW,bgH;
-    private int aniTick,aniIndex,aniSpeed=7;
+    private int aniTick,aniIndex,aniSpeed=3;
     private boolean check = false;
     public LevelCompletedOverlay(Playing playing){
         this.playing = playing;

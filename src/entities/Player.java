@@ -42,7 +42,7 @@ public class Player extends Entity {
     private int timerAttack;
     private int timerAttackMax = 40;
     private boolean canAttack;
-    private int damage = 1500;
+    private int damage = 150;
 
 
     // Flip animation when turn left or right
@@ -136,7 +136,7 @@ public class Player extends Entity {
     // Draw heart at left-top corner
     private void drawHeart(Graphics g) {
         for (int i = 0; i < hearts.size(); i++) {
-            g.drawImage(hearts.get(i), 75 + 50 * i, 30, 45, 45, null);
+            g.drawImage(hearts.get(i), 50*(i+1), 30, 45, 45, null);
         }
     }
 
