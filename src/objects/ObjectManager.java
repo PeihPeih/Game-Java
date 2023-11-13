@@ -14,6 +14,8 @@ import utilz.constants;
 
 import javax.imageio.ImageIO;
 
+import audio.AudioPlayer;
+
 import static utilz.HelpMethods.IsBombsHittingLevel;
 import static utilz.constants.ObjectConstants.*;
 
@@ -88,14 +90,21 @@ public class ObjectManager {
             if (!bombs.get(i).isDestroy()) {
                 bombs.get(i).update();
                 if (bombs.get(i).getHitbox().intersects(player.getHitbox())) {
+                	playing.getGame().getAudioPlayer().stopEffect();
+                	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.METEOR);
                     player.minusHeart(1);
                     bombs.get(i).setDestroy(true);
-                } else if (IsBombsHittingLevel(bombs.get(i), lvlData)) {
+                } 
+                else if (IsBombsHittingLevel(bombs.get(i), lvlData)) {
+                	playing.getGame().getAudioPlayer().stopEffect();
+                	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.METEOR);
                     bombs.get(i).setDestroy(true);
                 }
             }
         }
     }
+    
+    
 
 
     public void draw(Graphics g, int xLvlOffset) {

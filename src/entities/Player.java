@@ -1,6 +1,9 @@
 package entities;
 
 import javax.imageio.ImageIO;
+
+import audio.AudioPlayer;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,6 +20,7 @@ import static utilz.constants.PlayerConstants.*;
 
 import static utilz.HelpMethods.*;
 
+import gamestate.Gamestate;
 import gamestate.Playing;
 import main.Game;
 import objects.Bullet;
@@ -26,7 +30,7 @@ import objects.Trap;
 import utilz.LoadSave;
 
 public class Player extends Entity {
-    private BufferedImage[][] animations;
+	private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
 
@@ -75,13 +79,16 @@ public class Player extends Entity {
         BufferedImage heart = LoadSave.GetSpriteAtlas(LoadSave.HEART);
         for (int i = 0; i < 3; i++) hearts.add(heart);
     }
+    
 
     public void update() {
         updateTimer();
         updatePos();
+        
         updateAnimationonTick();
         updateBullet();
         setAnimation();
+        
     }
 
     private void updateTimer() {
@@ -202,8 +209,8 @@ public class Player extends Entity {
         moving = false;
 
         if (jump)
-            jump();
-
+        	jump();
+         
         float xSpeed = 0;
 
         // Left
@@ -233,6 +240,7 @@ public class Player extends Entity {
             // Chạm đất thì có thể bắn
             if (attacking && canAttack) {
                 shoot();
+                
             }
         }
 
@@ -272,6 +280,7 @@ public class Player extends Entity {
     private void shoot() {
         if (aniTick == 0) {
             shootBullet();
+            playing.getGame().getAudioPlayer().playEffect(AudioPlayer.SHOOT);
             canAttack = false;
         }
     }
@@ -433,9 +442,12 @@ public class Player extends Entity {
 
     public void minusHeart(int value) {
         for (int i = 0; i < value; i++) {
+//        	System.out.println(hearts.size());
             if (hearts.size() > 0) {
+            	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.HURT);
                 hearts.remove(hearts.size() - 1);
-            }
+                
+            }	
         }
     }
 
@@ -488,7 +500,9 @@ public class Player extends Entity {
 
     public boolean IsDeath() {
         if (hitbox.y + hitbox.height + 1 > Game.GAME_HEIGHT)
-            hearts.clear();
+        {
+        	hearts.clear();
+        }
         return hearts.isEmpty();
     }
 

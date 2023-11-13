@@ -1,6 +1,7 @@
 package gamestate;
 
 import UI.MenuButtons;
+import audio.AudioPlayer;
 import main.Game;
 
 import java.awt.event.MouseEvent;
@@ -15,5 +16,15 @@ public class State {
     }
     public Game getGame(){
         return game;
+    }
+    
+    public void setGamestate(Gamestate state)
+    {
+    	switch(state)
+    	{
+    	case MENU -> game.getAudioPlayer().playSong(AudioPlayer.MENU);
+    	case PLAYING -> game.getAudioPlayer().playSong(AudioPlayer.PLAY);
+    	}
+    	Gamestate.state = state;
     }
 }

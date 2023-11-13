@@ -5,6 +5,9 @@ import gamestate.Playing;
 import main.Game;
 
 import javax.imageio.ImageIO;
+
+import audio.AudioPlayer;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -94,12 +97,14 @@ public class LevelCompletedOverlay {
     public void mouseReleased(MouseEvent e) throws IOException {
         if(isIn(menu,e))
             if(menu.isMousePressed()){
+            	playing.getGame().getAudioPlayer().playSong(AudioPlayer.MENU);
                 playing.resetLvl();
                 playing.resetTime();
                 Gamestate.state=Gamestate.MENU;
             }
         if(isIn(next,e))
             if(next.isMousePressed()){
+            	playing.getGame().getAudioPlayer().playSong(AudioPlayer.PLAY);
                 playing.loadNextlevel();
                 playing.resetALL();
             }

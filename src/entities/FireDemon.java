@@ -11,8 +11,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 
-public class FireDemon extends Enemy {
+import audio.AudioPlayer;
+import gamestate.Playing;
 
+public class FireDemon extends Enemy {
     // Init
     public FireDemon(float x, float y) {
         super(x, y, DEMON_WIDTH, DEMON_HEIGHT, FIRE_DEMON);
@@ -32,6 +34,7 @@ public class FireDemon extends Enemy {
         updateAnimationTicks();
         updateBehaviour(lvlData, player);
         updateAttackBox();
+
     }
 
     private void updateAttackBox() {

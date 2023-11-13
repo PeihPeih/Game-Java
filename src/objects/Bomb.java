@@ -65,6 +65,7 @@ public class Bomb extends GameObject {
     }
 
     public void setDestroy(boolean destroy) {
+    	
         isDestroy = destroy;
     }
 

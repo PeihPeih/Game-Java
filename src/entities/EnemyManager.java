@@ -6,6 +6,9 @@ import main.Game;
 import objects.Bullet;
 
 import javax.imageio.ImageIO;
+
+import audio.AudioPlayer;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -20,8 +23,8 @@ public class EnemyManager {
     private ArrayList<FireDemon> fireDemons = new ArrayList<>();
     private ArrayList<FrostDemon> frostDemons = new ArrayList<>();
     private ArrayList<ShadowDemon> shadowDemons = new ArrayList<>();
-     private FinalBoss finalBoss;
-
+    private FinalBoss finalBoss;
+    
     // Init
     public EnemyManager(Playing playing) {
         this.playing = playing;
@@ -134,7 +137,7 @@ public class EnemyManager {
 
         for (int i = 0; i < GetSpriteAmount(FIRE_DEMON, DEAD); i++) {
             try {
-                fireAnimations[DEAD][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Fire Demon/05_demon_death/demon_death_" + (i + 1) + ".png"));
+                fireAnimations[DEAD][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Fire Demon/05_demon_death/demon_death_" + (i + 1) + ".png"));                	
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -214,11 +217,13 @@ public class EnemyManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            
         }
 
         for (int i = 0; i < GetSpriteAmount(SHADOW_DEMON, DEAD); i++) {
             try {
                 shadowAnimations[DEAD][i] = ImageIO.read(getClass().getResourceAsStream("/demon/Shadow Demon/Death/Bringer-of-Death_Death_" + (i + 1) + ".png"));
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -236,29 +241,54 @@ public class EnemyManager {
         Rectangle attackBox = b.getHitbox().getBounds();
         for (int i = 0; i < fireDemons.size(); i++) {
             if (!fireDemons.get(i).isDead() && fireDemons.get(i).getEnemyState() != DEAD)
-                if (fireDemons.get(i).getHitbox().intersects(attackBox)) {
+            {
+            	if (fireDemons.get(i).getHitbox().intersects(attackBox)) {
                     fireDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }
+            	
+            }
+            if(fireDemons.get(i).isDead() && fireDemons.get(i).canPlayMusic())
+            {
+            	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.FIRE_DEMON_DEAD);
+            	fireDemons.get(i).setCanPlayMusic(false);
+            }
+            
         }
-
+    
         for (int i = 0; i < frostDemons.size(); i++) {
             if (!frostDemons.get(i).isDead() && frostDemons.get(i).getEnemyState() != DEAD)
-                if (frostDemons.get(i).getHitbox().intersects(attackBox)) {
+            {
+            	if (frostDemons.get(i).getHitbox().intersects(attackBox)) {
                     frostDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }
+            }
+            if(frostDemons.get(i).isDead() && frostDemons.get(i).canPlayMusic())
+            {
+            	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.FROZEN_DEMON_DEAD);
+            	frostDemons.get(i).setCanPlayMusic(false);
+            }
+               
         }
 
         for (int i = 0; i < shadowDemons.size(); i++) {
             if (!shadowDemons.get(i).isDead() && shadowDemons.get(i).getEnemyState() != DEAD)
-                if (shadowDemons.get(i).getHitbox().intersects(attackBox)) {
+            {
+            	if (shadowDemons.get(i).getHitbox().intersects(attackBox)) {
                     shadowDemons.get(i).hurt(playing.getPlayer().getDamage());
                     b.setActive(false);
                     return;
                 }
+            }
+            if(shadowDemons.get(i).isDead() && shadowDemons.get(i).canPlayMusic())
+            {
+            	playing.getGame().getAudioPlayer().playEffect(AudioPlayer.SHADOW_DEMON_DEAD);
+            	shadowDemons.get(i).setCanPlayMusic(false);
+            }
+                
         }
 
      if(finalBoss.getState() != DEAD && !finalBoss.isDead()){
@@ -277,13 +307,17 @@ public class EnemyManager {
 
     public void resetEnemies() {
         for (FireDemon d : fireDemons) {
+      
             d.resetEnemy();
+            d.setCanPlayMusic(true);
         }
         for (FrostDemon d : frostDemons) {
             d.resetEnemy();
+            d.setCanPlayMusic(true);
         }
         for (ShadowDemon d : shadowDemons) {
             d.resetEnemy();
+            d.setCanPlayMusic(true);
         }
         finalBoss.resetAll();
     }

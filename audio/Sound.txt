@@ -1,0 +1,13 @@
+Player: - Bắn súng 	check
+        - Hurt		check
+Demon: - Attack		-false
+       - Dead		check
+Thiên thạch: Va chạm 	check
+Boss: - Dead		check
+      - Laser_casting -> laser	check
+      - Shoot		check - can sua lai sound
+Background		check
+
+add:
+menu music
+over music

@@ -3,6 +3,7 @@ package gamestate;
 import UI.GameOverOverlay;
 import UI.LevelCompletedOverlay;
 import UI.PauseOverlay;
+import audio.AudioPlayer;
 import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
@@ -174,12 +175,18 @@ public class Playing extends State implements Statemethods {
     @Override
     public void update() {//update
        gameover = player.IsDeath();
-
         if (!paused && !gameover && !lvlcompleted) {
+        	
             levelManager.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
-            player.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+            player.update();
+            if(player.IsDeath())
+            {
+            	getGame().getAudioPlayer().stopSong();
+            	getGame().getAudioPlayer().playEffect(AudioPlayer.GAME_OVER);
+            }
+            
 
             if (levelManager.getLvlIndex() == levelManager.getAmountOfLevels() - 1) {
                 if(!existBoss){
@@ -199,7 +206,10 @@ public class Playing extends State implements Statemethods {
         }
 
         if (gameover)
-            gameOverOverlay.update();
+        {
+        	gameOverOverlay.update();
+        }
+            
         else if(paused)
             pauseOverlay.update();
         else if (lvlcompleted)
@@ -397,6 +407,10 @@ public class Playing extends State implements Statemethods {
     }
     public void setLvlcompleted(boolean lvlcompleted) {
         this.lvlcompleted = lvlcompleted;
+        if(lvlcompleted)
+        {
+        	game.getAudioPlayer().lvlCompleted();
+        }
     }
 
     public void unpausedGame() {
