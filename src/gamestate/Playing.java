@@ -171,7 +171,7 @@ public class Playing extends State implements Statemethods {
             if(player.IsDeath())
             {
             	getGame().getAudioPlayer().stopSong();
-            	getGame().getAudioPlayer().playSong(AudioPlayer.GAME_OVER);;
+            	getGame().getAudioPlayer().playEffect(AudioPlayer.GAME_OVER);
             }
             
 
@@ -363,6 +363,10 @@ public class Playing extends State implements Statemethods {
     }
     public void setLvlcompleted(boolean lvlcompleted) {
         this.lvlcompleted = lvlcompleted;
+        if(lvlcompleted)
+        {
+        	game.getAudioPlayer().lvlCompleted();
+        }
     }
 
     public void unpausedGame() {

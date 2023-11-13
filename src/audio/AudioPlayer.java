@@ -20,7 +20,6 @@ public class AudioPlayer {
 	
 	public static int MENU = 0;
 	public static int PLAY = 1;
-	public static int GAME_OVER = 2;
 	
     public static int HURT = 0;
     public static int RUN_SHOOT = 1;
@@ -34,6 +33,8 @@ public class AudioPlayer {
     public static int BOSS_LASER = 8;
     public static int METEOR = 9;
     public static int BOSS_SHOOT = 10;
+    public static int LEVEL_COMPLETE = 11;
+    public static int GAME_OVER = 12;
     
 	
     private Clip[] songs, effects;
@@ -52,7 +53,7 @@ public class AudioPlayer {
 	
 	private void loadSongs()
 	{
-		String[] names = {"menu_music", "background", "game_over"};
+		String[] names = {"menu_music", "background"};
 		songs = new Clip[names.length];
 		for(int i = 0; i < songs.length;i++)
 		{
@@ -63,7 +64,8 @@ public class AudioPlayer {
 	private void loadEffects()
 	{
 		String[] effectNames = {"player_hurt", "player_shoot", "demon_attack", "demon_fire_dead", "demon_frozen_dead",
-				"demon_shadow_dead", "boss_dead", "boss_laser_casting", "boss_laser", "meteor_collision", "boss_shoot"};
+				"demon_shadow_dead", "boss_dead", "boss_laser_casting", "boss_laser", "meteor_collision", "boss_shoot",
+				"level_comp", "game_over"};
 		effects = new Clip[effectNames.length];
 		for(int i = 0; i < effects.length;i++)
 		{
@@ -132,11 +134,11 @@ public class AudioPlayer {
 	}
 	
 	
-//	public void lvlCompleted()
-//	{
-//		stopSong();
-//		playEffect(JUMP);
-//	}
+	public void lvlCompleted()
+	{
+		stopSong();
+		playEffect(LEVEL_COMPLETE);
+	}
 
 	
 	public void playGameOver()
