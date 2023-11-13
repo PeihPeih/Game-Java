@@ -19,7 +19,7 @@ import static utilz.constants.UI.Buttons.B_WIDTH_DEFAULT;
 
 public class Menu extends State implements Statemethods {
 
-    private MenuButtons[] buttons = new MenuButtons[3];
+    private MenuButtons[] buttons = new MenuButtons[4];
 
     private BufferedImage[] backgroundImage;
     private BufferedImage cloud;
@@ -57,9 +57,10 @@ public class Menu extends State implements Statemethods {
     }
 
     public void loadButtons(){//load nut ( boi vi cai Menu buttons chi la cai rieng biet de load tung nut)
-            buttons[0] = new MenuButtons(Game.GAME_WIDTH/2, (int) (200*Game.SCALE),0,Gamestate.PLAYING);
-            buttons[1] = new MenuButtons(Game.GAME_WIDTH/2, (int) (270*Game.SCALE),1,Gamestate.OPTION);
-            buttons[2] = new MenuButtons(Game.GAME_WIDTH/2, (int) (340*Game.SCALE),2,Gamestate.QUIT);
+            buttons[0] = new MenuButtons(Game.GAME_WIDTH/2, (int) (170*Game.SCALE),0,Gamestate.PLAYING);
+            buttons[1] = new MenuButtons(Game.GAME_WIDTH/2, (int) (230*Game.SCALE),1,Gamestate.LEADERBOARD);
+            buttons[2] = new MenuButtons(Game.GAME_WIDTH/2, (int) (290*Game.SCALE),2,Gamestate.OPTION);
+            buttons[3] = new MenuButtons(Game.GAME_WIDTH/2, (int) (350*Game.SCALE),3,Gamestate.QUIT);
     }
     public void loadMenuBackground(){//load anh menu
         try {

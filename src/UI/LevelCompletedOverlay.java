@@ -20,7 +20,7 @@ public class LevelCompletedOverlay {
     private UrmButtons menu,next;
     private BufferedImage[] imgs;
     private int bgX,bgY,bgW,bgH;
-    private int aniTick,aniIndex,aniSpeed=7;
+    private int aniTick,aniIndex,aniSpeed=3;
     private boolean check = false;
     public LevelCompletedOverlay(Playing playing){
         this.playing = playing;
@@ -94,11 +94,12 @@ public class LevelCompletedOverlay {
         if(isIn(next,e))
             next.setMouseOver(true);
     }
-    public void mouseReleased(MouseEvent e){
+    public void mouseReleased(MouseEvent e) throws IOException {
         if(isIn(menu,e))
             if(menu.isMousePressed()){
             	playing.getGame().getAudioPlayer().playSong(AudioPlayer.MENU);
                 playing.resetLvl();
+                playing.resetTime();
                 Gamestate.state=Gamestate.MENU;
             }
         if(isIn(next,e))

@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.Random;
 
 import UI.AudioOptions;
+
 import audio.AudioPlayer;
-import gamestate.Gamestate;
-import gamestate.Menu;
-import gamestate.Option;
-import gamestate.Playing;
+
+import gamestate.*;
+
 import utilz.LoadSave;
 
 
@@ -24,6 +24,7 @@ public class Game implements Runnable {
     private Menu menu;
     private Playing playing;
     private Option option;
+    private LeaderBoard leaderBoard;
     private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
 
@@ -63,6 +64,7 @@ public class Game implements Runnable {
         menu = new Menu(this);
         playing = new Playing(this);
         option = new Option(this);
+        leaderBoard = new LeaderBoard(this);
     }
     public void startGameLoop() {
         gameThread = new Thread(this);
@@ -116,8 +118,13 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             }
+            case LEADERBOARD ->  {
+                leaderBoard.update();
+                break;
+            }
             case OPTION -> {
                 option.update();
+                break;
             }
             case QUIT -> {
                 System.exit(0);
@@ -138,6 +145,10 @@ public class Game implements Runnable {
             case PLAYING -> {
                 playing.draw(g);
                 playing.destroy();
+                break;
+            }
+            case LEADERBOARD -> {
+                leaderBoard.draw(g);
                 break;
             }
             case OPTION -> {
@@ -164,6 +175,10 @@ public class Game implements Runnable {
 
     public Option getOption() {
         return option;
+    }
+
+    public LeaderBoard getLeaderBoard() {
+        return leaderBoard;
     }
 
     public AudioOptions getAudioOptions() {
