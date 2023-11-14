@@ -26,8 +26,11 @@ public class Warning extends GameObject {
         this.image = new BufferedImage[10];
         try {
             BufferedImage tmp = ImageIO.read(getClass().getResourceAsStream("/demon/Final Boss/warning.png"));
-            for (int i = 0; i < 10; i++) {
-                image[i] = tmp;
+            for (int i = 0; i < 5; i++) {
+                image[i] = tmp.getSubimage(32*i,0,32,32);
+            }
+            for(int i=5;i<9;i++){
+                image[i]=image[9-i];
             }
 
         } catch (Exception e) {
@@ -55,7 +58,7 @@ public class Warning extends GameObject {
 
     public void draw(Graphics g, int xLvlOffset) {
         if (active) {
-            g.drawImage(image[aniIndex], (int) (this.hitbox.x - xLvlOffset), (int) (this.hitbox.y) + Game.TILES_SIZE - 36, 36, 36, null);
+            g.drawImage(image[aniIndex], (int) (this.hitbox.x - xLvlOffset), (int) (this.hitbox.y) + Game.TILES_SIZE - 32, 32, 32, null);
         }
     }
 }
