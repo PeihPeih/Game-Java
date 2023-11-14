@@ -4,7 +4,7 @@
 - Cài JDK
 - Cài đặt image folder thành source root
 - Cài đặt audio folder thành source root
- Hướng dẫn chơi game
+- Hướng dẫn chơi game
   - W: nhảy
   - A: sang trái
   - D: sang phải
