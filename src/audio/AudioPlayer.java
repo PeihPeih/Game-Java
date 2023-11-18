@@ -42,7 +42,6 @@ public class AudioPlayer {
     private int currentEffectId;
     private float volume = 0.8f;
     private boolean songMute, effectMute;
-    private Random rand = new Random();
     
 	public AudioPlayer ()
 	{
@@ -167,8 +166,6 @@ public class AudioPlayer {
 			BooleanControl booleanControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
 			booleanControl.setValue(effectMute);
 		}
-		if(!effectMute)
-			playEffect(HURT);
 	}
 	
 	private void updateSongVolume()
