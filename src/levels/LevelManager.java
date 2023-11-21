@@ -114,6 +114,7 @@ public class LevelManager {
     public void loadNextLevel() throws IOException {
         lvlIndex++;
         if (lvlIndex >= levels.size()) {
+            game.getPlaying().resetTime();
             lvlIndex = 0;
             System.out.println("No more levels! Game Completed!");
             Gamestate.state = Gamestate.MENU;
