@@ -1,11 +1,15 @@
 # Hướng dẫn cài đặt
 
-B1: Sử dụng IDE thông dụng để code Java như Intellij, Eclipse.  
+B1: Sử dụng IDE thông dụng để code Java như Intellij, Eclipse, Netbeans.  
 B2: Clone repo này về máy.  
 B3: Mở folder đã clone về máy trên IDE.  
    Với Intellij, ở bên trái màn hình, đặt file "image" và "audio" làm source root.  
    Bấm chuột phải vào file "image", sau đó cài đặt như trong hình. Tương tự với file audio  
    ![image](https://github.com/PeihPeih/Game-Java/assets/109358691/4464f0ab-2d51-4973-9942-40ba2f3eaede)
+
+   Với Esclipse, ở bên trái màn hình, đặt file "image" và "audio" làm source root.  
+   Bấm chuột phải vào file "image", sau đó cài đặt như trong hình. Tương tự với file audio
+   ![image](https://github.com/PeihPeih/Game-Java/assets/109358691/173ace76-3675-4ec3-b145-11f1c62bc127)
 
 * B4: Tìm file MainClass.java trong file "src" và chạy.
 
