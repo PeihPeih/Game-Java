@@ -19,5 +19,4 @@ Người chơi điều khiển nhân vật bằng các phím như sau:
 
 #### Lưu ý: Để qua màn thì cần tiêu diệt hết quái. Nếu muốn nhanh chóng qua màn chơi thì có thể tăng lượng dame của nhân vật bằng cách điều chỉnh thông số damage trong Player.java lên 200.
 
-# Nếu có thắc mắc hoặc không chạy được game, liên hệ tới zalo: 0382625576 để được hướng dẫn.
 # Chúc mọi người trải nghiệm game vui vẻ !!!
