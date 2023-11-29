@@ -7,7 +7,7 @@ B3: Mở folder đã clone về máy trên IDE.
    Bấm chuột phải vào file "image", sau đó cài đặt như trong hình. Tương tự với file audio  
    ![image](https://github.com/PeihPeih/Game-Java/assets/109358691/4464f0ab-2d51-4973-9942-40ba2f3eaede)
 
-* B4: Tìm file MainClass.java và ấn chạy.
+* B4: Tìm file MainClass.java trong file "src" và chạy.
 
 # Hướng dẫn chơi game
 
