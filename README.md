@@ -20,7 +20,8 @@ B3: Mở folder đã clone về máy trên IDE.
 Người chơi điều khiển nhân vật bằng các phím như sau:  
 * A: Di chuyển trái.  
 * D: Di chuyển phải.  
-* W, SPACE: Nhảy lên.  
+* W, SPACE: Nhảy lên.
+* J: Bắn súng.  
 * ESC: Pause game.
 
 #### Lưu ý: Để qua màn thì cần tiêu diệt hết quái. Nếu muốn nhanh chóng qua màn chơi thì có thể tăng lượng dame của nhân vật bằng cách điều chỉnh thông số damage trong Player.java lên 200.
